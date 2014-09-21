@@ -3,7 +3,7 @@ Demonstrates Angular testing
 
 [![Build Status](https://travis-ci.org/johnpapa/ng-demos.svg?branch=master)](https://travis-ci.org/johnpapa/ng-patterns-testing)
 
-[ ![Codeship Status for johnpapa/ng-demos](https://codeship.io/projects/4da9d8a0-160c-0132-3072-1640fccf9ec7/status)](https://codeship.io/projects/33792)
+[ ![Codeship Status for johnpapa/ng-patterns-testing](https://codeship.io/projects/115a40f0-23cf-0132-4e4e-7e9ae55fd39f/status)](https://codeship.io/projects/36742)
 
 >*Opinionated AngularJS style guide for teams by [@john_papa](//twitter.com/john_papa)*
 
