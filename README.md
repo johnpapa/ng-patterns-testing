@@ -16,7 +16,6 @@ Demonstrates Angular testing
 3. Add ui-router
 4. Revise from avengers
 
-
 ## Structure
 	/build 	(created on the fly)
 	/gulp	

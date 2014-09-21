@@ -12,8 +12,8 @@
     }
 
     var config = {
-        appErrorPrefix: '[NG-Modular Error] ', //Configure the exceptionHandler decorator
-        appTitle: 'Angular Modular Demo',
+        appErrorPrefix: '[NG-Testing Error] ', //Configure the exceptionHandler decorator
+        appTitle: 'Angular Testing Demo',
         version: '1.0.0'
     };
 
@@ -30,7 +30,7 @@
 
         // Configure the common route provider
         routehelperConfigProvider.config.$routeProvider = $routeProvider;
-        routehelperConfigProvider.config.docTitle = 'NG-Modular: ';
+        routehelperConfigProvider.config.docTitle = 'NG-Testing: ';
         var resolveAlways = { /* @ngInject */
             ready: function(dataservice) {
                 return dataservice.ready();

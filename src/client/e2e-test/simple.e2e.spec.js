@@ -40,9 +40,9 @@
  */
 
 // Jasmine Test
-describe('modular app', function() {
+describe('testing app', function() {
     it('should find avengers', function() {
-        browser.get('http://localhost:7200/#/avengers');
+        browser.get('http://localhost:7202/#/avengers');
         var list = element.all(by.repeater('c in vm.avengers'));
         expect(list.count()).toEqual(7);
         element(by.model('vm.filter.name')).sendKeys('iron');
@@ -57,9 +57,9 @@ describe('modular app', function() {
 // var chaiAsPromised = require('chai-as-promised');
 // chai.use(chaiAsPromised);
 // var expect = chai.expect;
-// describe('modular app', function() {
+// describe('testing app', function() {
 //     it('should find avengers', function() {
-//         browser.get('http://localhost:7200/#/avengers');
+//         browser.get('http://localhost:7202/#/avengers');
 //         var list = element.all(by.repeater('c in vm.avengers'));
 //         expect(list.count()).to.eventually.equal(7);
 //         element(by.model('vm.filter.name')).sendKeys('iron');
