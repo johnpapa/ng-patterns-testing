@@ -1,13 +1,19 @@
 /* jshint camelcase:false */
 var gulp = require('gulp');
-var common = require('./gulp/common.js');
+var browserSync = require('browser-sync');
+var del = require('del');
+var glob = require('glob');
 var karma = require('karma').server;
 var merge = require('merge-stream');
-var pkg = require('./package.json');
+var paths = require('./gulp.config.json');
+var plato = require('plato');
 var plug = require('gulp-load-plugins')();
+var reload = browserSync.reload;
 
+var colors = plug.util.colors;
 var env = plug.util.env;
 var log = plug.util.log;
+var port = process.env.PORT || 7202;
 
 /**
  * List the available gulp tasks
@@ -15,16 +21,18 @@ var log = plug.util.log;
 gulp.task('help', plug.taskListing);
 
 /**
- * Lint the code
+ * Lint the code, create coverage report, and a visualizer
  * @return {Stream}
  */
 gulp.task('analyze', function() {
-    log('Analyzing source with JSHint and JSCS');
+    log('Analyzing source with JSHint, JSCS, and Plato');
 
-    var jshintTests = analyzejshint('./src/client/**/*.spec.js', './src/client/test/.jshintrc');
-    var jshint = analyzejshint([].concat(pkg.paths.js, pkg.paths.nodejs, '!./src/client/**/*.spec.js'), './.jshintrc');
-    var jscs = analyzejscs([].concat(pkg.paths.js, pkg.paths.nodejs), './.jshintrc');
-    return merge(jshintTests, jshint, jscs);
+    var jshint = analyzejshint([].concat(paths.js, paths.specs, paths.nodejs));
+    var jscs = analyzejscs([].concat(paths.js, paths.nodejs));
+
+    startPlatoVisualizer();
+
+    return merge(jshint, jscs);
 });
 
 /**
@@ -35,13 +43,16 @@ gulp.task('templatecache', function() {
     log('Creating an AngularJS $templateCache');
 
     return gulp
-        .src(pkg.paths.htmltemplates)
+        .src(paths.htmltemplates)
+        // .pipe(plug.bytediff.start())
+        .pipe(plug.minifyHtml({empty:true}))
+        // .pipe(plug.bytediff.stop(bytediffFormatter))
         .pipe(plug.angularTemplatecache('templates.js', {
             module: 'app.core',
             standalone: false,
             root: 'app/'
         }))
-        .pipe(gulp.dest(pkg.paths.stage));
+        .pipe(gulp.dest(paths.build));
 });
 
 /**
@@ -51,7 +62,7 @@ gulp.task('templatecache', function() {
 gulp.task('js', ['analyze', 'templatecache'], function() {
     log('Bundling, minifying, and copying the app\'s JavaScript');
 
-    var source = [].concat(pkg.paths.js, pkg.paths.stage + 'templates.js');
+    var source = [].concat(paths.js, paths.build + 'templates.js');
     return gulp
         .src(source)
        // .pipe(plug.sourcemaps.init()) // get screwed up in the file rev process
@@ -59,9 +70,9 @@ gulp.task('js', ['analyze', 'templatecache'], function() {
         .pipe(plug.ngAnnotate({add: true, single_quotes: true}))
         .pipe(plug.bytediff.start())
         .pipe(plug.uglify({mangle: true}))
-        .pipe(plug.bytediff.stop(common.bytediffFormatter))
+        .pipe(plug.bytediff.stop(bytediffFormatter))
         // .pipe(plug.sourcemaps.write('./'))
-        .pipe(gulp.dest(pkg.paths.stage));
+        .pipe(gulp.dest(paths.build));
 });
 
 /**
@@ -70,12 +81,13 @@ gulp.task('js', ['analyze', 'templatecache'], function() {
  */
 gulp.task('vendorjs', function() {
     log('Bundling, minifying, and copying the Vendor JavaScript');
-    return gulp.src(pkg.paths.vendorjs)
+
+    return gulp.src(paths.vendorjs)
         .pipe(plug.concat('vendor.min.js'))
         .pipe(plug.bytediff.start())
         .pipe(plug.uglify())
-        .pipe(plug.bytediff.stop(common.bytediffFormatter))
-        .pipe(gulp.dest(pkg.paths.stage)); // + 'vendor'));
+        .pipe(plug.bytediff.stop(bytediffFormatter))
+        .pipe(gulp.dest(paths.build));
 });
 
 /**
@@ -84,14 +96,15 @@ gulp.task('vendorjs', function() {
  */
 gulp.task('css', function() {
     log('Bundling, minifying, and copying the app\'s CSS');
-    return gulp.src(pkg.paths.css)
+
+    return gulp.src(paths.css)
         .pipe(plug.concat('all.min.css')) // Before bytediff or after
         .pipe(plug.autoprefixer('last 2 version', '> 5%'))
         .pipe(plug.bytediff.start())
         .pipe(plug.minifyCss({}))
-        .pipe(plug.bytediff.stop(common.bytediffFormatter))
+        .pipe(plug.bytediff.stop(bytediffFormatter))
 //        .pipe(plug.concat('all.min.css')) // Before bytediff or after
-        .pipe(gulp.dest(pkg.paths.stage + 'content'));
+        .pipe(gulp.dest(paths.build + 'content'));
 });
 
 /**
@@ -100,12 +113,16 @@ gulp.task('css', function() {
  */
 gulp.task('vendorcss', function() {
     log('Compressing, bundling, copying vendor CSS');
-    return gulp.src(pkg.paths.vendorcss)
+
+    var vendorFilter = plug.filter(['**/*.css']);
+
+    return gulp.src(paths.vendorcss)
+        .pipe(vendorFilter)
         .pipe(plug.concat('vendor.min.css'))
         .pipe(plug.bytediff.start())
         .pipe(plug.minifyCss({}))
-        .pipe(plug.bytediff.stop(common.bytediffFormatter))
-        .pipe(gulp.dest(pkg.paths.stage + 'content'));
+        .pipe(plug.bytediff.stop(bytediffFormatter))
+        .pipe(gulp.dest(paths.build + 'content'));
 });
 
 /**
@@ -113,10 +130,10 @@ gulp.task('vendorcss', function() {
  * @return {Stream}
  */
 gulp.task('fonts', function() {
-    var dest = pkg.paths.stage + 'fonts';
+    var dest = paths.build + 'fonts';
     log('Copying fonts');
     return gulp
-        .src(pkg.paths.fonts)
+        .src(paths.fonts)
         .pipe(gulp.dest(dest));
 });
 
@@ -125,10 +142,10 @@ gulp.task('fonts', function() {
  * @return {Stream}
  */
 gulp.task('images', function() {
-    var dest = pkg.paths.stage + 'content/images';
+    var dest = paths.build + 'content/images';
     log('Compressing, caching, and copying images');
     return gulp
-        .src(pkg.paths.images)
+        .src(paths.images)
         .pipe(plug.cache(plug.imagemin({optimizationLevel: 3})))
         .pipe(gulp.dest(dest));
 });
@@ -142,17 +159,17 @@ gulp.task('rev-and-inject',
     ['js', 'vendorjs', 'css', 'vendorcss'], function() {
         log('Rev\'ing files and building index.html');
 
-        var minified = pkg.paths.stage + '**/*.min.*';
-        var index = pkg.paths.client + 'index.html';
+        var minified = paths.build + '**/*.min.*';
+        var index = paths.client + 'index.html';
         var minFilter = plug.filter(['**/*.min.*', '!**/*.map']);
         var indexFilter = plug.filter(['index.html']);
 
         var stream = gulp
             // Write the revisioned files
-            .src([].concat(minified, index)) // add all staged min files and index.html
+            .src([].concat(minified, index)) // add all built min files and index.html
             .pipe(minFilter) // filter the stream to minified css and js
             .pipe(plug.rev()) // create files with rev's
-            .pipe(gulp.dest(pkg.paths.stage)) // write the rev files
+            .pipe(gulp.dest(paths.build)) // write the rev files
             .pipe(minFilter.restore()) // remove filter, back to original stream
 
             // inject the files into index.html
@@ -161,65 +178,62 @@ gulp.task('rev-and-inject',
             .pipe(inject('content/all.min.css'))
             .pipe(inject('vendor.min.js', 'inject-vendor'))
             .pipe(inject('all.min.js'))
-            .pipe(gulp.dest(pkg.paths.stage)) // write the rev files
+            .pipe(gulp.dest(paths.build)) // write the rev files
             .pipe(indexFilter.restore()) // remove filter, back to original stream
 
             // replace the files referenced in index.html with the rev'd files
             .pipe(plug.revReplace())         // Substitute in new filenames
-            .pipe(gulp.dest(pkg.paths.stage)) // write the index.html file changes
+            .pipe(gulp.dest(paths.build)) // write the index.html file changes
             .pipe(plug.rev.manifest()) // create the manifest (must happen last or we screw up the injection)
-            .pipe(gulp.dest(pkg.paths.stage)); // write the manifest
+            .pipe(gulp.dest(paths.build)); // write the manifest
 
         function inject(path, name) {
-            var glob = pkg.paths.stage + path;
+            var pathGlob = paths.build + path;
             var options = {
-                ignorePath: pkg.paths.stage.substring(1),
+                ignorePath: paths.build.substring(1),
                 read: false
             };
             if (name) { options.name = name; }
-            return plug.inject(gulp.src(glob), options);
+            return plug.inject(gulp.src(pathGlob), options);
         }
     });
 
 /**
- * Stage the optimized app
+ * Build the optimized app
  * @return {Stream}
  */
-gulp.task('stage',
+gulp.task('build',
     ['rev-and-inject', 'images', 'fonts'], function() {
-        log('Staging the optimized app');
+        log('Building the optimized app');
 
         return gulp.src('').pipe(plug.notify({
             onLast: true,
-            message: 'Deployed code to stage!'
+            message: 'Deployed code!'
         }));
     });
 
 /**
  * Remove all files from the build folder
  * One way to run clean before all tasks is to run
- * from the cmd line: gulp clean && gulp stage
+ * from the cmd line: gulp clean && gulp build
  * @return {Stream}
  */
-gulp.task('clean', function() {
-    var paths = pkg.paths.build;
-    log('Cleaning: ' + plug.util.colors.blue(paths));
+gulp.task('clean', function(cb) {
+    log('Cleaning: ' + plug.util.colors.blue(paths.build));
 
-    return gulp
-        .src(paths, {read: false})
-        .pipe(plug.rimraf({force: true}));
+    var delPaths = [].concat(paths.build, paths.report);
+    del(delPaths, cb);
 });
 
 /**
  * Watch files and build
- * @return {Stream}
  */
 gulp.task('watch', function() {
     log('Watching all files');
 
-    var css = ['gulpfile.js'].concat(pkg.paths.css, pkg.paths.vendorcss);
-    var images = ['gulpfile.js'].concat(pkg.paths.images);
-    var js = ['gulpfile.js'].concat(pkg.paths.js);
+    var css = ['gulpfile.js'].concat(paths.css, paths.vendorcss);
+    var images = ['gulpfile.js'].concat(paths.images);
+    var js = ['gulpfile.js'].concat(paths.js);
 
     gulp
         .watch(js, ['js', 'vendorjs'])
@@ -253,7 +267,6 @@ gulp.task('test', function (done) {
  * Watch for file changes and re-run tests on each change
  * To start servers and run midway specs as well:
  *    gulp autotest --startServers  
- * @return {Stream}
  */
 gulp.task('autotest', function (done) {
     startTests(false /*singleRun*/, done);
@@ -262,39 +275,31 @@ gulp.task('autotest', function (done) {
 /**
  * serve the dev environment, with debug,
  * and with node inspector
- * @return {Stream}
  */
 gulp.task('serve-dev-debug', function() {
     serve({mode: 'dev', debug: '--debug'});
-    startLivereload('development');
 });
 
 /**
  * serve the dev environment, with debug-brk,
  * and with node inspector
- * @return {Stream}
  */
 gulp.task('serve-dev-debug-brk', function() {
     serve({mode: 'dev', debug: '--debug-brk'});
-    startLivereload('development');
 });
 
 /**
  * serve the dev environment
- * @return {Stream}
  */
 gulp.task('serve-dev', function() {
     serve({mode: 'dev'});
-    startLivereload('development');
 });
 
 /**
- * serve the staging environment
- * @return {Stream}
+ * serve the build environment
  */
-gulp.task('serve-stage', function() {
-    serve({mode: 'stage'});
-    startLivereload('stage');
+gulp.task('serve-build', function() {
+    serve({mode: 'build'});
 });
 
 ////////////////
@@ -302,13 +307,15 @@ gulp.task('serve-stage', function() {
 /**
  * Execute JSHint on given source files
  * @param  {Array} sources
- * @param  {string} jshintrc - file
+ * @param  {String} overrideRcFile 
  * @return {Stream}
  */
-function analyzejshint(sources, jshintrc) {
+function analyzejshint(sources, overrideRcFile) {
+    var jshintrcFile = overrideRcFile || './.jshintrc';
+    log('Running JSHint');
     return gulp
         .src(sources)
-        .pipe(plug.jshint(jshintrc))
+        .pipe(plug.jshint(jshintrcFile))
         .pipe(plug.jshint.reporter('jshint-stylish'));
 }
 
@@ -318,6 +325,7 @@ function analyzejshint(sources, jshintrc) {
  * @return {Stream}
  */
 function analyzejscs(sources) {
+    log('Running JSCS');
     return gulp
         .src(sources)
         .pipe(plug.jscs('./.jscsrc'));
@@ -331,25 +339,31 @@ function analyzejscs(sources) {
  */
 function serve(args) {
     var options = {
-        script: pkg.paths.server + 'app.js',
+        script: paths.server + 'app.js',
         delayTime: 1,
         ext: 'html js',
         env: {'NODE_ENV': args.mode},
         watch: [
             'gulpfile.js',
             'package.json',
-            pkg.paths.server,
-            pkg.paths.client
+            'gulp.config.json',
+            paths.server,
+            paths.client
         ]
     };
 
+    var exec;
     if (args.debug) {
-        gulp.src('', {read: false})
-            .pipe(plug.shell(['node-inspector']));
+        log('Running node-inspector. Browse to http://localhost:8080/debug?port=5858');
+        exec = require('child_process').exec;
+        exec('node-inspector');
         options.nodeArgs = [args.debug + '=5858'];
     }
 
     return plug.nodemon(options)
+        .on('start', function() {
+            startBrowserSync();
+        })
         //.on('change', tasks)
         .on('restart', function() {
             log('restarted!');
@@ -357,21 +371,41 @@ function serve(args) {
 }
 
 /**
- * Start Live Reload for a specific environment.
- * @param  {string} mode
- * @return {Steram}
+ * Start BrowserSync
+ * @return {Stream}
  */
-function startLivereload(mode) {
-    if (!env.liveReload) { return; }
+function startBrowserSync() {
+    if (!env.browserSync) { return; }
 
-    log('Serving from ' + mode);
-    var path = (env === 'stage' ? [pkg.paths.stage, pkg.paths.client + '/**'] : [pkg.paths.client + '/**']);
-    var options = {auto: true};
-    plug.livereload.listen(options);
-    return gulp.watch(path)
-        .on('change', function(file) {
-            plug.livereload.changed(file.path);
-        });
+    log('Starting BrowserSync');
+
+    browserSync({
+        proxy: 'localhost:' + port,
+        files: [paths.client + '/**/*.*']
+    });
+}
+
+/**
+ * Start Plato inspector and visualizer
+ */
+function startPlatoVisualizer() {
+    log('Running Plato');
+
+    var files = glob.sync('./src/client/app/**/*.js');
+    var excludeFiles = /\/src\/client\/app\/.*\.spec\.js/;
+
+    var options = {
+        title: 'Plato Inspections Report',
+        exclude: excludeFiles
+    };
+    var outputDir = './report/plato';
+
+    plato.inspect(files, outputDir, options, platoCompleted);
+
+    function platoCompleted(report) {
+        var overview = plato.getOverviewReport(report);
+        log(overview.summary);
+    }
 }
 
 /**
@@ -383,14 +417,14 @@ function startLivereload(mode) {
 function startTests(singleRun, done) {
     var child;
     var excludeFiles = ['./src/client/app/**/*spaghetti.js'];
-    var spawn = require('child_process').spawn;
+    var fork = require('child_process').fork;
 
     if (env.startServers) {
         log('Starting servers');
         var savedEnv = process.env;
         savedEnv.NODE_ENV = 'dev';
         savedEnv.PORT = 8888;
-        child = spawn('node', ['src/server/app.js'], {env: savedEnv}, childProcessCompleted);
+        child = fork('src/server/app.js', childProcessCompleted);
     } else {
         excludeFiles.push('./src/client/test/midway/**/*.spec.js');
     }
@@ -402,6 +436,7 @@ function startTests(singleRun, done) {
     }, karmaCompleted);
 
     ////////////////
+    
     function childProcessCompleted(error, stdout, stderr) {
         log('stdout: ' + stdout);
         log('stderr: ' + stderr);
@@ -414,6 +449,28 @@ function startTests(singleRun, done) {
         if (child) {child.kill();}
         done();
     }
+}
+
+/**
+ * Formatter for bytediff to display the size changes after processing
+ * @param  {Object} data - byte data
+ * @return {String}      Difference in bytes, formatted
+ */
+function bytediffFormatter(data) {
+    var difference = (data.savings > 0) ? ' smaller.' : ' larger.';
+    return data.fileName + ' went from ' +
+        (data.startSize / 1000).toFixed(2) + ' kB to ' + (data.endSize / 1000).toFixed(2) + ' kB' +
+        ' and is ' + formatPercent(1 - data.percent, 2) + '%' + difference;
+}
+
+/**
+ * Format a number as a percentage
+ * @param  {Number} num       Number to format as a percent
+ * @param  {Number} precision Precision of the decimal
+ * @return {Number}           Formatted perentage
+ */
+function formatPercent(num, precision) {
+    return (num * 100).toFixed(precision);
 }
 
 /**
@@ -432,9 +489,9 @@ function startTests(singleRun, done) {
  */
 gulp.task('ngAnnotateTest', function() {
     log('Annotating AngularJS dependencies');
-    var source = [].concat(pkg.paths.js);
+    var source = [].concat(paths.js);
     return gulp
-        .src(pkg.paths.client + '/app/avengers/avengers.js')
+        .src(paths.client + '/app/avengers/avengers.js')
         .pipe(plug.ngAnnotate({add: true, single_quotes: true}))
-        .pipe(gulp.dest(pkg.paths.client + '/app/avengers/annotated'));
+        .pipe(gulp.dest(paths.client + '/app/avengers/annotated'));
 });

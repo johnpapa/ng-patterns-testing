@@ -13,7 +13,6 @@ var port = process.env.PORT || 7202;
 var routes;
 
 var environment = process.env.NODE_ENV;
-var pkg = require('./../../package.json');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -37,20 +36,13 @@ app.get('/ping', function(req, res, next) {
 });
 
 switch (environment){
-    case 'production':
-        console.log('** PRODUCTION ON AZURE **');
-        process.chdir('./../../');
-        app.use('/', express.static('./build/stage/'));
-        // app.use('/', express.static(pkg.paths.client));
-        // app.use('/', express.static('./'));
-        break;
-    case 'stage':
-        console.log('** STAGE **');
-        app.use('/', express.static('./build/stage/'));
+    case 'build':
+        console.log('** BUILD **');
+        app.use('/', express.static('./build/'));
         break;
     default:
         console.log('** DEV **');
-        app.use('/', express.static(pkg.paths.client));
+        app.use('/', express.static('./src/client/'));
         app.use('/', express.static('./'));
         break;
 }
