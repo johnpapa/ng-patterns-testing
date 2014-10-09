@@ -12,17 +12,13 @@
 
 
 
-	/* 'config' value */
+	/* 'config' value - for mutable configuration; only becomes available in Ng's run phase */
 
     basics.value('config', {
 	    // the base Uri for server api calls
         apiBaseUri: '/api/marvel/',
         appTitle:   'Basic Avengers'
     });
-
-
-
-
 
 
 
@@ -175,6 +171,23 @@
                 });
         }
     }
+
+
+
+
+
+
+
+    /* 'config2' constant - which is available in Ng's config phase */
+
+    basics.constant('config2', {
+        debugMode:  true
+    });
+
+    // use constant in config phase
+    basics.config(function ($logProvider, config2) {
+        $logProvider.debugEnabled(config2.debugMode);
+    });
 
 }());
 /* jscs: enable */

@@ -1,4 +1,7 @@
 /* jscs: disable */
+/*
+ *  Using chai BDD (expect) assertions: http://chaijs.com/api/bdd/
+ */
 describe('Basics - assertion examples:', function () {
     'use strict';
 
