@@ -5,6 +5,18 @@
 describe('Basics - assertion examples:', function () {
     'use strict';
 
+
+
+    it('true is true', function () {
+        expect(true).to.be.true;
+    });
+
+    it('one + one is two', function () {
+        expect(1+1).to.equal(2);
+    });
+
+
+
     describe('Array#indexOf()', function () {
 
         it('should return -1 when the value is not present', function () {
