@@ -13,7 +13,6 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            './src/client/test/lib/bindPolyfill.js',
 
             './node_modules/ng-midway-tester/src/ngMidwayTester.js',
 
@@ -27,6 +26,7 @@ module.exports = function (config) {
             './bower_components/toastr/toastr.js',
             './bower_components/moment/moment.js',
             './bower_components/extras.angular.plus/ngplus-overlay.js',
+            './src/client/test/lib/bindPolyfill.js',
 
             './src/client/app/app.module.js',
             './src/client/app/**/*.module.js',

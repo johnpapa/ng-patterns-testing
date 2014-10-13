@@ -63,9 +63,7 @@
 
 
 
-
-
-	/* 'basicController' controller (ViewModel) */
+    /* 'basicController' controller (ViewModel), controllerAs-style */
 
     basics.controller('basicController', basicController);
 
@@ -79,6 +77,29 @@
         ///////////
         function activate(){
             $log.debug(vm.title + ' controller activated');
+        }
+    }
+
+
+
+
+
+
+
+
+
+    /* 'basicScopedController' controller (legacy) */
+
+    basics.controller('basicScopedController', basicScopedController);
+
+    function basicScopedController($scope, $log) {
+        $scope.avengers = [];
+        $scope.title = 'Avengers Listing';
+
+        activate();
+        ///////////
+        function activate(){
+            $log.debug($scope.title + ' scoped controller activated');
         }
     }
 

@@ -63,6 +63,14 @@ var specHelper = (function() {
         return params;
     }
 
+    /**
+     * inject selected services into the windows object during test
+     * then remove them when test ends.
+     *
+     * spares us the repetition of creating common service vars and injecting them
+     *
+     * See avengers-route.spec for example
+     */
     function injector () {
         var annotation,
             body = '',
