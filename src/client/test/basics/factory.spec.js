@@ -1,3 +1,4 @@
+/* jshint -W117, -W030 */
 describe('Basics - factory:', function() {
     'use strict';
 

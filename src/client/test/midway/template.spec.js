@@ -1,3 +1,4 @@
+/* jshint -W117, -W030 */
 describe('Midway: templates', function() {
     it('should load the template for the avengers view properly',
         function(done) {

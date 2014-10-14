@@ -1,4 +1,4 @@
-/* global dataservice, */
+/* jshint -W117, -W030 */
 describe('app.dashboard', function() {
     var controller;
 
@@ -7,7 +7,7 @@ describe('app.dashboard', function() {
             specHelper.fakeRouteProvider($provide);
             specHelper.fakeLogger($provide);
         });
-        specHelper.injector(function($controller, $q, $rootScope, dataservice) {});            
+        specHelper.injector(function($controller, $q, $rootScope, dataservice) {});
     });
 
     beforeEach(function () {
@@ -22,7 +22,7 @@ describe('app.dashboard', function() {
             deferred.resolve({test: 123});
             return deferred.promise;
         });
-      
+
         controller = $controller('Dashboard');
         $rootScope.$apply();
     });

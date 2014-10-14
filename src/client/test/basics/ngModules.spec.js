@@ -1,3 +1,4 @@
+/* jshint -W117, -W030 */
 /* ngModules.spec.js:
  *
  * ngMocks mocks the module registration so you can get

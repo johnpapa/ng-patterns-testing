@@ -1,4 +1,4 @@
-/* global calcService, $log, foo, baz */
+/* jshint -W117, -W030 */
 describe('specHelper.injectoror', function() {
     'use strict';
 

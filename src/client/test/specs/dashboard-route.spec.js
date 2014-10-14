@@ -1,10 +1,11 @@
+/* jshint -W117, -W030 */
 describe('dashboard', function () {
     describe('route', function () {
         var controller;
 
         beforeEach(function() {
             module('app', specHelper.fakeLogger);
-            specHelper.injector(function($httpBackend, $location, $rootScope, $route) {});            
+            specHelper.injector(function($httpBackend, $location, $rootScope, $route) {});
             $httpBackend.expectGET('app/dashboard/dashboard.html').respond(200);
         });
 

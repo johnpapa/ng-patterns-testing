@@ -1,4 +1,4 @@
-/* global dataservice, */
+/* jshint -W117, -W030 */
 describe('dataservice', function () {
     var scope;
     var mocks = {};
@@ -8,9 +8,9 @@ describe('dataservice', function () {
             specHelper.fakeRouteProvider($provide);
             specHelper.fakeLogger($provide);
         });
-        specHelper.injector(function($httpBackend, $rootScope, dataservice) {});            
-        
-        mocks.maaData = [{ 
+        specHelper.injector(function($httpBackend, $rootScope, dataservice) {});
+
+        mocks.maaData = [{
             data: {results: mockData.getMockAvengers()}
         }];
         // sinon.stub(dataservice, 'getAvengers', function () {
@@ -28,7 +28,7 @@ describe('dataservice', function () {
         it('should exist', function () {
             expect(dataservice.getAvengers).not.to.equal(null);
         });
-        
+
         it('should return 5 Avengers', function (done) {
             $httpBackend.when('GET', '/api/maa').respond(200, mocks.maaData);
             dataservice.getAvengers().then(function(data) {

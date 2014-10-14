@@ -1,3 +1,4 @@
+/* jshint -W117, -W030 */
 /* ngPromises.spec.js:
  *
  * ngMocks mocks angular's $q library so that functions
@@ -20,7 +21,7 @@
 describe('Basics - ng Promises:', function() {
     'use strict';
 
-    var $q; 
+    var $q;
     var $rootScope;
     var bingo;
     var deferred;
