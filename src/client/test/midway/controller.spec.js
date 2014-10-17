@@ -3,11 +3,12 @@
 //https://github.com/yearofmoo-articles/AngularJS-Testing-Article
 describe('Midway: controllers and routes', function() {
     var tester;
+
     beforeEach(function() {
-        if (tester) {
-            tester.destroy();
-        }
         tester = ngMidwayTester('app');
+    });
+    afterEach(function () {
+        if (tester) { tester.destroy(); }
     });
 
     beforeEach(function () {

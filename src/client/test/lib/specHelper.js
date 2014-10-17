@@ -1,12 +1,12 @@
 /*jshint -W079 */
-var specHelper = (function() {
-    var service = {
+window.specHelper = (function() {
+    return {
         fakeLogger: fakeLogger,
         fakeRouteProvider: fakeRouteProvider,
         injector: injector,
         verifyNoOutstandingHttpRequests: verifyNoOutstandingHttpRequests
     };
-    return service;
+    ////////////////////////
 
     function fakeLogger($provide) {
         $provide.value('logger', sinon.stub({
@@ -132,6 +132,7 @@ var specHelper = (function() {
         // Then caller must say something like:
         //     eval(specHelper.injector('$log', 'foo'));
     }
+
 
     function verifyNoOutstandingHttpRequests () {
         afterEach(inject(function($httpBackend) {

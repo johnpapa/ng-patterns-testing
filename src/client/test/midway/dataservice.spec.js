@@ -4,10 +4,10 @@ describe('Midway: dataservice requests', function() {
     var tester;
 
     beforeEach(function() {
-        if (tester) {
-            tester.destroy();
-        }
         tester = ngMidwayTester('app');
+    });
+    afterEach(function () {
+        if (tester) { tester.destroy(); }
     });
 
     beforeEach(function() {
@@ -20,8 +20,7 @@ describe('Midway: dataservice requests', function() {
             dataservice.getAvengers().then(function(data) {
                 expect(data).not.to.equal(null);
                 expect(data.length).to.equal(7);
-                done();
-            });
+            }).then(done, done);
             // $rootScope.$apply();
         });
 
@@ -32,8 +31,7 @@ describe('Midway: dataservice requests', function() {
                     return element.name.indexOf('Black Widow') >= 0;
                 });
                 expect(hasBlackWidow).to.be.true;
-                done();
-            });
+            }).then(done,done);
             // $rootScope.$apply();
         });
     });
