@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe('specHelper.injectoror', function() {
+describe('specHelper.injector', function() {
     'use strict';
 
     beforeEach(module('basics'));

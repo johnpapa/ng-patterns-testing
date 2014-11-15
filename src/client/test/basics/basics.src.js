@@ -12,38 +12,36 @@
 
 
 
-	/* 'config' value - for mutable configuration; only becomes available in Ng's run phase */
-
-    basics.value('config', {
-	    // the base Uri for server api calls
-        apiBaseUri: '/api/marvel/',
-        appTitle:   'Basic Avengers'
-    });
 
 
+    /* 'mathService' as service */
 
+    basics.service('mathService', mathService);
+    function mathService(){
+        // add two values, even if they are strings
+        this.add = function(a, b) {return +(a || 0) + +(b || 0);}
 
-
-
-
+        // multiply two values, even if they are strings
+        this.multiply = function(a, b) {return +(a || 0) * +(b || 1);}
+    }
 
 
 
-	/* 'basicService' */
+
+
+	/* 'calcService' as factory*/
 
     basics.factory('calcService', calcService);
 
     // "factory" (AKA "service") to test
     // Depends upon the Angular $log service
-    function calcService($log) {
+    function calcService($log, mathService) {
         return {
             calc: calc
         };
         ///////////
         function calc(input, previousOutput){
-            var inp =  +(input || 0);
-            var prev = +(previousOutput || 0);
-            var result = inp + prev;
+            var result = mathService.add(input, previousOutput);
 
             // use the dependency
             $log.debug('calc(' + input + ', ' + previousOutput + ') => '+ result);
@@ -53,6 +51,19 @@
     }
 
 
+
+
+
+
+
+
+    /* 'config' value - typically constants used throughout the app*/
+
+    basics.value('config', {
+        // the base Uri for server api calls
+        apiBaseUri: '/api/marvel/',
+        appTitle:   'Basic Avengers'
+    });
 
 
 
