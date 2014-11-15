@@ -3,7 +3,7 @@ describe('Midway: view requests', function() {
     var tester;
 
     beforeEach(function() {
-        tester = ngMidwayTester('app');
+        tester = ngMidwayTester('app', {mockLocationPaths: false});
     });
     afterEach(function () {
         if (tester) { tester.destroy(); }
@@ -22,7 +22,8 @@ describe('Midway: view requests', function() {
 
     it('should have a working avengers request', function(done) {
         tester.visit('/avengers', function() {
-            expect(tester.viewElement().html()).to.contain('title="Avengers"');
+            var elem = tester.viewElement();
+            expect(elem.find('#avengers-view')).to.have.length(1, elem.html());
             done();
         });
     });

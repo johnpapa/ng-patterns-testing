@@ -3,7 +3,7 @@ describe('Midway: templates', function() {
     var tester;
 
     beforeEach(function() {
-        tester = ngMidwayTester('app');
+        tester = ngMidwayTester('app', {mockLocationPaths: false});
     });
     afterEach(function () {
         if (tester) { tester.destroy(); }
