@@ -78,7 +78,7 @@
     "method-override": "^1.0.2",
     "minimist": "^1.1.0",
     "mocha": "^1.20.1",
-    "ng-midway-tester": "^2.0.5",
+    "ng-midway-tester":"wardbell/ngMidwayTester#v2.0.6",
     "phantomjs": "1.9.9",
     "plato": "^1.2.0",
     "q": "^1.0.1",
