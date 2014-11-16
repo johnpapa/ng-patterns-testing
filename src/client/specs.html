@@ -7,16 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
     <title>ng-patterns-testing</title>
-    <!-- inject-vendor:css -->
-    <!-- <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />-->
-    <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="/bower_components/toastr/toastr.css" rel="stylesheet" />
-    <!-- endinject -->
 
-    <!-- inject:css -->
-    <!-- <link href="/src/client/content/customtheme.css" rel="stylesheet">-->
-    <link href="/src/client/content/styles.css" rel="stylesheet" />
-    <!-- endinject -->
+    <style>
+        body {
+            font: 20px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+            padding-left: 20px;
+        }   
+    </style>
+
+    <!--BEWARE of using any app styles as @media can screw up tests -->
 
     <!-- inject-testVendorcss:css -->
     <link rel="stylesheet" href="/node_modules/mocha/mocha.css">
