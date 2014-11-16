@@ -7,8 +7,13 @@ Demonstrates Angular testing
 
 >*Opinionated AngularJS style guide for teams by [@john_papa](//twitter.com/john_papa)*
 
->More details about the styles and patterns used in this app can be found in my [AngularJS Style Guide](https://github.com/johnpapa/angularjs-styleguide) and my **AngularJS Patterns: Clean Code**(coming soon) course at [Pluralsight](http://pluralsight.com/training/Authors/Details/john-papa) and working in teams. 
+>More details about the styles and patterns used in this app can be found in my [AngularJS Style Guide](https://github.com/johnpapa/angularjs-styleguide) and my **AngularJS Patterns: Clean Code**(coming soon) course at [Pluralsight](http://pluralsight.com/training/Authors/Details/john-papa) and working in teams.
+> 
+## Slides
 
+The slides for Ward's talk which accompanies this project are available on google docs.
+
+[See the slides](https://docs.google.com/presentation/d/137lgLMtflW3q4SBKrrjVgiuSAi6GC19T4mNVox-4kV8/present)
 
 ## TODO
 1. Structure will have specs side by side with code, except cross cutting tests
