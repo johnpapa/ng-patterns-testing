@@ -4,7 +4,7 @@ describe('Midway: dataservice requests', function() {
     var tester;
 
     beforeEach(function() {
-        tester = ngMidwayTester('app');
+        tester = ngMidwayTester('midwayApp');
     });
     afterEach(function () {
         if (tester) { tester.destroy(); }

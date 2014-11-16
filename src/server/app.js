@@ -42,6 +42,13 @@ switch (environment){
         break;
     default:
         console.log('** DEV **');
+        app.use('/bower_components', express.static('./bower_components/'));
+        app.use('/node_modules', express.static('./node_modules/'));
+
+        // Because sinon.js is using require to get its submodules
+        app.use('/sinon', express.static('./node_modules/sinon/lib/sinon/'));
+        app.use('/sinon.js', express.static('./node_modules/sinon/lib/sinon.js'));
+
         app.use('/', express.static('./src/client/'));
         app.use('/', express.static('./'));
         break;

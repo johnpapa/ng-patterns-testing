@@ -3,14 +3,10 @@ describe('Midway: view requests', function() {
     var tester;
 
     beforeEach(function() {
-        tester = ngMidwayTester('app', {mockLocationPaths: false});
+        tester = ngMidwayTester('midwayApp', {mockLocationPaths: false});
     });
     afterEach(function () {
         if (tester) { tester.destroy(); }
-    });
-
-    beforeEach(function() {
-        module('app', specHelper.fakeLogger);
     });
 
     it('should go to the dashboard by default', function(done) {

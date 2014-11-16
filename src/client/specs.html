@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+    <title>ng-patterns-testing</title>
+    <!-- inject-vendor:css -->
+    <!-- <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />-->
+    <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/bower_components/toastr/toastr.css" rel="stylesheet" />
+    <!-- endinject -->
+
+    <!-- inject:css -->
+    <!-- <link href="/src/client/content/customtheme.css" rel="stylesheet">-->
+    <link href="/src/client/content/styles.css" rel="stylesheet" />
+    <!-- endinject -->
+
+    <!-- inject-testVendorcss:css -->
+    <link rel="stylesheet" href="/node_modules/mocha/mocha.css">
+    <!-- endinject -->
+
+</head>
+<body>
+
+<h1><a href="specs.html">ng-patterns-testing</a></h1>
+<p><strong>Make sure the REMOTE server is running</strong><br/>
+    Click on a <em>description title</em> to narrow the scope to just its specs
+    (see "<a href="http://mochajs.github.io/mocha/#grep-option" target="_blank" title="MochaJS grep option">
+        ?grep</a>" in address bar).<br/>
+    Click on a <em>spec title</em> to see the test implementation.<br/>
+    Click on <em>page title</em> to start over.
+</p>
+
+<div id="mocha"></div>
+
+
+    <!-- inject-testharness:js -->
+    <script src="/node_modules/chai/chai.js"></script>
+    <script src="/node_modules/mocha/mocha.js"></script>
+    <!-- endinject -->
+
+    <!-- sinon -->
+        <!-- kludge for sinon.js --> 
+        <script>
+            // sinon.js must be tricked into thinking we're in node
+            // and that require, module.exports and exports are available
+            var exports = window.exports = window;
+            var module  = window.module = {exports: exports};
+        </script>
+        <script src="/bower_components/require.js/build/require.min.js"></script>        
+        <script src="/node_modules/sinon/lib/sinon.js"></script>
+        <script>
+            // delete require && exports  
+            // so libs don't think we're in node or using require anymore
+            delete window.require; 
+            delete module.exports;
+        </script>
+        <script src="/node_modules/sinon-chai/lib/sinon-chai.js"></script>
+    <!-- end sinon -->  
+
+    <script>
+        expect = chai.expect;
+        mocha.setup('bdd');
+    </script>
+
+    <!-- inject-testVendor:js -->
+    <script src="/node_modules/ng-midway-tester/src/ngMidwayTester.js"></script>    
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-mocks/angular-mocks.js"></script>
+    <script src="/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    <script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="/bower_components/toastr/toastr.js"></script>
+    <script src="/bower_components/moment/moment.js"></script>
+    <script src="/bower_components/extras.angular.plus/ngplus-overlay.js"></script>
+    <!-- endinject -->
+
+    <!-- inject:js -->
+    <!-- Bootstrapping -->
+    <script src="/src/client/app/app.module.js"></script>
+
+    <!-- Reusable Blocks/Modules -->
+    <script src="/src/client/app/blocks/exception/exception.module.js"></script>
+    <script src="/src/client/app/blocks/exception/exception-handler.provider.js"></script>
+    <script src="/src/client/app/blocks/exception/exception.js"></script>
+    <script src="/src/client/app/blocks/logger/logger.module.js"></script>
+    <script src="/src/client/app/blocks/logger/logger.js"></script>
+    <script src="/src/client/app/blocks/router/router.module.js"></script>
+    <script src="/src/client/app/blocks/router/routehelper.js"></script>
+
+    <!-- core module -->
+    <script src="/src/client/app/core/core.module.js"></script>
+    <script src="/src/client/app/core/constants.js"></script>
+    <script src="/src/client/app/core/config.js"></script>
+    <script src="/src/client/app/core/dataservice.js"></script>
+
+    <!-- layout -->
+    <script src="/src/client/app/layout/layout.module.js"></script>
+    <script src="/src/client/app/layout/shell.js"></script>
+    <script src="/src/client/app/layout/sidebar.js"></script>
+
+    <!--widgets-->
+    <script src="/src/client/app/widgets/widgets.module.js"></script>
+    <script src="/src/client/app/widgets/ccSidebar.js"></script>
+    <script src="/src/client/app/widgets/ccWidgetHeader.js"></script>
+
+    <!-- dashboard -->
+    <script src="/src/client/app/dashboard/dashboard.module.js"></script>
+    <script src="/src/client/app/dashboard/config.route.js"></script>
+    <script src="/src/client/app/dashboard/dashboard.js"></script>
+
+    <!--avengers module-->
+    <script src="/src/client/app/avengers/avengers.module.js"></script>
+    <script src="/src/client/app/avengers/config.route.js"></script>
+    <script src="/src/client/app/avengers/avengers.js"></script>
+    <!-- endinject -->
+
+    <!-- inject:basicsApp -->
+    <script src="/src/client/test/basics/basics.src.js"></script>
+    <!-- endinject -->
+
+    <!-- inject-specHelpers:js -->
+    <script src="/src/client/test/lib/specHelper.js"></script>
+    <script src="/src/client/test/lib/bindPolyfill.js"></script>
+    <script src="/src/client/test/lib/mockData.js"></script>
+    <!-- endinject -->
+
+    <!-- inject-basicsSpecs:js -->
+    <script src="/src/client/test/basics/assertions.spec.js"></script>
+    <script src="/src/client/test/basics/service.spec.js"></script>
+    <script src="/src/client/test/basics/service-redefined.spec.js"></script>
+    <script src="/src/client/test/basics/value.spec.js"></script>
+    <script src="/src/client/test/basics/factory.spec.js"></script>
+    <script src="/src/client/test/basics/controller.spec.js"></script>
+    <script src="/src/client/test/basics/controllerWithSyncDataService.spec.js"></script>
+    <script src="/src/client/test/basics/ngPromises.spec.js"></script>    
+    <script src="/src/client/test/basics/controllerWithAsyncDataService.spec.js"></script>
+    <script src="/src/client/test/basics/constant.spec.js"></script>
+    <script src="/src/client/test/basics/ngModules.spec.js"></script>    
+    <!-- endinject -->
+
+    <!-- inject-appSpecs:js -->
+    <script src="/src/client/test/specs/avengers-route.spec.js"></script>
+    <script src="/src/client/test/specs/avengers.spec.js"></script>
+    <script src="/src/client/test/specs/ccSidebar.spec.js"></script>
+    <script src="/src/client/test/specs/dashboard-route.spec.js"></script>
+    <script src="/src/client/test/specs/dashboard.spec.js"></script>
+    <script src="/src/client/test/specs/exception-handler.provider.spec.js"></script>
+    <script src="/src/client/test/specs/injector.spec.js"></script>
+    <script src="/src/client/test/specs/sidebar.spec.js"></script>
+    <!-- endinject -->
+
+
+    <!-- inject-midwaySpecs:js -->
+
+    <script src="/src/client/test/midway/controller.spec.js"></script>
+    <script src="/src/client/test/midway/dataservice.spec.js"></script>
+    <script src="/src/client/test/midway/template.spec.js"></script>
+    <script src="/src/client/test/midway/view-requests.spec.js"></script>
+
+    <!-- endinject -->
+
+    <script>
+        mocha.run();
+    </script>
+
+</body>
+</html>

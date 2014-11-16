@@ -1,15 +1,29 @@
 /*jshint -W079 */
 window.specHelper = (function() {
+
+    midwayApp();
+
     return {
         fakeLogger: fakeLogger,
         fakeRouteProvider: fakeRouteProvider,
+        fakeToastr: fakeToastr,
         injector: injector,
+        midwayApp: midwayApp,
         verifyNoOutstandingHttpRequests: verifyNoOutstandingHttpRequests
     };
     ////////////////////////
 
     function fakeLogger($provide) {
         $provide.value('logger', sinon.stub({
+            info: function() {},
+            error: function() {},
+            warning: function() {},
+            success: function() {}
+        }));
+    }
+
+    function fakeToastr($provide) {
+        $provide.constant('toastr', sinon.stub({
             info: function() {},
             error: function() {},
             warning: function() {},
@@ -133,6 +147,14 @@ window.specHelper = (function() {
         //     eval(specHelper.injector('$log', 'foo'));
     }
 
+    // Redefines the 'midwayApp' module and returns its name
+    // The 'midwayApp' module is for midway tests of the app 
+    // Useage: 
+    //    tester = ngMidwayTester(specHelper.midwayApp(), {mockLocationPaths: false});
+    function midwayApp(){  
+        angular.module('midwayApp',['app', fakeToastr]);      
+        return 'midwayApp';
+    }
 
     function verifyNoOutstandingHttpRequests () {
         afterEach(inject(function($httpBackend) {

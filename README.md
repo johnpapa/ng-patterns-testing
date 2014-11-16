@@ -33,12 +33,56 @@ Demonstrates Angular testing
 - Open terminal
 - Type `npm install`
 
+>Do not be alarmed by the occasional sea of red complaining about
+the inability to re-build some library. You can ignore these warnings
+because we always use the pre-built libraries that were shipped with
+the package.
+
+## Cleaning 
+Over time you might accumulate some old libraries.
+
+It doesn't hurt to occasionally clear the decks by deleteing the
+"bower_components" and "node_modules" folders and re-installing
+with `npm install`.
+
 ## Installing Bower Packages
 `npm install` will install these too, but you can do it manually.
 - Open terminal
 - Type `bower install`
 
-## Running
+
+## Testing
+There are two ways to test: in the browser and with karma
+
+### Testing in the browser
+
+* Open a command or terminal window.
+
+* Launch the developer server listening on **port 7202**:
+
+		gulp serve-dev
+
+* Open a browser to `localhost:7202/specs.html`
+
+> "localhost:7202" alone runs the application in the browser. 
+Be sure to append ***/specs.html*** to that base url.
+
+* To stop, either "Ctrl-C" and answer the prompt with "Y" or just close the window.
+
+### Testing with karma
+* Open a command or terminal window.
+
+* To just the unit tests, type `gulp autotest` 
+
+* To run both unit and midway tests (spins up a dev server), type `gulp autotest --startServers`
+
+Testing uses karma, mocha, chai, sinon, ngMidwayTester libraries.
+
+>"autotest" starts the tests and stays alive, watching for file changes. Type "test" instead if you only want to run the tests once and then exit.
+
+* To stop, either "Ctrl-C" and answer the prompt with "Y" or just close the window.
+
+## Running the app
 Runs locally, no database required.
 
 ### Dev Builds
@@ -70,12 +114,7 @@ The optimizations are performed by the gulp tasks and include the following list
 - index.html injection for scripts and links
 - deploying all js, css, images, fonts, and index.html
 
-## Testing
-Type `gulp test` to run the tests including both unit and midway tests (spins up a server). This will create a watch on the files, with a 5 second delay, to run the tests.
-
-Testing uses karma, mocha, chai, sinon, ngMidwayTester libraries.
-
-## How It Works
+## How The App Works
 The app is quite simple and has 2 main routes:
 - dashboard
 - avengers list

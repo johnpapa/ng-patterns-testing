@@ -5,14 +5,10 @@ describe('Midway: controllers and routes', function() {
     var tester;
 
     beforeEach(function() {
-        tester = ngMidwayTester('app', {mockLocationPaths: false});
+        tester = ngMidwayTester('midwayApp', {mockLocationPaths: false});
     });
     afterEach(function () {
         if (tester) { tester.destroy(); }
-    });
-
-    beforeEach(function () {
-        module('app', specHelper.fakeLogger);
     });
 
     it('should load the Avengers controller properly when /avengers route is accessed', function(done) {
