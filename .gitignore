@@ -69,3 +69,6 @@ Thumbs.db
 packages
 ~$*.pp*
 
+# Plato generated files #
+######################
+/report

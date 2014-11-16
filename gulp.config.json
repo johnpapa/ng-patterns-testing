@@ -8,11 +8,10 @@
   ],
   "js": [
     "src/client/app/**/*.module.js",
-    "src/client/app/**/*.js",
-    "!src/client/app/**/*.spec.js"
+    "src/client/app/**/*.js"
   ],
   "specs": [
-    "./src/client/app/**/*.spec.js"
+    "./src/client/test/**/*.spec.js"
   ],
   "nodejs": [
     "./src/server/**/*.js"

@@ -34,7 +34,13 @@ gulp.task('analyze', function() {
 
     return merge(jshint, jscs);
 });
-
+/**
+ * Just lint the code
+ * @return {Stream}
+ */
+gulp.task('jshint', function() {
+    return analyzejshint([].concat(paths.js, paths.specs, paths.nodejs));
+})
 /**
  * Create $templateCache from the html templates
  * @return {Stream}
@@ -315,8 +321,9 @@ function analyzejshint(sources, overrideRcFile) {
     log('Running JSHint');
     return gulp
         .src(sources)
+//        .pipe(plug.print()) // list the files in sources
         .pipe(plug.jshint(jshintrcFile))
-        .pipe(plug.jshint.reporter('jshint-stylish'));
+        .pipe(plug.jshint.reporter('jshint-stylish', {verbose: true}));
 }
 
 /**

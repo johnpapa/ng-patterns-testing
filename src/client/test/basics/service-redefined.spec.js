@@ -1,4 +1,4 @@
-/* jshint -W117, -W030 */
+/* jshint -W117, -W109, -W030 */
 describe('Basics - tweaking the service:', function() {
     'use strict';
 
@@ -28,18 +28,18 @@ describe('Basics - tweaking the service:', function() {
         // revise the module cookbook
         beforeEach(module(function($provide) {
 
-            $provide.service('mathService', replacementMathService);
+            $provide.service('mathService', ReplacementMathService);
 
-            function replacementMathService(){
-
+            function ReplacementMathService(){
                 // add two values, even if they are strings
                 // but THIS time default 'b' to 1 instead of 0
-                this.add = function(a, b) {return +(a || 0) + +(b || 1);}
-
+                /* jshint -W040, -W007*/
+                this.add = function(a, b) { return +(a || 0) + +(b || 1); };
+                /* jshint +W040, +W007 */
                 // the answer is always 42;
                 this.multiply = function() { return 42; };
 
-            };
+            }
 
         }));
 

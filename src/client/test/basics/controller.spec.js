@@ -1,4 +1,4 @@
-/* jshint -W117, -W030 */
+/* jshint -W117, -W109, -W030 */
 describe('Basics - controller:', function() {
     'use strict';
 

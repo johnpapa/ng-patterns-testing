@@ -152,7 +152,7 @@ window.specHelper = (function() {
     // Useage: 
     //    tester = ngMidwayTester(specHelper.midwayApp(), {mockLocationPaths: false});
     function midwayApp(){  
-        angular.module('midwayApp',['app', fakeToastr]);      
+        angular.module('midwayApp',['app', fakeLogger]);//fakeToastr]);      
         return 'midwayApp';
     }
 

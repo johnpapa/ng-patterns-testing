@@ -41,8 +41,8 @@ the package.
 ## Cleaning 
 Over time you might accumulate some old libraries.
 
-It doesn't hurt to occasionally clear the decks by deleteing the
-"bower_components" and "node_modules" folders and re-installing
+It doesn't hurt to occasionally clear the decks by deleting the
+"bower\_components" and "node\_modules" folders and re-installing
 with `npm install`.
 
 ## Installing Bower Packages
@@ -122,20 +122,19 @@ The app is quite simple and has 2 main routes:
 ### The Modules
 The app has 4 feature modules and depends on a series of external modules and custom but cross-app modules
 
-```
-app --> [
-        app.avengers,
-        app.dashboard,
-        app.layout,
-        app.widgets,
-		app.core --> [
-			ngAnimate,
-			ngRoute,
-			ngSanitize,
-			blocks.exception,
-			blocks.logger,
-			blocks.router
-		]
-    ]
-```
+	app --> [
+	        app.avengers,
+	        app.dashboard,
+	        app.layout,
+	        app.widgets,
+			app.core --> [
+				ngAnimate,
+				ngRoute,
+				ngSanitize,
+				blocks.exception,
+				blocks.logger,
+				blocks.router
+			]
+	    ]
+
 
