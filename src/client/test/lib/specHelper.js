@@ -2,11 +2,13 @@
 window.specHelper = (function() {
 
     midwayApp();
+    httpReal();
 
     return {
         fakeLogger: fakeLogger,
         fakeRouteProvider: fakeRouteProvider,
         fakeToastr: fakeToastr,
+        flush: flush,
         injector: injector,
         midwayApp: midwayApp,
         verifyNoOutstandingHttpRequests: verifyNoOutstandingHttpRequests
@@ -52,6 +54,12 @@ window.specHelper = (function() {
             };
         });
     }
+    /**
+     * Flush the pending $http and $q queues with a digest cycle
+     */
+    function flush(fn){
+        inject(function ($rootScope){ $rootScope.$apply(fn);});
+    }
 
     /**
      * Inspired by Angular; that's how they get the parms for injection
@@ -75,6 +83,54 @@ window.specHelper = (function() {
             });
         }
         return params;
+    }
+
+    /**
+     *  Create the 'httpReal' specHelper module that replaces the 
+     *  ngMock'ed $httpBackend with the real one from ng thus restoring 
+     *  the ability to issue AJAX calls to the backend with $http.
+     *
+     *  This alternative to the ngMidwayTester preserves the ngMocks feature set
+     *  while restoring $http calls that pass through to the server
+     *
+     *  Note that $q remains ngMocked so you must flush $http calls ($rootScope.$digest).
+     *  The specHelper.flush() function is available for this purpose.
+     * 
+     *  Could restore $q in the same manner as demonstrated here. 
+     * 
+     *  Inspired by this StackOverflow answer:
+     *    http://stackoverflow.com/questions/20864764/e2e-mock-httpbackend-doesnt-actually-passthrough-for-me/26992327?iemail=1&noredirect=1#26992327
+     *
+     *  Usage:
+     *  
+     *    var $rootScope, myService;
+     *
+     *    beforeEach(module('myModule', 'httpReal');
+     *
+     *    beforeEach(inject(function( _myService_) {
+     *        myService = _myService_;
+     *    }));
+     * 
+     *    it('should return valid data', function(done) {
+     *        myService.remoteCall()
+     *            .then(function(data) {
+     *                expect(data).toBeDefined();
+     *            })
+     *            .then(done, done);
+     * 
+     *        specHelper.flush();  // flush the $http and $q queues
+     *    });        
+     */
+    function httpReal() {
+
+        angular.module('httpReal', ['ng'])
+            .config(['$provide', function($provide) {
+                $provide.decorator('$httpBackend', function() {
+                    // creates a new injector for the ng module in order to 
+                    // fish out the original, pre-ngMocks $httpBackend service
+                    return angular.injector(['ng']).get('$httpBackend');
+                });
+            }]);
     }
 
     /**
