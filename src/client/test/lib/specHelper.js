@@ -1,19 +1,121 @@
 /*jshint -W079 */
 window.specHelper = (function() {
 
-    midwayApp();
-    httpReal();
+    midwayTesterApp();
 
     return {
+        $httpBackend: $httpBackendReal,
+        $q: $qReal,
+        asyncModule: asyncModule,
         fakeLogger: fakeLogger,
         fakeRouteProvider: fakeRouteProvider,
         fakeToastr: fakeToastr,
         flush: flush,
         injector: injector,
-        midwayApp: midwayApp,
         verifyNoOutstandingHttpRequests: verifyNoOutstandingHttpRequests
     };
     ////////////////////////
+
+    /**
+     *  Replaces the ngMock'ed $httpBackend with the real one from ng thus
+     *  restoring the ability to issue AJAX calls to the backend with $http.
+     *
+     *  This alternative to the ngMidwayTester preserves the ngMocks feature set
+     *  while restoring $http calls that pass through to the server
+     *
+     *  Note that $q remains ngMocked so you must flush $http calls ($rootScope.$digest).
+     *  The specHelper.flush() function is available for this purpose.
+     * 
+     *  Could restore $q with $qReal in which case don't need to flush. 
+     * 
+     *  Inspired by this StackOverflow answer:
+     *    http://stackoverflow.com/questions/20864764/e2e-mock-httpbackend-doesnt-actually-passthrough-for-me/26992327?iemail=1&noredirect=1#26992327
+     *
+     *  Usage:
+     *  
+     *    var myService;
+     *
+     *    beforeEach(module(specHelper.$httpBackend, 'app');
+     *
+     *    beforeEach(inject(function( _myService_) {
+     *        myService = _myService_;
+     *    }));
+     * 
+     *    it('should return valid data', function(done) {
+     *        myService.remoteCall()
+     *            .then(function(data) {
+     *                expect(data).toBeDefined();
+     *            })
+     *            .then(done, done);
+     * 
+     *        // because not using $qReal, must flush the $http and $q queues
+     *        specHelper.flush();
+     *    });        
+     */
+    function $httpBackendReal($provide) {
+        $provide.provider('$httpBackend', function() {
+            this.$get = function() {
+                return angular.injector(['ng']).get('$httpBackend');
+            };
+        });
+    }
+
+
+    /**
+     *  Replaces the ngMock'ed $q with the real one from ng thus 
+     *  obviating the need to flush $http and $q queues
+     *  at the expense of ability to control $q timing.
+     *
+     *  This alternative to the ngMidwayTester preserves the other ngMocks features
+     *
+     *  Usage:
+     *  
+     *    var myService;
+     *
+     *    // Consider: beforeEach(specHelper.asyncModule('app'));
+     *
+     *    beforeEach(module(specHelper.$q, specHelper.$httpBackend, 'app');
+     *
+     *    beforeEach(inject(function( _myService_) {
+     *        myService = _myService_;
+     *    }));
+     * 
+     *    it('should return valid data', function(done) {
+     *        myService.remoteCall()
+     *            .then(function(data) {
+     *                expect(data).toBeDefined();
+     *            })
+     *            .then(done, done);
+     *
+     *        // not need to flush
+     *    });        
+     */
+    function $qReal($provide) {
+        $provide.provider('$q', function() {
+            this.$get = function() {
+                return angular.injector(['ng']).get('$q');
+            };
+        });
+    }
+
+    /**
+     * Prepare ngMocked module definition that makes real $http and $q calls
+     * Also adds fakeLogger to the end of the definition
+     * Use it as you would the ngMocks#module method
+     * 
+     *  Useage:
+     *     beforeEach(specHelper.asyncModule('app'));
+     *
+     *     // Equivalent to:
+     *     //   beforeEach(module(specHelper.$q, specHelper.$httpBackend, 'app', specHelper.fakeLogger));
+     */
+    function asyncModule(){
+        var args = Array.prototype.slice.call(arguments, 0);
+        args.unshift($qReal, $httpBackendReal); // prepend real replacements for mocks
+        args.push(fakeLogger);                  // suffix with fake logger
+        // build and return the ngMocked test module
+        return angular.mock.module.apply(angular.mock.module, args); 
+    }
 
     function fakeLogger($provide) {
         $provide.value('logger', sinon.stub({
@@ -54,6 +156,7 @@ window.specHelper = (function() {
             };
         });
     }
+
     /**
      * Flush the pending $http and $q queues with a digest cycle
      */
@@ -83,54 +186,6 @@ window.specHelper = (function() {
             });
         }
         return params;
-    }
-
-    /**
-     *  Create the 'httpReal' specHelper module that replaces the 
-     *  ngMock'ed $httpBackend with the real one from ng thus restoring 
-     *  the ability to issue AJAX calls to the backend with $http.
-     *
-     *  This alternative to the ngMidwayTester preserves the ngMocks feature set
-     *  while restoring $http calls that pass through to the server
-     *
-     *  Note that $q remains ngMocked so you must flush $http calls ($rootScope.$digest).
-     *  The specHelper.flush() function is available for this purpose.
-     * 
-     *  Could restore $q in the same manner as demonstrated here. 
-     * 
-     *  Inspired by this StackOverflow answer:
-     *    http://stackoverflow.com/questions/20864764/e2e-mock-httpbackend-doesnt-actually-passthrough-for-me/26992327?iemail=1&noredirect=1#26992327
-     *
-     *  Usage:
-     *  
-     *    var $rootScope, myService;
-     *
-     *    beforeEach(module('myModule', 'httpReal');
-     *
-     *    beforeEach(inject(function( _myService_) {
-     *        myService = _myService_;
-     *    }));
-     * 
-     *    it('should return valid data', function(done) {
-     *        myService.remoteCall()
-     *            .then(function(data) {
-     *                expect(data).toBeDefined();
-     *            })
-     *            .then(done, done);
-     * 
-     *        specHelper.flush();  // flush the $http and $q queues
-     *    });        
-     */
-    function httpReal() {
-
-        angular.module('httpReal', ['ng'])
-            .config(['$provide', function($provide) {
-                $provide.decorator('$httpBackend', function() {
-                    // creates a new injector for the ng module in order to 
-                    // fish out the original, pre-ngMocks $httpBackend service
-                    return angular.injector(['ng']).get('$httpBackend');
-                });
-            }]);
     }
 
     /**
@@ -203,15 +258,22 @@ window.specHelper = (function() {
         //     eval(specHelper.injector('$log', 'foo'));
     }
 
-    // Redefines the 'midwayApp' module and returns its name
-    // The 'midwayApp' module is for midway tests of the app 
-    // Useage: 
-    //    tester = ngMidwayTester(specHelper.midwayApp(), {mockLocationPaths: false});
-    function midwayApp(){  
-        angular.module('midwayApp',['app', fakeLogger]);//fakeToastr]);      
-        return 'midwayApp';
+    /**
+     * Defines a test module for the 'app' application module that 
+     * presupposes use of ngMidwayTester instead of ngMocks for test setup
+     *
+     * Useage: 
+     *    tester = ngMidwayTester('midwayTesterApp', {mockLocationPaths: false});
+     */
+    function midwayTesterApp(){  
+        angular.module('midwayTesterApp',['app', fakeLogger]);//fakeToastr]);      
+        return 'midwayTesterApp';
     }
 
+    /**
+     *  Assert that there are no outstanding HTTP requests after test is complete
+     *  For use with ngMocks; doesn't work for midway tests
+     */
     function verifyNoOutstandingHttpRequests () {
         afterEach(inject(function($httpBackend) {
             $httpBackend.verifyNoOutstandingExpectation();

@@ -9,9 +9,10 @@
 
 describe('Midway: dataservice requests', function() {
     var dataservice;
-    var flush = specHelper.flush;
 
-    beforeEach(module('app', 'httpReal', specHelper.fakeLogger));
+    beforeEach(specHelper.asyncModule('app'));
+
+//    beforeEach(module(specHelper.$q, specHelper.$httpBackend, 'app', specHelper.fakeLogger));
 
     beforeEach(function() {
         inject(function(_dataservice_){
@@ -29,8 +30,6 @@ describe('Midway: dataservice requests', function() {
                     expect(data).to.have.length(7);
                 })
                 .then(done, done);
-
-            flush();
         });
 
         it('should contain Black Widow', function (done) {
@@ -43,8 +42,6 @@ describe('Midway: dataservice requests', function() {
                     expect(hasBlackWidow).to.be.true;
                 })
                 .then(done, done);
-
-            flush();
         });
     });
 

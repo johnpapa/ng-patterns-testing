@@ -3,7 +3,7 @@ describe('Midway: view requests', function() {
     var tester;
 
     beforeEach(function() {
-        tester = ngMidwayTester('midwayApp', {mockLocationPaths: false});
+        tester = ngMidwayTester('midwayTesterApp', {mockLocationPaths: false});
     });
     afterEach(function () {
         if (tester) { tester.destroy(); }
