@@ -49,8 +49,8 @@ switch (environment){
         app.use('/sinon', express.static('./node_modules/sinon/lib/sinon/'));
         app.use('/sinon.js', express.static('./node_modules/sinon/lib/sinon.js'));
 
+        app.use('/src/client', express.static('./src/client/'));
         app.use('/', express.static('./src/client/'));
-        app.use('/', express.static('./'));
         break;
 }
 

@@ -7,8 +7,8 @@
     "./src/client/content/styles.css"
   ],
   "js": [
-    "src/client/app/**/*.module.js",
-    "src/client/app/**/*.js"
+    "./src/client/app/**/*.module.js",
+    "./src/client/app/**/*.js"
   ],
   "specs": [
     "./src/client/test/**/*.spec.js"
