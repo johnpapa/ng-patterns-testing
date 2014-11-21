@@ -213,12 +213,14 @@
     /* 'config2' constant - which is available in Ng's config phase */
 
     basics.constant('config2', {
-        debugMode:  true
+        debugMode:  true,
+        foo: 'foo'
     });
 
     // use constant in config phase
     basics.config(function ($logProvider, config2) {
         $logProvider.debugEnabled(config2.debugMode);
+        $logProvider.foo = config2.foo;
     });
 
 }());
