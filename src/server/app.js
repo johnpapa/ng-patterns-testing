@@ -47,6 +47,7 @@ switch (environment){
         app.use('/bower_components', staticFiles('./bower_components/'));
         app.use('/node_modules', staticFiles('./node_modules/'));
         app.use('/src/client', staticFiles('./src/client/'));
+        app.use('/build', staticFiles('./build/'));
         app.use('/', staticFiles('./src/client/'));
         break;
 }
