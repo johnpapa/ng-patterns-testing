@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe('Midway: view requests', function() {
+describe('Server: view requests', function() {
     var tester;
 
     beforeEach(function() {

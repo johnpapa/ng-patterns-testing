@@ -46,9 +46,8 @@ module.exports = function (config) {
 
         // list of files to exclude
         exclude: [
-            // Excluding midway tests for now; comment this line out when you want to run them
-            './src/client/test/midway/**/*.spec.js',
-            './src/client/app/**/*spaghetti.js'
+            // Including server-integration tests for now; comment this line out when you want to run them
+            './src/client/test/server-integration/**/*.spec.js'
         ],
 
         proxies: {

@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe('Midway: templates', function() {
+describe('Server: templates', function() {
     var tester;
 
     beforeEach(function() {

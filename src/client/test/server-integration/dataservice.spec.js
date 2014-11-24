@@ -7,7 +7,7 @@
  *  An alternative to the ngMidwayTester (seen in other Midway tests)
  */
 
-describe('Midway: dataservice requests', function() {
+describe('Server: dataservice requests', function() {
     var dataservice;
 
     beforeEach(specHelper.asyncModule('app'));

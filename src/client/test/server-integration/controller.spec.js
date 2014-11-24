@@ -1,7 +1,7 @@
 /* jshint -W117, -W109, -W030 */
 //http://www.yearofmoo.com/2013/01/full-spectrum-testing-with-angularjs-and-karma.html
 //https://github.com/yearofmoo-articles/AngularJS-Testing-Article
-describe('Midway: controllers and routes', function() {
+describe('Server: controllers and routes', function() {
     var tester;
 
     beforeEach(function() {
