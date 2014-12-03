@@ -16,13 +16,16 @@
 
     /* 'mathService' as service */
 
-    basics.service('mathService', mathService);
-    function mathService(){
+    basics.service('mathService', MathService);
+    function MathService(){
+        /* jshint -W007 */
         // add two values, even if they are strings
-        this.add = function(a, b) {return +(a || 0) + +(b || 0);}
+        this.add = function(a, b) {return +(a || 0) + +(b || 0);};
 
         // multiply two values, even if they are strings
-        this.multiply = function(a, b) {return +(a || 0) * +(b || 1);}
+        this.multiply = function(a, b) {return +(a || 0) * +(b || 1);};
+        /* jshint +W007 */
+
     }
 
 

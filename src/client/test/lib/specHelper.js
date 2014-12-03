@@ -1,4 +1,4 @@
-/*jshint -W079 */
+/*jshint -W079, -W117 */
 (function() {
 
     midwayTesterApp();
@@ -17,7 +17,7 @@
     };
     window.specHelper = specHelper;
     ////////////////////////
-
+    /*jshint -W101 */
     /**
      *  Replaces the ngMock'ed $httpBackend with the real one from ng thus
      *  restoring the ability to issue AJAX calls to the backend with $http.
@@ -31,7 +31,7 @@
      *  Could restore $q with $qReal in which case don't need to flush. 
      * 
      *  Inspired by this StackOverflow answer:
-     *    http://stackoverflow.com/questions/20864764/e2e-mock-httpbackend-doesnt-actually-passthrough-for-me/26992327?iemail=1&noredirect=1#26992327
+     *    http://stackoverflow.com/questions/20864764/e2e-mock-httpbackend-doesnt-actually-passthrough-for-me/26992327?iemail=1&noredirect=1#26992327 
      *
      *  Usage:
      *  
@@ -54,6 +54,7 @@
      *        specHelper.flush();
      *    });        
      */
+    /*jshint +W101 */
     function $httpBackendReal($provide) {
         $provide.provider('$httpBackend', function() {
             this.$get = function() {

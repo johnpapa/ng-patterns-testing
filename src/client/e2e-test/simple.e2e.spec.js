@@ -1,4 +1,4 @@
-/* global browser, element, expect, by */
+/* global describe, it, browser, element, expect, by */
 // describe('angularjs homepage todo list', function() {
 //     it('should add a todo', function() {
 //         browser.get('http://www.angularjs.org');

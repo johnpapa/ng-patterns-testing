@@ -113,7 +113,7 @@ describe('Basics - constant:', function() {
 
         it("config2.foo has revised value, 'bar'", function(){
             expect(configConstant.foo).to.equal('bar');
-        })
+        });
 
         // Unfortunately, revised config2 value was added too late
         // to be used in a config phase of the 'basics' module.
