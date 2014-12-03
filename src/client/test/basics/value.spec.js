@@ -22,7 +22,7 @@ describe('Basics - value:', function() {
 
     // Re-define the ENTIRE 'config' component
     // by re-registering with a completely new value
-    describe("when completely replaced:", function(){
+    describe("when completely replaced:", function() {
 
         var config;
 
@@ -56,7 +56,7 @@ describe('Basics - value:', function() {
 
 
     // Re-define a PART of the 'config' component by decoration
-    describe("when decorated", function(){
+    describe("when decorated", function() {
 
         // A new apiBaseUri to reach a different server, our test server
         var mockApiBaseUri = '/api/decorated/location';
@@ -107,7 +107,7 @@ describe('Basics - value:', function() {
     describe('when original is revisited', function() {
 
         beforeEach(inject(function(_config_) { 
-                config = _config_; 
+            config = _config_; 
         }));
 
         it('config.apiBaseUri has expected original value', function() {

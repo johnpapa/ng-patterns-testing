@@ -6,7 +6,7 @@ describe('Basics - controller:', function() {
 
     beforeEach(module('basics'));
 
-    describe("'controllerAs' style (no $scope)", function(){
+    describe("'controllerAs' style (no $scope)", function() {
         // Create an instance of the controller (ViewModel) before each test
         beforeEach(inject(function($controller) {
             // '$controller' is an Ng service that makes controller instances
@@ -31,14 +31,14 @@ describe('Basics - controller:', function() {
         }));
     });
 
-    describe("'$scoped controller' style ", function(){
+    describe("'$scoped controller' style ", function() {
         var $scope; // we'll examine inside expectations
 
         beforeEach(inject(function($controller) {
             // controller constructor needs a $scope
             // create and pass to $controller factory via ctorArgs
             $scope = {}; 
-            var ctorArgs = { $scope: $scope};
+            var ctorArgs = {$scope: $scope};
             controller = $controller('basicScopedController', ctorArgs);
         }));
 

@@ -39,7 +39,7 @@
      *
      *    beforeEach(module(specHelper.$httpBackend, 'app');
      *
-     *    beforeEach(inject(function( _myService_) {
+     *    beforeEach(inject(function(_myService_) {
      *        myService = _myService_;
      *    }));
      * 
@@ -79,7 +79,7 @@
      *
      *    beforeEach(module(specHelper.$q, specHelper.$httpBackend, 'app');
      *
-     *    beforeEach(inject(function( _myService_) {
+     *    beforeEach(inject(function(_myService_) {
      *        myService = _myService_;
      *    }));
      * 
@@ -112,7 +112,7 @@
      *     // Equivalent to:
      *     //   beforeEach(module(specHelper.$q, specHelper.$httpBackend, 'app', specHelper.fakeLogger));
      */
-    function asyncModule(){
+    function asyncModule() {
         var args = Array.prototype.slice.call(arguments, 0);
         args.unshift($qReal, $httpBackendReal); // prepend real replacements for mocks
         args.push(fakeLogger);                  // suffix with fake logger
@@ -163,8 +163,8 @@
     /**
      * Flush the pending $http and $q queues with a digest cycle
      */
-    function flush(fn){
-        inject(function ($rootScope){ $rootScope.$apply(fn);});
+    function flush(fn) {
+        inject(function ($rootScope) { $rootScope.$apply(fn);});
     }
 
     /**
@@ -239,14 +239,14 @@
             // todo: tolerate component names that are invalid JS identifiers, e.g. 'burning man'
         });
 
-        var fn = 'function(' + params.join(',') + '){' + body + '}';
+        var fn = 'function(' + params.join(',') + ') {' + body + '}';
 
         if (mustAnnotate) {
             fn = '[\'' + annotation + '\',' + fn + ']';
         }
 
         var exp = 'inject(' + fn + ');' +
-                  'afterEach(function(){' + cleanupBody + '});'; // remove from window.
+                  'afterEach(function() {' + cleanupBody + '});'; // remove from window.
 
         //Function(exp)(); // the assigned vars will be global. `afterEach` will remove them
         /* jshint evil:true */
@@ -268,8 +268,8 @@
      * Useage: 
      *    tester = ngMidwayTester('midwayTesterApp', {mockLocationPaths: false});
      */
-    function midwayTesterApp(){  
-        angular.module('midwayTesterApp',['app', fakeLogger]);//fakeToastr]);      
+    function midwayTesterApp() {  
+        angular.module('midwayTesterApp', ['app', fakeLogger]);//fakeToastr]);      
         return 'midwayTesterApp';
     }
 

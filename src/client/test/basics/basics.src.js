@@ -6,7 +6,7 @@
 (function() {
     'use strict';
 
-	/* Module */
+	  /* Module */
     var basics = angular.module('basics', []);
 
 
@@ -17,7 +17,7 @@
     /* 'mathService' as service */
 
     basics.service('mathService', MathService);
-    function MathService(){
+    function MathService() {
         /* jshint -W007 */
         // add two values, even if they are strings
         this.add = function(a, b) {return +(a || 0) + +(b || 0);};
@@ -32,7 +32,7 @@
 
 
 
-	/* 'calcService' as factory*/
+	  /* 'calcService' as factory*/
 
     basics.factory('calcService', calcService);
 
@@ -43,7 +43,7 @@
             calc: calc
         };
         ///////////
-        function calc(input, previousOutput){
+        function calc(input, previousOutput) {
             var result = mathService.add(input, previousOutput);
 
             // use the dependency
@@ -89,7 +89,7 @@
 
         activate();
         ///////////
-        function activate(){
+        function activate() {
             $log.debug(vm.title + ' controller activated');
         }
     }
@@ -112,7 +112,7 @@
 
         activate();
         ///////////
-        function activate(){
+        function activate() {
             $log.debug($scope.title + ' scoped controller activated');
         }
     }
@@ -124,7 +124,7 @@
 
 
 
-	/* 'basicDataController' controller (ViewModel) */
+	  /* 'basicDataController' controller (ViewModel) */
 
     basics
     	.controller('basicDataController', basicDataController)
@@ -139,7 +139,7 @@
 
         activate();
         ///////////
-        function activate(){
+        function activate() {
             vm.avengers = syncDataservice.getAvengers();
             $log.debug(vm.title + ' controller activated');
         }
@@ -152,7 +152,7 @@
             getAvengers: getAvengers
         };
         ///////////
-        function getAvengers(){
+        function getAvengers() {
             throw new Error('getting Avengers is way too hard');
         }
     }
@@ -163,7 +163,7 @@
 
 
 
-	/* 'basicAsyncDataController' controller (ViewModel) */
+	  /* 'basicAsyncDataController' controller (ViewModel) */
 
     basics
     	.controller('basicAsyncDataController', basicAsyncDataController)
@@ -177,10 +177,10 @@
 
         activate();
         ///////////
-        function activate(){
+        function activate() {
         	// async dataservice method
             asyncDataservice.getAvengers()
-            	.then(function(avengers){
+            	.then(function(avengers) {
                 	vm.avengers = avengers;
             	});
 
@@ -194,7 +194,7 @@
             getAvengers: getAvengers
         };
         ///////////
-        function getAvengers(){
+        function getAvengers() {
 
             return $http.get(config.apiBaseUri+'avengers')
                 .then(function (data) {

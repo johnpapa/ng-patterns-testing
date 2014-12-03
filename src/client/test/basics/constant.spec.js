@@ -10,26 +10,26 @@ describe('Basics - constant:', function() {
         var $log;
 
         // inject triggers injector creation; module definition now "baked"
-        beforeEach(inject(function(config2, _$log_){
+        beforeEach(inject(function(config2, _$log_) {
             configConstant = config2;
             $log = _$log_;
         }));
 
-        it("is accessible", function(){
+        it("is accessible", function() {
             expect(configConstant).to.exist;
         });
 
-        it("#debugMode is true", function(){
+        it("#debugMode is true", function() {
             expect(configConstant.debugMode).to.be.true;
         });
 
-        it("#foo is 'foo'", function(){
+        it("#foo is 'foo'", function() {
             expect(configConstant.foo).to.be.equal('foo');
         });
     });
 
 
-    describe("the $logProvider, which is configured with config2,", function(){
+    describe("the $logProvider, which is configured with config2,", function() {
         var configConstant;
         var $log;
         var $logProvider;
@@ -40,31 +40,31 @@ describe('Basics - constant:', function() {
 
             // This module definition function has access to any previously defined provider
             // which in this case is any provider defined in ng, ngMocks, or basics
-            function( _$logProvider_) {
+            function(_$logProvider_) {
                 $logProvider = _$logProvider_;
             }
         ));
 
         // inject triggers injector creation; module definition now "baked"
-        beforeEach(inject(function(config2, _$log_){
+        beforeEach(inject(function(config2, _$log_) {
             configConstant = config2;
             $log = _$log_;
         }));
 
-        it("is accessible via the module function", function(){
+        it("is accessible via the module function", function() {
             expect($logProvider).to.exist;
         });
 
-        it("is not the same as the log service", function(){
+        it("is not the same as the log service", function() {
             expect($logProvider).not.to.equal($log);
         });
 
-        it("has same debugEnabled value as config2.debugMode", function(){
+        it("has same debugEnabled value as config2.debugMode", function() {
             expect($logProvider.debugEnabled()).to.equal(configConstant.debugMode);
         });
 
 
-        it("has a made-up 'foo' value from config2.foo", function(){
+        it("has a made-up 'foo' value from config2.foo", function() {
             expect($logProvider.foo).to.exist;
             expect($logProvider.foo).to.equal(configConstant.foo);
         });
@@ -73,7 +73,7 @@ describe('Basics - constant:', function() {
     // Demonstrates how difficult it is to test
     // constants and a module config phase.
     // Recommend very limited use of both.
-    describe("when fake constant 'config2'", function(){
+    describe("when fake constant 'config2'", function() {
 
         var configConstant;
         var $logProvider;
@@ -107,18 +107,18 @@ describe('Basics - constant:', function() {
         }));
 
         // inject triggers injector creation; module definition now "baked"
-        beforeEach(inject(function( config2){
+        beforeEach(inject(function(config2) {
             configConstant = config2;
         }));
 
-        it("config2.foo has revised value, 'bar'", function(){
+        it("config2.foo has revised value, 'bar'", function() {
             expect(configConstant.foo).to.equal('bar');
         });
 
         // Unfortunately, revised config2 value was added too late
         // to be used in a config phase of the 'basics' module.
         it("Too late! $logProvider has 'foo' value from ORIGINAL config2.foo", 
-            function(){
+            function() {
                 expect($logProvider.foo).to.not.equal(configConstant.foo, 
                     '!== CURRENT config2.foo');
                 expect($logProvider.foo).to.equal($logProviderFirstFoo,

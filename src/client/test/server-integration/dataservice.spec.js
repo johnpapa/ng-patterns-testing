@@ -15,7 +15,7 @@ describe('Server: dataservice requests', function() {
 //    beforeEach(module(specHelper.$q, specHelper.$httpBackend, 'app', specHelper.fakeLogger));
 
     beforeEach(function() {
-        inject(function(_dataservice_){
+        inject(function(_dataservice_) {
             dataservice = _dataservice_;
             expect(dataservice).not.to.equal(null);           
         });

@@ -171,7 +171,7 @@ describe('ccSidebar directive: ', function () {
                     // should be visible after animation
                     dropdownIsVisible(true);
                     done();
-                } catch(e){
+                } catch(e) {
                     done(e);
                 }
             }, 400); // guess at animation time + a little more
@@ -190,7 +190,7 @@ describe('ccSidebar directive: ', function () {
                     // should be hidden after animation
                     dropdownIsVisible(false);
                     done();
-                } catch(e){
+                } catch(e) {
                     done(e);
                 }
             }, 400); // guess at animation time; then add a little more

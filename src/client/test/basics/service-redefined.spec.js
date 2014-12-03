@@ -23,14 +23,14 @@ describe('Basics - tweaking the service:', function() {
 
     // Re-define the ENTIRE 'mathService' component
     // by re-registering with a completely new implementation
-    describe("when completely replaced:", function(){
+    describe("when completely replaced:", function() {
 
         // revise the module cookbook
         beforeEach(module(function($provide) {
 
             $provide.service('mathService', ReplacementMathService);
 
-            function ReplacementMathService(){
+            function ReplacementMathService() {
                 // add two values, even if they are strings
                 // but THIS time default 'b' to 1 instead of 0
                 /* jshint -W040, -W007*/
@@ -67,7 +67,7 @@ describe('Basics - tweaking the service:', function() {
                 // Change the 'add' method
                 var originalAdd = $delegate.add;
 
-                $delegate.add =function(a, b){
+                $delegate.add = function(a, b) {
                     b = (b === undefined) ? 1 : b;
                     return originalAdd(a, b);
                 };

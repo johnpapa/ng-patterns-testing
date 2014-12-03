@@ -94,7 +94,7 @@ describe('specHelper.injector', function() {
 
         /*
          // Would fail because THIS afterEach is registered BEFORE the one created by specHelper.injector
-         afterEach(function(){
+         afterEach(function() {
          // Should have cleaned up after itself
          expect(window.$log).to.not.exist;
          expect(window.calcService).to.not.exist;
