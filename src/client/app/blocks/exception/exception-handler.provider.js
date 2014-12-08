@@ -5,15 +5,14 @@
 
     angular
         .module('blocks.exception')
-        .provider('exceptionHandler', exceptionHandlerProvider)
+        .provider('exceptionHandler', ExceptionHandlerProvider)
         .config(config);
 
     /**
      * Must configure the exception handling
      * @return {[type]}
      */
-    function exceptionHandlerProvider() {
-        /* jshint validthis:true */
+    function ExceptionHandlerProvider() {
         this.config = {
             appErrorPrefix: undefined
         };
@@ -32,8 +31,8 @@
      * Accessible via config.appErrorPrefix (via config value).
      * @param  {[type]} $provide
      * @return {[type]}
-     * @ngInject
      */
+     /* @ngInject */
     function config($provide) {
         $provide.decorator('$exceptionHandler', extendExceptionHandler);
     }
@@ -45,6 +44,7 @@
      * @param  {Object} logger
      * @return {Function} the decorated $exceptionHandler service
      */
+    /* @ngInject */     
     function extendExceptionHandler($delegate, exceptionHandler, logger) {
         return function(exception, cause) {
             var appErrorPrefix = exceptionHandler.config.appErrorPrefix || '';

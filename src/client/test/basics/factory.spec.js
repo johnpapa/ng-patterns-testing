@@ -18,22 +18,25 @@ describe('Basics - factory:', function() {
             // Learn more about sinon spies: http://sinonjs.org/docs/
             addSpy = sinon.spy(mathService, 'add');
 
-            // invoke the calcService
-            calc(42);
         })
     );
 
     it('"addSpy" heard the call', function() {
+        calc(42);
         //Learn more about sinon-chai assertions: https://github.com/domenic/sinon-chai
         expect(addSpy).to.have.been.calledOnce;
     });
 
 
     it('"add" was called with expected argument', function() {
+        calc(42);
+
         expect(addSpy).to.have.been.calledWith(42);
     });
 
     it('"add" returned expected argument', function() {
+        calc(42);
+
         expect(addSpy).returned(42);
     });
 
@@ -50,6 +53,8 @@ describe('Basics - factory:', function() {
 
     // Don't HAVE to spy on $log because ngMocks does that for us.
     it('$log is an ngMock spy that can tell us about logged messages', function() {
+        calc(42);
+
         // ngMock defined $log as a spy that doesn't write to console
         // assert calc logged the result
         expect($log.debug.logs.length).to.equal(1,

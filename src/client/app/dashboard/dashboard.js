@@ -21,22 +21,16 @@
         activate();
 
         function activate() {
-            var promises = [getAvengerCount(), getAvengersCast()];
+            var promises = [getAvengersCast()];
             return $q.all(promises).then(function() {
                 logger.info('Activated Dashboard View');
-            });
-        }
-
-        function getAvengerCount() {
-            return dataservice.getAvengerCount().then(function(data) {
-                vm.avengerCount = data;
-                return vm.avengerCount;
             });
         }
 
         function getAvengersCast() {
             return dataservice.getAvengersCast().then(function(data) {
                 vm.avengers = data;
+                vm.avengerCount = data.length;
                 return vm.avengers;
             });
         }

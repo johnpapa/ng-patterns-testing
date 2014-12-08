@@ -3,14 +3,11 @@
 
     angular
         .module('blocks.router')
-        .provider('routehelperConfig', routehelperConfig)
+        .provider('routehelperConfig', RoutehelperConfig)
         .factory('routehelper', routehelper);
 
-    routehelper.$inject = ['$location', '$rootScope', '$route', 'logger', 'routehelperConfig'];
-
     // Must configure via the routehelperConfigProvider
-    function routehelperConfig() {
-        /* jshint validthis:true */
+    function RoutehelperConfig() {
         this.config = {
             // These are the properties we need to set
             // $routeProvider: undefined
@@ -25,6 +22,7 @@
         };
     }
 
+    /* @ngInject */
     function routehelper($location, $rootScope, $route, logger, routehelperConfig) {
         var handlingRouteChangeError = false;
         var routeCounts = {

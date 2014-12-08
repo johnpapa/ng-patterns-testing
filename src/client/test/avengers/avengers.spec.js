@@ -1,46 +1,38 @@
 /* jshint -W117, -W030 */
-describe('app.avengers', function() {
+describe('avengers controller', function() {
+
+    var avengers = mockData.getMockAvengers(); 
     var controller;
 
     beforeEach(function() {
-        module('app', function($provide) {
-            specHelper.fakeRouteProvider($provide);
-            specHelper.fakeLogger($provide);
-        });
-        specHelper.injector(function($controller, $q, $rootScope, dataservice) {});
+        specHelper.appModule('app.avengers');
+        specHelper.injector(function($controller, $log, $q, dataservice) { });
     });
 
     beforeEach(function () {
-        sinon.stub(dataservice, 'getAvengers', function() {
-            var deferred = $q.defer();
-            deferred.resolve(mockData.getMockAvengers());
-            return deferred.promise;
-        });
-
-        sinon.stub(dataservice, 'ready', function() {
-            var deferred = $q.defer();
-            deferred.resolve({test: 123});
-            return deferred.promise;
-        });
+        sinon.stub(dataservice, 'getAvengers')
+             .returns($q.when(avengers));
 
         controller = $controller('Avengers');
-        $rootScope.$apply();
+        specHelper.flush();
     });
 
-    describe('Avengers controller', function() {
-        it('should be created successfully', function () {
-            expect(controller).to.be.defined;
-        });
+    it('should be created successfully', function () {
+        expect(controller).to.be.defined;
+    });
 
-        describe('after activate', function() {
-            it('should have title of Avengers', function() {
-                expect(controller.title).to.equal('Avengers');
-            });
+    it('should have title of Avengers', function() {
+        expect(controller.title).to.equal('Avengers');
+    });
 
-            it('should have 5 Avengers', function() {
-                expect(controller.avengers).to.have.length(5);
-            });
-        });
+    it('should have Avengers from dataservice', function() {
+        expect(controller.avengers)
+            .to.have.length(avengers.length);
+    });
+
+    it('should have logged "Activated"', function() {
+        // passes if ANY of the logs matches
+        expect($log.info.logs).to.match(/Activated/);
     });
 
     specHelper.verifyNoOutstandingHttpRequests();

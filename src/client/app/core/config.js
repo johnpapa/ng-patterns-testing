@@ -1,25 +1,20 @@
 (function() {
     'use strict';
 
-    var core = angular.module('app.core');
+    angular.module('app.core')
+        .factory('config', config)
+        .config(toastrConfig)
+        .config(configure);
 
-    core.config(toastrConfig);
 
-    /* @ngInject */
-    function toastrConfig(toastr) {
-        toastr.options.timeOut = 4000;
-        toastr.options.positionClass = 'toast-bottom-right';
-    }
-
-    var config = {
-        appErrorPrefix: '[NG-Testing Error] ', //Configure the exceptionHandler decorator
-        appTitle: 'Angular Testing Demo',
-        version: '1.0.0'
-    };
-
-    core.value('config', config);
-
-    core.config(configure);
+    function config() {
+        return {
+            //Configure the exceptionHandler decorator
+            appErrorPrefix: '[NG-Testing Error] ', 
+            appTitle: 'Angular Testing Demo',
+            version: '1.0.0'
+        };
+    } 
 
     /* @ngInject */
     function configure ($logProvider, $routeProvider, routehelperConfigProvider, exceptionHandlerProvider) {
@@ -31,7 +26,8 @@
         // Configure the common route provider
         routehelperConfigProvider.config.$routeProvider = $routeProvider;
         routehelperConfigProvider.config.docTitle = 'NG-Testing: ';
-        var resolveAlways = { /* @ngInject */
+        var resolveAlways = { 
+            /* @ngInject */
             ready: function(dataservice) {
                 return dataservice.ready();
             }
@@ -44,4 +40,11 @@
         // Configure the common exception handler
         exceptionHandlerProvider.configure(config.appErrorPrefix);
     }
+
+
+    /* @ngInject */
+    function toastrConfig(toastr) {
+        toastr.options.timeOut = 4000;
+        toastr.options.positionClass = 'toast-bottom-right';
+    }   
 })();

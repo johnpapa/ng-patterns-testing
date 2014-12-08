@@ -2,12 +2,12 @@
 /*jshint node:true*/
 'use strict';
 
+require('look').start(); // perf output to http://localhost:5959
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var compress = require('compression');
-var cors = require('cors');
-var errorHandler = require('./routes/utils/errorHandler')();
+var errorHandler = require('./utils/errorHandler')();
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var port = process.env.PORT || 7202;
@@ -20,11 +20,11 @@ app.use(favicon(__dirname + '/favicon.ico'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(logger('dev'));
-app.use(compress());            // Compress response data with gzip
-app.use(cors());                // enable ALL CORS requests
+app.use(compress());        // Compress response data with gzip
+app.use(require('cors')()); // enable ALL CORS requests
 app.use(errorHandler.init);
 
-routes = require('./routes/index')(app);
+app.use('/api', require('./routes'));
 
 console.log('About to crank up node');
 console.log('PORT=' + port);

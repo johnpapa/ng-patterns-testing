@@ -6,8 +6,10 @@
     var specHelper = {
         $httpBackend: $httpBackendReal,
         $q: $qReal,
+        appModule: appModule,
         asyncModule: asyncModule,
         fakeLogger: fakeLogger,
+        fakeRouteHelperProvider: fakeRouteHelperProvider,
         fakeRouteProvider: fakeRouteProvider,
         fakeToastr: fakeToastr,
         flush: flush,
@@ -54,9 +56,10 @@
      *        specHelper.flush();
      *    });        
      */
-    /*jshint +W101 */
+
     function $httpBackendReal($provide) {
         $provide.provider('$httpBackend', function() {
+            /*jshint validthis:true */
             this.$get = function() {
                 return angular.injector(['ng']).get('$httpBackend');
             };
@@ -95,6 +98,7 @@
      */
     function $qReal($provide) {
         $provide.provider('$q', function() {
+            /*jshint validthis:true */        
             this.$get = function() {
                 return angular.injector(['ng']).get('$q');
             };
@@ -117,7 +121,28 @@
         args.unshift($qReal, $httpBackendReal); // prepend real replacements for mocks
         args.push(fakeLogger);                  // suffix with fake logger
         // build and return the ngMocked test module
-        return angular.mock.module.apply(angular.mock.module, args); 
+        return angular.mock.module.apply(angular.mock, args); 
+    }
+
+    /**
+     * Prepare ngMocked application feature module along with
+     * its 'app.core' dependency and faked logger
+     * Use it as you would the ngMocks#module method
+     * 
+     *  Useage:
+     *     beforeEach(specHelper.appModule('app.avengers'));
+     *
+     *     Equivalent to:
+     *       beforeEach(module(
+     *          'app.avengers',
+     *          'app.core', 
+     *          specHelper.fakeToastr)
+     *       );
+     */
+    function appModule() {
+        var args = ['app.core', fakeToastr];//, fakeRouteHelperProvider];
+        args = args.concat(Array.prototype.slice.call(arguments, 0));
+        angular.mock.module.apply(angular.mock, args);
     }
 
     function fakeLogger($provide) {
@@ -136,6 +161,26 @@
             warning: function() {},
             success: function() {}
         }));
+    }
+
+    function fakeRouteHelperProvider($provide) {
+        $provide.provider('routehelper', function() {
+            /* jshint validthis:true */            
+            this.config = {
+               $routeProvider: undefined,
+               docTitle: 'Testing'
+            };
+            this.$get = function() {
+                return {
+                    configureRoutes: sinon.stub(),
+                    getRoutes: sinon.stub().returns([]),
+                    routeCounts: {
+                        errors: 0,
+                        changes: 0
+                    }
+                };
+            };
+        });
     }
 
     function fakeRouteProvider($provide) {

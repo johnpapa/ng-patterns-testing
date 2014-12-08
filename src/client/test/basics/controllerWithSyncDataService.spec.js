@@ -60,10 +60,7 @@ describe('Basics - controller w/ dependent synchronous dataservice:', function()
         beforeEach(inject(function($controller, syncDataservice) {
 
             // replace the problematic 'getAvengers' method with a mock version
-            stub = sinon.stub(
-                syncDataservice,
-                'getAvengers',
-                mockData.getMockAvengers);
+            stub = sinon.stub(syncDataservice, 'getAvengers', mockData.getMockAvengers);
 
             controller = $controller(controllerName);
         }));
