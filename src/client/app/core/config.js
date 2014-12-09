@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.core')
-        .factory('config', config)
+        .value('config', config())
         .config(toastrConfig)
         .config(configure);
 
@@ -15,6 +15,12 @@
             version: '1.0.0'
         };
     } 
+
+    /* @ngInject */
+    function toastrConfig(toastr) {
+        toastr.options.timeOut = 4000;
+        toastr.options.positionClass = 'toast-bottom-right';
+    }
 
     /* @ngInject */
     function configure ($logProvider, $routeProvider, routehelperConfigProvider, exceptionHandlerProvider) {
@@ -31,20 +37,10 @@
             ready: function(dataservice) {
                 return dataservice.ready();
             }
-            // ready: ['dataservice', function (dataservice) {
-            //    return dataservice.ready();
-            // }]
         };
         routehelperConfigProvider.config.resolveAlways = resolveAlways;
 
         // Configure the common exception handler
         exceptionHandlerProvider.configure(config.appErrorPrefix);
-    }
-
-
-    /* @ngInject */
-    function toastrConfig(toastr) {
-        toastr.options.timeOut = 4000;
-        toastr.options.positionClass = 'toast-bottom-right';
-    }   
+    } 
 })();

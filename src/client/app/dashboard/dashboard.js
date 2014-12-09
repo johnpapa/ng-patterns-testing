@@ -6,22 +6,20 @@
         .controller('Dashboard', Dashboard);
 
     /* @ngInject */
-    function Dashboard($q, dataservice, logger) {
+    function Dashboard(dataservice, logger) {
         var vm = this;
-
-        vm.news = {
-            title: 'Marvel Avengers',
-            description: 'Marvel Avengers 2 is now in production!'
-        };
         vm.castCount = 0;
         vm.cast = [];
+        vm.news = {
+            title: 'Marvel Avengers',
+            description: 'The Avengers: Age of Ultron opens in U.S. theaters on May 1, 2015'
+        };
         vm.title = 'Dashboard';
 
         activate();
 
         function activate() {
-            var promises = [getAvengersCast()];
-            return $q.all(promises).then(function() {
+            return getAvengersCast().then(function() {
                 logger.info('Activated Dashboard View');
             });
         }

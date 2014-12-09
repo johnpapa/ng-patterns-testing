@@ -7,7 +7,6 @@
 
     /* @ngInject */
     function Avengers(dataservice, logger) {
-        /*jshint validthis: true */
         var vm = this;
         vm.avengers = [];
         vm.title = 'Avengers';

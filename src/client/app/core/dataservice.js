@@ -3,20 +3,15 @@
 
     angular
         .module('app.core')
-        .factory('dataservice', dataservice);
+        .service('dataservice', Dataservice);
 
     /* @ngInject */
-    function dataservice($http, $q, exception, logger) {
-        var isPrimed = false;
-        var primePromise;
-
-        var service = {
-            getAvengers: getAvengers,
-            getAvengersCast: getAvengersCast,
-            ready: ready
-        };
-
-        return service;
+    function Dataservice($http, $q, exception, logger) {
+        var readyPromise;
+        
+        this.getAvengers     = getAvengers;
+        this.getAvengersCast = getAvengersCast;
+        this.ready           = ready;
 
         function getAvengers() {
             return $http.get('/api/maa')
@@ -38,21 +33,20 @@
                 });
         }
 
-        function prime() {
-            if (!primePromise) {
+        function getReady() {
+            if (!readyPromise) {
                 // Apps often pre-fetch session data ("prime the app") 
                 // before showing the first view.                
                 // This app doesn't need priming but we add a
                 // no-op implementation to show how it would work.
-                logger.info('Primed data');
-                primePromise = $q.when(true);
+                logger.info('Primed the app data');
+                readyPromise = $q.when(true);
             }
-            return primePromise; 
+            return readyPromise; 
         }
 
         function ready(nextPromises) {
-            var readyPromise = primePromise || prime();
-            return readyPromise
+            return getReady()
                 .then(function() { 
                     return nextPromises ? readyPromise : $q.all(nextPromises); 
                 })
