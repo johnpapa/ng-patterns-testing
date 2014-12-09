@@ -3,14 +3,9 @@ describe('core dataservice', function () {
     var scope;
 
     beforeEach(function () {
-        module('app', function($provide) {
-            specHelper.fakeRouteProvider($provide);
-            specHelper.fakeLogger($provide);
-        });
-        specHelper.injector(function($httpBackend, $rootScope, dataservice) {});
-        
+        module('app.core', specHelper.fakeToastr);
+        specHelper.injector(function($httpBackend, $rootScope, dataservice) {});        
         $httpFlush = $httpBackend.flush;
-        $apply = specHelper.$apply;
     });
 
     it('should be registered', function() {
@@ -88,10 +83,9 @@ describe('core dataservice', function () {
                     expect('promise rejected').to.be.true;
                 })
             .then(done, done);
-            $apply();
+            $rootScope.$apply(); // no $http so just flush $q
         });
     });
 
     specHelper.verifyNoOutstandingHttpRequests();
-
 });

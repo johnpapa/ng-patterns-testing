@@ -6,7 +6,7 @@ describe('avengers controller', function() {
 
     beforeEach(function() {
         specHelper.appModule('app.avengers');
-        specHelper.injector(function($controller, $log, $q, dataservice) { });
+        specHelper.injector(function($controller, $log, $q, $rootScope, dataservice) { });
     });
 
     beforeEach(function () {
@@ -14,7 +14,7 @@ describe('avengers controller', function() {
              .returns($q.when(avengers));
 
         controller = $controller('Avengers');
-        specHelper.$apply();
+        $rootScope.$apply(); // flush $q
     });
 
     it('should be created successfully', function () {

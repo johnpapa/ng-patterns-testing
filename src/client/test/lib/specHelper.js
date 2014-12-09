@@ -4,7 +4,6 @@
     midwayTesterApp();
 
     var specHelper = {
-        $apply: $apply,
         $httpBackend: $httpBackendReal,
         $q: $qReal,
         appModule: appModule,
@@ -64,16 +63,6 @@
                 return angular.injector(['ng']).get('$httpBackend');
             };
         });
-    }
-
-    /**
-     * Invoke the digest cycle, flushing the pending $q queue
-     * Does NOT flush the $httpBackend; must call $httpBackend.flush 
-     * separately which also runs the digest cycle IFF
-     * $httpBackend had something to flush
-     */
-    function $apply(fn) {
-        inject(function ($rootScope) { $rootScope.$apply(fn);});
     }
 
     /**

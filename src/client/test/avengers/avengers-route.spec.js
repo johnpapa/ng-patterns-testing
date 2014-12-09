@@ -5,8 +5,9 @@ describe('avengers-route', function () {
 
     beforeEach(function() {
         module('app.avengers', 'app.core', specHelper.fakeToastr);
-        specHelper.injector(function($location, $route, $templateCache) {});
-        $templateCache.put(view,'')    });
+        specHelper.injector(function($location, $route, $rootScope, $templateCache) {});
+        $templateCache.put(view, '');   
+    });
 
     it('should map /avengers route to avengers View template', function () {
         expect($route.routes['/avengers'].templateUrl).to.equal(view);
@@ -14,8 +15,7 @@ describe('avengers-route', function () {
 
     it('should route / to the avengers View', function () {
         $location.path('/avengers');
-        specHelper.$apply();
+        $rootScope.$apply();
         expect($route.current.templateUrl).to.equal(view);
     });
-
 });

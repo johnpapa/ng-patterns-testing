@@ -98,17 +98,18 @@
             }
             $rootScope.$on('$routeChangeStart',
                 function(event, current, previous) {
+                    /* jshint maxcomplexity:false */
                     // check again; could turn listening on/off
                     if (!routehelperConfig.config.listenForRouteChange) {
                         return;
                     }
                     var dest;
-                    if (current){
+                    if (current) {
                         dest = current.title || current.name || 'unnamed';
                         dest += ' (controller: ' + current.controller;
                         dest += ' templateUrl: ' + current.templateUrl + ')';
                     }
-                    if (!dest){
+                    if (!dest) {
                         dest = 'unknown target';
                     }
                     var destination = (current && (current.title || current.name || current.templateUrl)) ||
