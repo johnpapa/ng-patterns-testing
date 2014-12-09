@@ -28,7 +28,7 @@ describe('Basics - controller w/ dependent synchronous dataservice:', function()
             //  the constructor instead of values from the injector
             var ctorArgs = {
                 // specify a fake service instance whose getAvengers() returns test data
-                syncDataservice: {getAvengers: mockData.getMockAvengers}
+                syncDataservice: {getAvengers: mockData.getAvengers}
             };
 
             controller = $controller(controllerName, ctorArgs);
@@ -44,7 +44,7 @@ describe('Basics - controller w/ dependent synchronous dataservice:', function()
 
             // replace the problematic 'getAvengers' method with a mock version
             // can't spy on it this way
-            syncDataservice.getAvengers = mockData.getMockAvengers;
+            syncDataservice.getAvengers = mockData.getAvengers;
             controller = $controller(controllerName);
         }));
 
@@ -60,7 +60,7 @@ describe('Basics - controller w/ dependent synchronous dataservice:', function()
         beforeEach(inject(function($controller, syncDataservice) {
 
             // replace the problematic 'getAvengers' method with a mock version
-            stub = sinon.stub(syncDataservice, 'getAvengers', mockData.getMockAvengers);
+            stub = sinon.stub(syncDataservice, 'getAvengers', mockData.getAvengers);
 
             controller = $controller(controllerName);
         }));
@@ -90,7 +90,7 @@ describe('Basics - controller w/ dependent synchronous dataservice:', function()
 
         // definition of a mock service whose getAvengers() returns test data
         function mockSyncDataservice() {
-            return {getAvengers: mockData.getMockAvengers};
+            return {getAvengers: mockData.getAvengers};
         }
     });
 

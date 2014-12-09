@@ -7,15 +7,14 @@
 
         /* @ngInject */
     function Dashboard($q, dataservice, logger) {
-        /*jshint validthis: true */
         var vm = this;
 
         vm.news = {
             title: 'Marvel Avengers',
             description: 'Marvel Avengers 2 is now in production!'
         };
-        vm.avengerCount = 0;
-        vm.avengers = [];
+        vm.castCount = 0;
+        vm.cast = [];
         vm.title = 'Dashboard';
 
         activate();
@@ -29,9 +28,9 @@
 
         function getAvengersCast() {
             return dataservice.getAvengersCast().then(function(data) {
-                vm.avengers = data;
-                vm.avengerCount = data.length;
-                return vm.avengers;
+                vm.cast = data;
+                vm.castCount = data.length;
+                return data;
             });
         }
     }

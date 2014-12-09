@@ -4,6 +4,7 @@
     midwayTesterApp();
 
     var specHelper = {
+        $apply: $apply,
         $httpBackend: $httpBackendReal,
         $q: $qReal,
         appModule: appModule,
@@ -12,7 +13,6 @@
         fakeRouteHelperProvider: fakeRouteHelperProvider,
         fakeRouteProvider: fakeRouteProvider,
         fakeToastr: fakeToastr,
-        flush: flush,
         injector: injector,
         replaceAccentChars: replaceAccentChars,
         verifyNoOutstandingHttpRequests: verifyNoOutstandingHttpRequests
@@ -28,7 +28,7 @@
      *  while restoring $http calls that pass through to the server
      *
      *  Note that $q remains ngMocked so you must flush $http calls ($rootScope.$digest).
-     *  The specHelper.flush() function is available for this purpose.
+     *  The specHelper.$apply() function is available for this purpose.
      * 
      *  Could restore $q with $qReal in which case don't need to flush. 
      * 
@@ -56,7 +56,7 @@
      *        specHelper.flush();
      *    });        
      */
-
+    /*jshint +W101 */
     function $httpBackendReal($provide) {
         $provide.provider('$httpBackend', function() {
             /*jshint validthis:true */
@@ -66,6 +66,15 @@
         });
     }
 
+    /**
+     * Invoke the digest cycle, flushing the pending $q queue
+     * Does NOT flush the $httpBackend; must call $httpBackend.flush 
+     * separately which also runs the digest cycle IFF
+     * $httpBackend had something to flush
+     */
+    function $apply(fn) {
+        inject(function ($rootScope) { $rootScope.$apply(fn);});
+    }
 
     /**
      *  Replaces the ngMock'ed $q with the real one from ng thus 
@@ -106,6 +115,27 @@
     }
 
     /**
+     * Prepare ngMocked application feature module along with
+     * its 'app.core' dependency and faked logger and routehelper
+     * Use it as you would the ngMocks#module method
+     * 
+     *  Useage:
+     *     beforeEach(specHelper.appModule('app.avengers'));
+     *
+     *     Equivalent to:
+     *       beforeEach(module(
+     *          'app.avengers',
+     *          'app.core', 
+     *          specHelper.fakeToastr)
+     *       );
+     */
+    function appModule() {
+        var args = ['app.core', fakeToastr, fakeRouteHelperProvider];
+        args = args.concat(Array.prototype.slice.call(arguments, 0));
+        angular.mock.module.apply(angular.mock, args);
+    }
+
+    /**
      * Prepare ngMocked module definition that makes real $http and $q calls
      * Also adds fakeLogger to the end of the definition
      * Use it as you would the ngMocks#module method
@@ -122,27 +152,6 @@
         args.push(fakeLogger);                  // suffix with fake logger
         // build and return the ngMocked test module
         return angular.mock.module.apply(angular.mock, args); 
-    }
-
-    /**
-     * Prepare ngMocked application feature module along with
-     * its 'app.core' dependency and faked logger
-     * Use it as you would the ngMocks#module method
-     * 
-     *  Useage:
-     *     beforeEach(specHelper.appModule('app.avengers'));
-     *
-     *     Equivalent to:
-     *       beforeEach(module(
-     *          'app.avengers',
-     *          'app.core', 
-     *          specHelper.fakeToastr)
-     *       );
-     */
-    function appModule() {
-        var args = ['app.core', fakeToastr];//, fakeRouteHelperProvider];
-        args = args.concat(Array.prototype.slice.call(arguments, 0));
-        angular.mock.module.apply(angular.mock, args);
     }
 
     function fakeLogger($provide) {
@@ -203,13 +212,6 @@
                 };
             };
         });
-    }
-
-    /**
-     * Flush the pending $http and $q queues with a digest cycle
-     */
-    function flush(fn) {
-        inject(function ($rootScope) { $rootScope.$apply(fn);});
     }
 
     /**

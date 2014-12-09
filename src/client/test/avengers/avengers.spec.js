@@ -1,7 +1,7 @@
 /* jshint -W117, -W030 */
 describe('avengers controller', function() {
 
-    var avengers = mockData.getMockAvengers(); 
+    var avengers = mockData.getAvengers(); 
     var controller;
 
     beforeEach(function() {
@@ -14,7 +14,7 @@ describe('avengers controller', function() {
              .returns($q.when(avengers));
 
         controller = $controller('Avengers');
-        specHelper.flush();
+        specHelper.$apply();
     });
 
     it('should be created successfully', function () {

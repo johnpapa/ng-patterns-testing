@@ -15,7 +15,7 @@
                         <li class="bblue">
                             <div class="pull-left avenger-logo"></div>
                             <div class="datas-text pull-right">
-                                <span class="bold">{{vm.avengerCount}}</span> Cast
+                                <span class="bold">{{vm.castCount}}</span> Cast
                             </div>
                             <div class="clearfix"></div>
                         </li>
@@ -37,9 +37,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr data-ng-repeat="a in vm.avengers">
-                                        <td>{{a.name}}</td>
-                                        <td>{{a.character}}</td>
+                                    <tr data-ng-repeat="avenger in vm.cast">
+                                        <td>{{avenger.name}}</td>
+                                        <td>{{avenger.character}}</td>
                                     </tr>
                                 </tbody>
                             </table>

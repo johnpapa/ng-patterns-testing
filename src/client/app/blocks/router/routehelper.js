@@ -9,7 +9,8 @@
     // Must configure via the routehelperConfigProvider
     function RoutehelperConfig() {
         this.config = {
-            // These are the properties we need to set
+            listenForRouteChange: true
+            // These are the other properties we need to set
             // $routeProvider: undefined
             // docTitle: ''
             // resolveAlways: {ready: function(){ } }
@@ -52,6 +53,19 @@
             $routeProvider.otherwise({redirectTo: '/'});
         }
 
+        function getRoutes() {
+            for (var prop in $route.routes) {
+                if ($route.routes.hasOwnProperty(prop)) {
+                    var route = $route.routes[prop];
+                    var isRoute = !!route.title;
+                    if (isRoute) {
+                        routes.push(route);
+                    }
+                }
+            }
+            return routes;
+        }
+
         function handleRoutingErrors() {
             // Route cancellation:
             // On routing error, go to the dashboard.
@@ -73,21 +87,36 @@
         }
 
         function init() {
+            listenForRouteChange();
             handleRoutingErrors();
             updateDocTitle();
         }
 
-        function getRoutes() {
-            for (var prop in $route.routes) {
-                if ($route.routes.hasOwnProperty(prop)) {
-                    var route = $route.routes[prop];
-                    var isRoute = !!route.title;
-                    if (isRoute) {
-                        routes.push(route);
-                    }
-                }
+        function listenForRouteChange() {
+            if (!routehelperConfig.config.listenForRouteChange) {               
+                return; // never listen
             }
-            return routes;
+            $rootScope.$on('$routeChangeStart',
+                function(event, current, previous) {
+                    // check again; could turn listening on/off
+                    if (!routehelperConfig.config.listenForRouteChange) {
+                        return;
+                    }
+                    var dest;
+                    if (current){
+                        dest = current.title || current.name || 'unnamed';
+                        dest += ' (controller: ' + current.controller;
+                        dest += ' templateUrl: ' + current.templateUrl + ')';
+                    }
+                    if (!dest){
+                        dest = 'unknown target';
+                    }
+                    var destination = (current && (current.title || current.name || current.templateUrl)) ||
+                        'unknown target';
+                    var msg = 'Starting route change to ' + dest;
+                    logger.info(msg, [current]);
+                }
+            );
         }
 
         function updateDocTitle() {

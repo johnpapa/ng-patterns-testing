@@ -4,18 +4,17 @@ describe('avengers-route', function () {
     var view = 'app/avengers/avengers.html';
 
     beforeEach(function() {
-        specHelper.appModule('app.avengers');
-        specHelper.injector(function($httpBackend, $location, $route) {});
-    });
+        module('app.avengers', 'app.core', specHelper.fakeToastr);
+        specHelper.injector(function($location, $route, $templateCache) {});
+        $templateCache.put(view,'')    });
 
     it('should map /avengers route to avengers View template', function () {
         expect($route.routes['/avengers'].templateUrl).to.equal(view);
     });
 
     it('should route / to the avengers View', function () {
-        $httpBackend.expectGET(view).respond(200);
         $location.path('/avengers');
-        specHelper.flush();
+        specHelper.$apply();
         expect($route.current.templateUrl).to.equal(view);
     });
 

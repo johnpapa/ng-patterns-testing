@@ -16,7 +16,6 @@ describe('layout', function () {
             $httpBackend.when('GET', 'app/dashboard/dashboard.html').respond(200);
             $location.path('/');
             $httpBackend.flush();
-            $rootScope.$apply();
             expect(controller.isCurrent($route.current)).to.equal('current');
         });
 
@@ -24,7 +23,6 @@ describe('layout', function () {
             $httpBackend.when('GET', 'app/avengers/avengers.html').respond(200);
             $location.path('/avengers');
             $httpBackend.flush();
-            $rootScope.$apply();
             expect(controller.isCurrent($route.current)).to.equal('current');
         });
 
@@ -32,7 +30,6 @@ describe('layout', function () {
             $httpBackend.when('GET', 'app/dashboard/dashboard.html').respond(200);
             $location.path('/invalid');
             $httpBackend.flush();
-            $rootScope.$apply();
             expect(controller.isCurrent({title: 'invalid'})).not.to.equal('current');
         });
 

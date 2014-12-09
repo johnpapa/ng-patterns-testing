@@ -8,7 +8,7 @@
  * aside: 'fulfilled' means either 'resolved successfully' or 'rejected'
  *
  * The mocked $q puts synchronously fulfilled promises in its queue
- * and you can flush that queue WITHOUT waiting for a JavaScript turn (a 'tick')
+ * and you can $apply that queue WITHOUT waiting for a JavaScript turn (a 'tick')
  * by calling $rootScope.$digest (or the higher level $rootScope.$apply)
  *
  * You must ensure that all promises fulfilled immediately (synchronously).
@@ -21,11 +21,11 @@
 describe('Basics - ng Promises:', function() {
     'use strict';
 
+    var $apply;
     var $q;
     var $rootScope;
     var bingo;
     var deferred;
-    var flush;
 
     function sayBingo() {
         bingo = 'bingo!';
@@ -50,29 +50,29 @@ describe('Basics - ng Promises:', function() {
         deferred = $q.defer();
         deferred.promise.then(sayBingo);
 
-        flush = $rootScope.$apply.bind($rootScope);
+        $apply = $rootScope.$apply.bind($rootScope);
     }));
 
-    it('bingo when resolved promise is flushed', function() {
+    it('bingo when resolved promise is flushed w/ $apply', function() {
         deferred.resolve();
-        flush();
+        $apply();
         saidBingo();
     });
 
-    it('no bingo when forget to flush', function() {
+    it('no bingo when forget to $apply', function() {
         deferred.resolve();
 
-        // forgot to call flush()
+        // forgot to call $apply()
         haveNotSaidBingo();
 
-        flush();
+        $apply();
         // now should have bingo
         saidBingo();
     });
 
-    it('no bingo when rejected promise is flushed', function() {
+    it('no bingo when rejected promise is flushed w/ $apply', function() {
         deferred.reject('Oh darn!');
-        flush();
+        $apply();
 
         haveNotSaidBingo();
 
@@ -89,7 +89,7 @@ describe('Basics - ng Promises:', function() {
             deferred.resolve();
         }, 10); // test will have finished before promise is resolved.
 
-        flush();
+        $apply();
         // bingo is still null because promise wasn't fulfilled
         haveNotSaidBingo();
     });
@@ -101,13 +101,13 @@ describe('Basics - ng Promises:', function() {
 
         setTimeout(function() {
             deferred.resolve();
-            flush();     // must flush again to catch this resolve
+            $apply();     // must $apply again to catch this resolve
             saidBingo();
             done();      // now the test is over
         }, 10);
 
         // pointless: bingo is still null because promise not yet fulfilled
-        flush();
+        $apply();
         haveNotSaidBingo();
     });
 });
