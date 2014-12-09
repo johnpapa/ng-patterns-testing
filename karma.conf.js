@@ -31,8 +31,9 @@ module.exports = function (config) {
             './src/client/app/app.module.js',
             './src/client/app/**/*.module.js',
             './src/client/app/**/*.js',
+            './build/templates.js',
 
-            /* MOCHA */
+            /* MOCHA specs */
             './src/client/test/lib/specHelper.js',
             './src/client/test/lib/mockData.js',
 

@@ -1,8 +1,6 @@
 /*jshint -W079, -W117 */
 (function() {
 
-    midwayTesterApp();
-
     var specHelper = {
         $httpBackend: $httpBackendReal,
         $q: $qReal,
@@ -17,6 +15,15 @@
         verifyNoOutstandingHttpRequests: verifyNoOutstandingHttpRequests
     };
     window.specHelper = specHelper;
+
+    /**
+     * Define a test application module with faked logger for use with ngMidwayTester
+     *
+     * Useage: 
+     *    tester = ngMidwayTester('testerApp', {mockLocationPaths: false});
+     */ 
+    angular.module('testerApp', ['app', fakeLogger]);     
+
     ////////////////////////
     /*jshint -W101 */
     /**
@@ -133,13 +140,12 @@
      *  Useage:
      *     beforeEach(specHelper.asyncModule('app'));
      *
-     *     // Equivalent to:
-     *     //   beforeEach(module(specHelper.$q, specHelper.$httpBackend, 'app', specHelper.fakeLogger));
+     *     Equivalent to:
+     *       beforeEach(module('app', specHelper.$httpBackend, specHelper.$q, specHelper.fakeToastr));
      */
     function asyncModule() {
         var args = Array.prototype.slice.call(arguments, 0);
-        args.unshift($qReal, $httpBackendReal); // prepend real replacements for mocks
-        args.push(fakeLogger);                  // suffix with fake logger
+        args = args.concat($httpBackendReal, $qReal, fakeToastr);      
         // build and return the ngMocked test module
         return angular.mock.module.apply(angular.mock, args); 
     }
@@ -296,18 +302,6 @@
         //
         // Then caller must say something like:
         //     eval(specHelper.injector('$log', 'foo'));
-    }
-
-    /**
-     * Defines a test module for the 'app' application module that 
-     * presupposes use of ngMidwayTester instead of ngMocks for test setup
-     *
-     * Useage: 
-     *    tester = ngMidwayTester('midwayTesterApp', {mockLocationPaths: false});
-     */
-    function midwayTesterApp() {  
-        angular.module('midwayTesterApp', ['app', fakeLogger]);//fakeToastr]);      
-        return 'midwayTesterApp';
     }
 
     // Replaces the accented characters of many European languages w/ unaccented chars

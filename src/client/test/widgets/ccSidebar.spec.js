@@ -147,8 +147,8 @@ describe('ccSidebar directive: ', function () {
     }
 
     //////////  uncomment only during demonstration ///////
-    // What if you don't know about turning JQuery animation durations off ($.fx.off?
-    // You have to write async tests
+    // What if you don't know about turning JQuery animation durations off ($.fx.off)?
+    // You have to write async tests and perhaps guess at animation duration
     /*
     describe('when animating  w/ jQuery fx turned on', function () {
         beforeEach(function () {
@@ -178,7 +178,6 @@ describe('ccSidebar directive: ', function () {
         });
 
         it('dropdown is hidden after closing menu - async', function (done) {
-            $.fx.off = true;
             openDropdown();
 
             dropdownIsVisible(true); // should be visible when we start

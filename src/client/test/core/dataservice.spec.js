@@ -59,13 +59,13 @@ describe('core dataservice', function () {
             $httpFlush();
         });
 
-        it('should contain Natasha', function (done) {
+        it('should contain Scarlett Johansson', function (done) {
             dataservice.getAvengersCast()
             .then(function(data) {
-                var hasBlackWidow = data.some(function (c) {
-                    return c.character.indexOf('Natasha') >= 0;
+                var hasScarlett = data.some(function (c) {
+                    return c.name === 'Scarlett Johansson';
                 });
-                expect(hasBlackWidow).to.be.true;
+                expect(hasScarlett).to.be.true;
             })
             .then(done, done);
             $httpFlush();
