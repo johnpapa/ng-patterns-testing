@@ -1,1 +1,1 @@
-angular.module('app.dashboard', []);
+angular.module('app.dashboard', ['app.core']);

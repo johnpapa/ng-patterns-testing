@@ -5,7 +5,6 @@
         .module('app.widgets')
         .directive('ccWidgetHeader', ccWidgetHeader);
 
-    /* @ngInject */
     function ccWidgetHeader () {
         //Usage:
         //<div data-cc-widget-header title="vm.map.title"></div>

@@ -9,7 +9,7 @@
     // Must configure via the routehelperConfigProvider
     function RoutehelperConfig() {
         this.config = {
-            listenForRouteChange: true
+            listenForRouteChange: false // set true for debugging
             // These are the other properties we need to set
             // $routeProvider: undefined
             // docTitle: ''
@@ -112,8 +112,6 @@
                     if (!dest) {
                         dest = 'unknown target';
                     }
-                    var destination = (current && (current.title || current.name || current.templateUrl)) ||
-                        'unknown target';
                     var msg = 'Starting route change to ' + dest;
                     logger.info(msg, [current]);
                 }

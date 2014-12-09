@@ -1,4 +1,1 @@
-angular.module('blocks.router', [
-    'ngRoute',
-    'blocks.logger'
-]);
+angular.module('blocks.router', ['ngRoute', 'blocks.logger']);

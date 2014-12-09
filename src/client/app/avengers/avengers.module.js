@@ -1,1 +1,1 @@
-angular.module('app.avengers', []);
+angular.module('app.avengers', ['app.core']);

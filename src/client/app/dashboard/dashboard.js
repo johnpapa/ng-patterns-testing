@@ -5,7 +5,7 @@
         .module('app.dashboard')
         .controller('Dashboard', Dashboard);
 
-        /* @ngInject */
+    /* @ngInject */
     function Dashboard($q, dataservice, logger) {
         var vm = this;
 

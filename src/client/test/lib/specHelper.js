@@ -104,8 +104,9 @@
     }
 
     /**
-     * Prepare ngMocked application feature module along with
-     * its 'app.core' dependency and faked logger and routehelper
+     * Prepare ngMocked application feature module 
+     * along with faked toastr and routehelper
+     * Especially useful for controller testing
      * Use it as you would the ngMocks#module method
      * 
      *  Useage:
@@ -114,13 +115,13 @@
      *     Equivalent to:
      *       beforeEach(module(
      *          'app.avengers',
-     *          'app.core', 
-     *          specHelper.fakeToastr)
+     *          specHelper.fakeToastr, 
+     *          specHelper.fakeRouteHelperProvider)
      *       );
      */
     function appModule() {
-        var args = ['app.core', fakeToastr, fakeRouteHelperProvider];
-        args = args.concat(Array.prototype.slice.call(arguments, 0));
+        var args = Array.prototype.slice.call(arguments, 0); 
+        args = args.concat(fakeToastr, fakeRouteHelperProvider);
         angular.mock.module.apply(angular.mock, args);
     }
 
@@ -250,7 +251,7 @@
             params = arguments[0];
         }
         else {
-            params = Array.prototype.slice.call(arguments);
+            params = Array.prototype.slice.call(arguments, 0);
         }
 
         annotation = params.join('\',\''); // might need to annotate

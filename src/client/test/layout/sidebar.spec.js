@@ -1,38 +1,41 @@
 /* jshint -W117, -W030 */
-describe('layout', function () {
-    describe('sidebar', function () {
-        var controller;
+describe('layout sidebar', function () {
+    var controller;
 
-        beforeEach(function() {
-            module('app', specHelper.fakeLogger);
-            specHelper.injector(function($controller, $httpBackend, $location, $rootScope, $route) {});
-        });
+    beforeEach(function() {
+        // Setup for entire app because each feature module adds its own routes
+        // 'templates' populates $templateCache with all views
+        // so that tests don't try to retrieve view templates from the server.
+        module('app', 'templates', specHelper.fakeToastr);
+        specHelper.injector(function($controller, $location, $rootScope, $route) {});
+    });
 
-        beforeEach(function () {
-            controller = $controller('Sidebar');
-        });
+    beforeEach(function () {
+        controller = $controller('Sidebar');
+    });
 
-        it('should have isCurrent() for / to return `current`', function () {
-            $httpBackend.when('GET', 'app/dashboard/dashboard.html').respond(200);
-            $location.path('/');
-            $httpBackend.flush();
-            expect(controller.isCurrent($route.current)).to.equal('current');
-        });
+    it('before navigating, isCurrent() should NOT return `current`', function () {
+        expect(controller.isCurrent({title: 'invalid'})).not.to.equal('current');
+    });
+    
+    // Confirm that, after navigating successfully,
+    // controller.isCurrent() returns the class name `current`
+    // for the router's current route (the browser's current address)
+    it('after going to `/`, isCurrent() should return `current`', function () {
+        $location.path('/');
+        $rootScope.$apply();
+        expect(controller.isCurrent($route.current)).to.equal('current');
+    });
 
-        it('should have isCurrent() for /avengers to return `current`', function () {
-            $httpBackend.when('GET', 'app/avengers/avengers.html').respond(200);
-            $location.path('/avengers');
-            $httpBackend.flush();
-            expect(controller.isCurrent($route.current)).to.equal('current');
-        });
+    it('after going to `/avengers`, isCurrent() should return `current`', function () {
+        $location.path('/avengers');
+        $rootScope.$apply();
+        expect(controller.isCurrent($route.current)).to.equal('current');
+    });
 
-        it('should have isCurrent() for non route not return `current`', function () {
-            $httpBackend.when('GET', 'app/dashboard/dashboard.html').respond(200);
-            $location.path('/invalid');
-            $httpBackend.flush();
-            expect(controller.isCurrent({title: 'invalid'})).not.to.equal('current');
-        });
-
-        specHelper.verifyNoOutstandingHttpRequests();
+    it('after going to an invalid route, isCurrent() should NOT return `current`', function () {
+        $location.path('/invalid');
+        $rootScope.$apply();
+        expect(controller.isCurrent({title: 'invalid'})).not.to.equal('current');
     });
 });
