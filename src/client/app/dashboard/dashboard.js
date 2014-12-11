@@ -10,11 +10,6 @@
         var vm = this;
         vm.castCount = 0;
         vm.cast = [];
-        vm.news = {
-            title: 'Marvel Avengers',
-            description: 'The Avengers: Age of Ultron opens in U.S. theaters on May 1, 2015'
-        };
-        vm.title = 'Dashboard';
 
         activate();
 

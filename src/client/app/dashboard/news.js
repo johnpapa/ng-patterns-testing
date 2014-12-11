@@ -12,6 +12,7 @@
     /* @ngInject */
     function News($scope, $interval, $timeout, newsService, logger) {       
         $scope.news = [];
+        $scope.title = 'Marvel News';
 
         activate();
         //////////////////////////
