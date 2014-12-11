@@ -49,18 +49,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="widget wlightblue">
-                        <div data-cc-widget-header title="{{vm.news.title}}"
-                             allow-collapse="true"></div>
-                        <div class="widget-content text-info">
-                            <small>{{vm.news.description}}</small>
-                        </div>
-                        <div class="widget-foot">
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
-                </div>
+                <div ng-include="'app/dashboard/news.html'" class="col-md-6"></div>
             </div>
         </div>
     </section>

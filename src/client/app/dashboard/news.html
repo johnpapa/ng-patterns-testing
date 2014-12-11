@@ -1,0 +1,10 @@
+<div class="widget wlightblue" ng-controller="News">
+    <div data-cc-widget-header title="{{vm.news.title}}"
+         allow-collapse="true"></div>
+    <div class="widget-content text-info" ng-repeat="item in news">
+        <small>{{item.description}}</small>
+    </div>
+    <div class="widget-foot">
+        <div class="clearfix"></div>
+    </div>
+</div>

@@ -34,7 +34,7 @@
      *  while restoring $http calls that pass through to the server
      *
      *  Note that $q remains ngMocked so you must flush $http calls ($rootScope.$digest).
-     *  The specHelper.$apply() function is available for this purpose.
+     *  Use $rootScope.$apply() for this purpose.
      * 
      *  Could restore $q with $qReal in which case don't need to flush. 
      * 
@@ -59,7 +59,7 @@
      *            .then(done, done);
      * 
      *        // because not using $qReal, must flush the $http and $q queues
-     *        specHelper.flush();
+     *        $rootScope.$apply;
      *    });        
      */
     /*jshint +W101 */
