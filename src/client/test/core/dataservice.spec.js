@@ -1,6 +1,5 @@
 /* jshint -W117, -W030 */
 describe('core dataservice', function () {
-    var scope;
 
     beforeEach(function () {
         module('app.core', specHelper.fakeToastr);
