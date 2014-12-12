@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe('news controller', function() {
+describe('dashboard news controller', function() {
 
     var controller, $scope;
     var stories = mockData.getNewsStories();
@@ -7,7 +7,7 @@ describe('news controller', function() {
     beforeEach(function() {
         specHelper.appModule('app.dashboard');
         specHelper.injector(
-            function($controller, $q, $rootScope, $timeout, newsService) { });
+            function($controller, $interval, $q, $rootScope, $timeout, newsService) { });
     });
 
     beforeEach(function () {
@@ -40,12 +40,36 @@ describe('news controller', function() {
 
     it('refreshes stories periodically', function () {
         // Must know at least the minimum interval; 
-        // picked big test interval to trigger many refreshes
-        inject(function($interval) {              
-            $interval.flush(100000);        
-        });
-
+        // picked big test interval to trigger many refreshes            
+        $interval.flush(100000);        
         expect(newsService.getTopStories.callCount).to.be.above(2);
     });
 
+    it('stops refreshing stories when the controller is destroyed', function () {
+        var $destroyEventRaised = false;
+
+        // listen for event when controller (well, its $scope) is destroyed
+        $scope.$on('$destroy', function() {
+            $destroyEventRaised = true;
+        });
+
+        // trigger some newsService activity as time passes
+        $timeout.flush();           
+        $interval.flush(100000);
+        var lastCount = newsService.getTopStories.callCount;
+        expect(lastCount).to.be.above(2);
+
+        // now destroy the controller's scope (as when "close" its view)
+        // the controller should no longer ask for news refreshes    
+        $scope.$destroy();
+
+        // let more time pass; 
+        $interval.flush(100000);        
+
+        expect($destroyEventRaised).to.equal(true, 
+            'destroy event raised');
+
+        expect(newsService.getTopStories.callCount).to.equal(lastCount,
+            'there should have been no more newsService calls');
+    });
 });

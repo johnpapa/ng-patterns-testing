@@ -41,6 +41,6 @@
         $scope.$on('$destroy', function() {
             $timeout.cancel(timeoutHandle);
             $interval.cancel(refreshHandle);
-        })
+        });
     }
 })();        
