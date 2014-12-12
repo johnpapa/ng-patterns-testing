@@ -15,7 +15,7 @@ describe('news controller', function() {
         sinon.stub(newsService, 'getTopStories')
              .returns($q.when(stories));
 
-        $scope = {}; // traditionally: $scope = $rootScope.$new()
+        $scope = $rootScope.$new(); // need real $scope for $scope.$on
         controller = $controller('News', {$scope: $scope});
         $rootScope.$apply();
     }); 
