@@ -10,7 +10,9 @@
         .controller('News', News);
 
     /* @ngInject */
-    function News($scope, $interval, $timeout, newsService, logger) {       
+    function News($scope, $interval, $timeout, newsService, logger) {
+        var refreshHandle, timeoutHandle;
+
         $scope.news = [];
         $scope.title = 'Marvel News';
 
@@ -23,10 +25,10 @@
             }];
 
             // delay first time for demo
-            $timeout(getNews, 2000);
+            timeoutHandle = $timeout(getNews, 2000);
 
             // get fresh news periodically
-            $interval(getNews, 10000);
+            refreshHandle = $interval(getNews, 10000);
         }
 
         function getNews() {
@@ -35,5 +37,10 @@
                     $scope.news = news;
                 });	    	
         }
+
+        $scope.$on('$destroy', function() {
+            $timeout.cancel(timeoutHandle);
+            $interval.cancel(refreshHandle);
+        })
     }
 })();        

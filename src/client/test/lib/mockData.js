@@ -104,6 +104,6 @@ var mockData = (function() {
              description: 'Marvel\'s Agent Carter Debriefs Her First 2 Missions'},
             {title: 'Marvel Comics',
              description: 'Thor: Meet the new female hero who will wield Mjolnir!'}
-        ]
+        ];
     }
 })();

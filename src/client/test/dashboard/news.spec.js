@@ -1,7 +1,8 @@
 /* jshint -W117, -W030 */
 describe('news controller', function() {
 
-    var controller, stories, $scope;
+    var controller, $scope;
+    var stories = mockData.getNewsStories();
 
     beforeEach(function() {
         specHelper.appModule('app.dashboard');
@@ -10,11 +11,11 @@ describe('news controller', function() {
     });
 
     beforeEach(function () {
-        stories = mockData.getNewsStories();
+
         sinon.stub(newsService, 'getTopStories')
              .returns($q.when(stories));
 
-        $scope = {}; // traditionally = $rootScope.$new()
+        $scope = {}; // traditionally: $scope = $rootScope.$new()
         controller = $controller('News', {$scope: $scope});
         $rootScope.$apply();
     }); 
@@ -40,7 +41,7 @@ describe('news controller', function() {
     it('refreshes stories periodically', function () {
         // Must know at least the minimum interval; 
         // picked big test interval to trigger many refreshes
-        inject(function($interval){              
+        inject(function($interval) {              
             $interval.flush(100000);        
         });
 
