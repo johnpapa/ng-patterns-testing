@@ -10,6 +10,7 @@
         var vm = this;
         vm.castCount = 0;
         vm.cast = [];
+        vm.title = 'Dashboard';
 
         activate();
 

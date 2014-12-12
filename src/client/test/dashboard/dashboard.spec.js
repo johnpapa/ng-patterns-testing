@@ -25,10 +25,6 @@ describe('dashboard controller', function() {
         expect(controller.title).to.equal('Dashboard');
     });
 
-    it('should have news', function () {
-        expect(controller.news).to.not.be.empty;
-    });
-
     it('should have the expected avengers cast', function () {
         expect(controller.cast).to.have.length(cast.length);
     });
