@@ -23,10 +23,6 @@
     "./src/client/test/**/*.spec.js",
     "!./src/client/test/server-integration/**/*.spec.js" 
   ],
-  "basics":[
-    "./src/client/test/basics/**/*.js",
-    "./src/client/test/basics/**/*.spec.js"
-  ],
   "specHelpers": [
       "./src/client/test/lib/specHelper.js",
       "./src/client/test/lib/appSpecHelper.js",
