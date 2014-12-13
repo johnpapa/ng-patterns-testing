@@ -26,29 +26,25 @@ module.exports = function (config) {
             './bower_components/toastr/toastr.js',
             './bower_components/moment/moment.js',
             './bower_components/extras.angular.plus/ngplus-overlay.js',
+
+            /* spec helpers */
             './src/client/test/lib/bindPolyfill.js',
-
-            './src/client/app/app.module.js',
-            './src/client/app/**/*.module.js',
-            './src/client/app/**/*.js',
-            './build/templates.js',
-
-            /* MOCHA specs */
             './src/client/test/lib/specHelper.js',
             './src/client/test/lib/mockData.js',
 
-            './src/client/test/basics/**/*.src.js',
-            './src/client/test/basics/**/*.spec.js',
+            './src/client/app/app.module.js',
+            './build/templates.js',
+            './src/client/app/**/*.module.js',
+            './src/client/app/**/*.js',
 
-            // all specs ... comment out during early test training
-            './src/client/test/**/*.spec.js'
+            './src/client/test/server-integration/**/*.spec.js'
 
         ],
 
         // list of files to exclude
         exclude: [
             // Including server-integration tests for now; comment this line out when you want to run them
-            './src/client/test/server-integration/**/*.spec.js'
+            //'./src/client/test/server-integration/**/*.spec.js'
         ],
 
         proxies: {

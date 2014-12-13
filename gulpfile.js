@@ -264,7 +264,7 @@ function startBrowserSync() {
             scroll: true
         },
         logLevel: 'debug',
-        logPrefix: 'gulp-patterns',
+        logPrefix: 'ng-patterns-testing',
         notify: true,
         reloadDelay: 1000
     });
