@@ -10,7 +10,7 @@
         body {
             font: 20px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
             padding-left: 20px;
-        }   
+        }
     </style>
 
     <!--BEWARE of using any app styles as @media can screw up tests -->
@@ -72,6 +72,10 @@
     <script src="src/client/app/avengers/avengers.js"></script>
     <script src="src/client/app/avengers/config.route.js"></script>
     <script src="src/client/app/basics/basics.src.js"></script>
+    <script src="src/client/app/blocks/exception/exception-handler.provider.js"></script>
+    <script src="src/client/app/blocks/exception/exception.js"></script>
+    <script src="src/client/app/blocks/logger/logger.js"></script>
+    <script src="src/client/app/blocks/router/routehelper.js"></script>
     <script src="src/client/app/core/config.js"></script>
     <script src="src/client/app/core/constants.js"></script>
     <script src="src/client/app/core/dataservice.js"></script>
@@ -83,10 +87,6 @@
     <script src="src/client/app/layout/sidebar.js"></script>
     <script src="src/client/app/widgets/ccSidebar.js"></script>
     <script src="src/client/app/widgets/ccWidgetHeader.js"></script>
-    <script src="src/client/app/blocks/exception/exception-handler.provider.js"></script>
-    <script src="src/client/app/blocks/exception/exception.js"></script>
-    <script src="src/client/app/blocks/logger/logger.js"></script>
-    <script src="src/client/app/blocks/router/routehelper.js"></script>
     <script src="build/templates.js"></script>
     <!-- endinject -->
 
@@ -120,6 +120,7 @@
     <script src="src/client/app/layout/shell.spec.js"></script>
     <script src="src/client/app/layout/sidebar.spec.js"></script>
     <script src="src/client/app/widgets/ccSidebar.spec.js"></script>
+    <script src="src/client/app/blocks/router/routehelper.spec.js"></script>
     <!-- endinject -->
 
     <!-- inject-serverspecs:js -->
