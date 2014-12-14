@@ -2,6 +2,7 @@
 var gulp = require('gulp');
 var browserSync = require('browser-sync');
 var del = require('del');
+var filter = require('gulp-filter');
 var glob = require('glob');
 var paths = require('./gulp.config.json');
 var plug = require('gulp-load-plugins')();
@@ -11,6 +12,9 @@ var colors = plug.util.colors;
 var env = plug.util.env;
 var log = plug.util.log;
 var port = process.env.PORT || 7202;
+
+var noSpecsJsFilter = filter(['**/*.js', '!**/*.spec.js']);
+var specsOnlyFilter = filter('**/*.spec.js');
 
 /**
  * List the available gulp tasks
@@ -37,33 +41,35 @@ gulp.task('analyze', function() {
  * @return {Stream}
  */
 gulp.task('build-specs', ['templatecache'], function() {
-        log('building specs.html');
-        var index = paths.client + 'specs.html';
-        var stream = gulp
+    log('building specs.html');
+    var index = paths.client + 'specs.html';
+    var stream = gulp
 
-            .src([index])          
-            //.pipe(inject([].concat(paths.css)))
-            .pipe(inject([].concat(paths.testvendorcss), 'inject-testvendorcss')) 
-            .pipe(inject([].concat(paths.testharnessjs), 'inject-testharness'))
-            .pipe(inject([].concat(paths.testvendorjs), 'inject-testvendor'))
-            .pipe(inject([].concat(paths.js)))
-            .pipe(inject([].concat(paths.specHelpers), 'inject-spechelpers'))
-            .pipe(inject([].concat(paths.basics, paths.specs), 'inject-specs'))
-            .pipe(inject([].concat(paths.serverIntegrationSpecs), 'inject-serverspecs'))
+    .src([index])          
+    //.pipe(inject([].concat(paths.css)))
+    .pipe(inject([].concat(paths.testvendorcss), 'inject-testvendorcss')) 
+    .pipe(inject([].concat(paths.testharnessjs), 'inject-testharness'))
+    .pipe(inject([].concat(paths.testvendorjs), 'inject-testvendor'))
+    .pipe(inject([].concat(paths.js), undefined, noSpecsJsFilter))
+    .pipe(inject([].concat(paths.specHelpers), 'inject-spechelpers'))
+    .pipe(inject([].concat(paths.js, paths.specs), 'inject-specs', specsOnlyFilter))
+    .pipe(inject([].concat(paths.serverIntegrationSpecs), 'inject-serverspecs'))
 
-            .pipe(gulp.dest(paths.client)); // write the specs.html file changes
+    .pipe(gulp.dest(paths.client)); // write the specs.html file changes
 
-    function inject(path, name) {
-            //var pathGlob = paths.build + path;
-            var options = {
-                //ignorePath: paths.build.substring(1),
-                addRootSlash: false,
-                read: false
-            };
-            if (name) { options.name = name; }
-            return plug.inject(gulp.src(path), options);
-        }
-    });
+    function inject(path, name, filter) {
+        //var pathGlob = paths.build + path;
+        var options = {
+            //ignorePath: paths.build.substring(1),
+            addRootSlash: false,
+            read: false
+        };
+        if (name) { options.name = name; }
+        var src = gulp.src(path);
+        if (filter) { src = src.pipe(filter); }
+        return plug.inject(src, options);
+    }
+});
 
 /**
  * Create $templateCache from the html templates
@@ -258,7 +264,7 @@ function startBrowserSync() {
             scroll: true
         },
         logLevel: 'debug',
-        logPrefix: 'gulp-patterns',
+        logPrefix: 'ng-patterns-testing',
         notify: true,
         reloadDelay: 1000
     });
