@@ -1,5 +1,5 @@
 /* jshint -W117, -W109, -W030 */
-describe('ccSidebar directive: ', function () {
+describe('widgets.ccSidebar directive: ', function () {
     var dropdownElement;
     var el;
     var innerElement;
@@ -20,7 +20,7 @@ describe('ccSidebar directive: ', function () {
         //
         // N.B.: We do NOT add this element to the browser DOM (although we could).
         //       spec runs faster if we don't touch the DOM (even the PhantomJS DOM).
-        
+
         /*jshint multistr:true */
         el = angular.element(
             '<div cc-sidebar  when-done-animating="vm.sidebarReady(42)" > \

@@ -1,8 +1,8 @@
 /* jshint -W117, -W030 */
 describe('avengers controller', function() {
 
-    var avengers = mockData.getAvengers(); 
-    var controller;
+    var avengers = mockData.getAvengers();
+    var controller, spy;
 
     beforeEach(function() {
         specHelper.appModule('app.avengers');
@@ -10,7 +10,7 @@ describe('avengers controller', function() {
     });
 
     beforeEach(function () {
-        sinon.stub(dataservice, 'getAvengers')
+        spy = sinon.stub(dataservice, 'getAvengers')
              .returns($q.when(avengers));
 
         controller = $controller('Avengers');
@@ -25,7 +25,11 @@ describe('avengers controller', function() {
         expect(controller.title).to.equal('Avengers');
     });
 
-    it('should have Avengers from dataservice', function() {
+    it('should have called `dataservice.getAvengers`', function() {
+        expect(spy).to.have.been.calledOnce;
+    });
+
+    it('should have Avengers', function() {
         expect(controller.avengers)
             .to.have.length(avengers.length);
     });

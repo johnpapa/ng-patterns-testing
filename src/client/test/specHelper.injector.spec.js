@@ -2,64 +2,67 @@
 describe('specHelper.injector', function() {
     'use strict';
 
-    beforeEach(module('basics'));
+    beforeEach(module(function($provide) {
+        // define a 'nutz' service for testing injector
+        $provide.service('nutz', function() {});
+    }));
 
     beforeEach(function() {
         // Confirm no window pollution from a prior inject() call
         expect(window.$log).to.not.exist;
-        expect(window.calcService).to.not.exist;
+        expect(window.nutz).to.not.exist;
         expect(window.baz).to.not.exist;
         expect(window.foo).to.not.exist;
     });
 
     describe('(describe #1):', function() {
-        it('window.$log and window.calcService should not exist', function() {
+        it('window.$log and window.nutz should not exist', function() {
             expect(window.$log).to.not.exist;
-            expect(window.calcService).to.not.exist;
+            expect(window.nutz).to.not.exist;
         });
 
     });
 
     describe('(describe #2):', function() {
         beforeEach(function() {
-            // window.$log and window.calcService should not exist before any test
+            // window.$log and window.nutz should not exist before any test
             expect(window.$log).to.not.exist;
-            expect(window.calcService).to.not.exist;
+            expect(window.nutz).to.not.exist;
         });
 
         // Although inject() puts injectables in the window,
         // it also removes them after each test by scheduling an afterEach
-        // Notice ... no private vars for $log or calcService! ... no injecting of them either.
-        it('should set window.$log and window.calcService when call inject with a func', function() {
-            specHelper.injector(function($log, calcService) {});
+        // Notice ... no private vars for $log or nutz! ... no injecting of them either.
+        it('should set window.$log and window.nutz when call inject with a func', function() {
+            specHelper.injector(function($log, nutz) {});
 
             expect($log).to.exist;
-            expect(calcService).to.exist;
+            expect(nutz).to.exist;
 
             // They are actually in the window
             expect(window.$log).to.exist;
-            expect(window.calcService).to.exist;
+            expect(window.nutz).to.exist;
 
             // THIS afterEach is registered AFTER the one created by specHelper.injector
             afterEach(function() {
                 // Should have cleaned up after itself
                 expect(window.$log).to.not.exist;
-                expect(window.calcService).to.not.exist;
+                expect(window.nutz).to.not.exist;
             });
         });
 
-        it('should set window.$log and window.calcService when call inject with string array', function() {
-            specHelper.injector(['$log', 'calcService']);
+        it('should set window.$log and window.nutz when call inject with string array', function() {
+            specHelper.injector(['$log', 'nutz']);
 
             expect($log).to.exist;
-            expect(calcService).to.exist;
+            expect(nutz).to.exist;
         });
 
-        it('should set window.$log and window.calcService when call inject with string params', function() {
-            specHelper.injector('$log', 'calcService');
+        it('should set window.$log and window.nutz when call inject with string params', function() {
+            specHelper.injector('$log', 'nutz');
 
             expect($log).to.exist;
-            expect(calcService).to.exist;
+            expect(nutz).to.exist;
         });
 
         // reinforcing the point that inject adds to globals, not local fn scope
@@ -97,16 +100,16 @@ describe('specHelper.injector', function() {
          afterEach(function() {
          // Should have cleaned up after itself
          expect(window.$log).to.not.exist;
-         expect(window.calcService).to.not.exist;
+         expect(window.nutz).to.not.exist;
          });
 
          */
     });
 
     describe('(describe #3):', function() {
-        it('window.$log and window.calcService should not exist', function() {
+        it('window.$log and window.nutz should not exist', function() {
             expect(window.$log).to.not.exist;
-            expect(window.calcService).to.not.exist;
+            expect(window.nutz).to.not.exist;
         });
     });
 

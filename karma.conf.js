@@ -36,7 +36,7 @@ module.exports = function (config) {
             './build/templates.js',
             './src/client/app/**/*.module.js',
             './src/client/app/**/*.js',
-
+            './src/client/test/*.spec.js',
             './src/client/test/server-integration/**/*.spec.js'
 
         ],
