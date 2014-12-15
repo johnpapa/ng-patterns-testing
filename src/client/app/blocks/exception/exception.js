@@ -3,14 +3,11 @@
 
     angular
         .module('blocks.exception')
-        .factory('exception', exception);
+        .service('exception', Exception);
 
     /* @ngInject */
-    function exception(logger) {
-        var service = {
-            catcher: catcher
-        };
-        return service;
+    function Exception(logger) {
+        this.catcher = catcher;
 
         function catcher(message) {
             return function(reason) {

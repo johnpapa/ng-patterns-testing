@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe('basics/router routehelper', function () {
+describe('blocks.router routehelper', function () {
 
     var routehelperConfig, testRoute;
 
