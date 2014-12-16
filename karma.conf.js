@@ -30,7 +30,7 @@ module.exports = function (config) {
             /* spec helpers */
             './src/client/test/lib/bindPolyfill.js',
             './src/client/test/lib/specHelper.js',
-            './src/client/test/lib/mockData.js',
+            './src/client/test/lib/**/*.js',
 
             './src/client/app/app.module.js',
             './build/templates.js',

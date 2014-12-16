@@ -10,11 +10,11 @@
     function config() {
         return {
             //Configure the exceptionHandler decorator
-            appErrorPrefix: '[NG-Testing Error] ', 
+            appErrorPrefix: '[NG-Testing Error] ',
             appTitle: 'Angular Testing Demo',
             version: '1.0.0'
         };
-    } 
+    }
 
     /* @ngInject */
     function toastrConfig(toastr) {
@@ -32,9 +32,9 @@
         // Configure the common route provider
         routehelperConfigProvider.config.$routeProvider = $routeProvider;
         routehelperConfigProvider.config.docTitle = 'NG-Testing: ';
-        var resolveAlways = { 
+        var resolveAlways = {
             /* @ngInject */
-            ready: function(dataservice) {
+            dataservice: function(dataservice) {
                 return dataservice.ready();
             }
         };
@@ -42,5 +42,5 @@
 
         // Configure the common exception handler
         exceptionHandlerProvider.configure(config.appErrorPrefix);
-    } 
+    }
 })();
