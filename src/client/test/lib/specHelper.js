@@ -325,11 +325,11 @@
      * add mocked function to the service using the config value
      *
      * Usage:
-     *   Given this service:
+     *   Given this DoWork service:
      *      {
-     *          doWork1:  a function,
+     *          doWork1:  an async function,
      *          doWork2:  a function,
-     *          doWork3:  a function,
+     *          doWork3:  an async function,
      *          doWork4:  a function,
      *          isActive: true
      *      }
@@ -339,7 +339,7 @@
      *          doWork1:  $q.when([{name: 'Bob'}, {name: 'Sally'}]),
      *          doWork2:  undefined,
      *          doWork4:  an alternate doWork4 function
-     *          doWork5:  {name: 'John'}
+     *          doWork5:  $q.reject('bad boy!')
      *          isActive: false,
      *          _default: $q.when([])
      *      }
@@ -350,7 +350,7 @@
      *          doWork2:  do-nothing stub,
      *          doWork3:  a stub returning $q.when([]),
      *          doWork4:  an alternate doWork4 function,
-     *          doWork5:  a stub returning {name: 'John'},
+     *          doWork5:  a stub returning $q.reject('bad boy!'),
      *          isActive: false,
      *      }
      */

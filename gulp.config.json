@@ -20,8 +20,9 @@
     "./src/server/**/*.js"
   ],
   "specs": [
+    "./src/client/app/**/*.spec.js",
     "./src/client/test/**/*.spec.js",
-    "!./src/client/test/server-integration/**/*.spec.js" 
+    "!./src/client/test/server-integration/**/*.spec.js"
   ],
   "specHelpers": [
       "./src/client/test/lib/specHelper.js",
@@ -29,7 +30,7 @@
       "./src/client/test/lib/**/*.js"
   ],
   "serverIntegrationSpecs":[
-    "./src/client/test/server-integration/**/*.spec.js"  
+    "./src/client/test/server-integration/**/*.spec.js"
   ],
 
   "testvendorcss": [

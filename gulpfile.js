@@ -2,7 +2,6 @@
 var gulp = require('gulp');
 var browserSync = require('browser-sync');
 var del = require('del');
-var filter = require('gulp-filter');
 var glob = require('glob');
 var paths = require('./gulp.config.json');
 var plug = require('gulp-load-plugins')();
@@ -12,9 +11,6 @@ var colors = plug.util.colors;
 var env = plug.util.env;
 var log = plug.util.log;
 var port = process.env.PORT || 7202;
-
-var noSpecsJsFilter = filter(['**/*.js', '!**/*.spec.js']);
-var specsOnlyFilter = filter('**/*.spec.js');
 
 /**
  * List the available gulp tasks
@@ -31,7 +27,7 @@ gulp.task('analyze', function() {
     var merge = require('merge-stream');
     var jshint = analyzejshint(paths.alljs);
     var jscs = analyzejscs(paths.alljs);
-    // startPlatoVisualizer(); 
+    // startPlatoVisualizer();
 
     return merge(jshint, jscs);
 });
@@ -45,19 +41,19 @@ gulp.task('build-specs', ['templatecache'], function() {
     var index = paths.client + 'specs.html';
     var stream = gulp
 
-    .src([index])          
+    .src([index])
     //.pipe(inject([].concat(paths.css)))
-    .pipe(inject([].concat(paths.testvendorcss), 'inject-testvendorcss')) 
+    .pipe(inject([].concat(paths.testvendorcss), 'inject-testvendorcss'))
     .pipe(inject([].concat(paths.testharnessjs), 'inject-testharness'))
     .pipe(inject([].concat(paths.testvendorjs), 'inject-testvendor'))
-    .pipe(inject([].concat(paths.js), undefined, noSpecsJsFilter))
-    .pipe(inject([].concat(paths.specHelpers), 'inject-spechelpers'))
-    .pipe(inject([].concat(paths.js, paths.specs), 'inject-specs', specsOnlyFilter))
+    .pipe(inject([].concat(paths.js, '!**/*.spec.js')))
+    .pipe(inject([].concat(paths.specHelpers, '!**/*.spec.js'), 'inject-spechelpers'))
+    .pipe(inject([].concat(paths.specs), 'inject-specs'))
     .pipe(inject([].concat(paths.serverIntegrationSpecs), 'inject-serverspecs'))
 
     .pipe(gulp.dest(paths.client)); // write the specs.html file changes
 
-    function inject(path, name, filter) {
+    function inject(path, name) {
         //var pathGlob = paths.build + path;
         var options = {
             //ignorePath: paths.build.substring(1),
@@ -65,9 +61,7 @@ gulp.task('build-specs', ['templatecache'], function() {
             read: false
         };
         if (name) { options.name = name; }
-        var src = gulp.src(path);
-        if (filter) { src = src.pipe(filter); }
-        return plug.inject(src, options);
+        return plug.inject(gulp.src(path), options);
     }
 });
 
@@ -100,7 +94,7 @@ gulp.task('wiredep', function () {
 
     var wiredep = require('wiredep').stream;
     var index = paths.client + 'index.html';
-    
+
     return gulp.src(index)
         .pipe(wiredep({
             directory: './bower_components/',
@@ -139,7 +133,7 @@ gulp.task('test', function (done) {
  * Run specs and wait.
  * Watch for file changes and re-run tests on each change
  * To start servers and run midway specs as well:
- *    gulp autotest --startServers  
+ *    gulp autotest --startServers
  */
 gulp.task('autotest', function (done) {
     startTests(false /*singleRun*/, done);
@@ -151,7 +145,7 @@ gulp.task('autotest', function (done) {
  */
 gulp.task('serve-dev-debug', function() {
     serve({
-        mode: 'dev', 
+        mode: 'dev',
         debug: '--debug'
     });
 });
@@ -162,7 +156,7 @@ gulp.task('serve-dev-debug', function() {
  */
 gulp.task('serve-dev-debug-brk', function() {
     serve({
-        mode: 'dev', 
+        mode: 'dev',
         debug: '--debug-brk'
     });
 });
@@ -180,7 +174,7 @@ gulp.task('serve-dev', function() {
 /**
  * Execute JSHint on given source files
  * @param  {Array} sources
- * @param  {String} overrideRcFile 
+ * @param  {String} overrideRcFile
  * @return {Stream}
  */
 function analyzejshint(sources, overrideRcFile) {
@@ -323,7 +317,7 @@ function startTests(singleRun, done) {
     }, karmaCompleted);
 
     ////////////////
-    
+
     function childProcessCompleted(error, stdout, stderr) {
         log('stdout: ' + stdout);
         log('stderr: ' + stderr);
