@@ -8,10 +8,10 @@
     /* @ngInject */
     function Dataservice($http, $q, exception, logger) {
         var readyPromise;
-        
-        this.getAvengers     = getAvengers;
-        this.getAvengersCast = getAvengersCast;
-        this.ready           = ready;
+        var ds = this;
+        ds.getAvengers     = getAvengers;
+        ds.getAvengersCast = getAvengersCast;
+        ds.ready           = ready;
 
         function getAvengers() {
             return $http.get('/api/maa')
@@ -35,20 +35,20 @@
 
         function getReady() {
             if (!readyPromise) {
-                // Apps often pre-fetch session data ("prime the app") 
-                // before showing the first view.                
+                // Apps often pre-fetch session data ("prime the app")
+                // before showing the first view.
                 // This app doesn't need priming but we add a
                 // no-op implementation to show how it would work.
                 logger.info('Primed the app data');
-                readyPromise = $q.when(true);
+                readyPromise = $q.when(ds);
             }
-            return readyPromise; 
+            return readyPromise;
         }
 
-        function ready(nextPromises) {
+        function ready(promisesArray) {
             return getReady()
-                .then(function() { 
-                    return nextPromises ? readyPromise : $q.all(nextPromises); 
+                .then(function() {
+                    return promisesArray ? $q.all(promisesArray) : readyPromise;
                 })
                 .catch(exception.catcher('"ready" function failed'));
         }

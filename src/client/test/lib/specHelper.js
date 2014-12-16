@@ -11,6 +11,7 @@
         fakeRouteProvider: fakeRouteProvider,
         fakeToastr: fakeToastr,
         injector: injector,
+        mockService: mockService,
         replaceAccentChars: replaceAccentChars,
         verifyNoOutstandingHttpRequests: verifyNoOutstandingHttpRequests
     };
@@ -19,10 +20,10 @@
     /**
      * Define a test application module with faked logger for use with ngMidwayTester
      *
-     * Useage: 
+     * Useage:
      *    tester = ngMidwayTester('testerApp', {mockLocationPaths: false});
-     */ 
-    angular.module('testerApp', ['app', fakeLogger]);     
+     */
+    angular.module('testerApp', ['app', fakeLogger]);
 
     ////////////////////////
     /*jshint -W101 */
@@ -35,14 +36,14 @@
      *
      *  Note that $q remains ngMocked so you must flush $http calls ($rootScope.$digest).
      *  Use $rootScope.$apply() for this purpose.
-     * 
-     *  Could restore $q with $qReal in which case don't need to flush. 
-     * 
+     *
+     *  Could restore $q with $qReal in which case don't need to flush.
+     *
      *  Inspired by this StackOverflow answer:
-     *    http://stackoverflow.com/questions/20864764/e2e-mock-httpbackend-doesnt-actually-passthrough-for-me/26992327?iemail=1&noredirect=1#26992327 
+     *    http://stackoverflow.com/questions/20864764/e2e-mock-httpbackend-doesnt-actually-passthrough-for-me/26992327?iemail=1&noredirect=1#26992327
      *
      *  Usage:
-     *  
+     *
      *    var myService;
      *
      *    beforeEach(module(specHelper.$httpBackend, 'app');
@@ -50,17 +51,17 @@
      *    beforeEach(inject(function(_myService_) {
      *        myService = _myService_;
      *    }));
-     * 
+     *
      *    it('should return valid data', function(done) {
      *        myService.remoteCall()
      *            .then(function(data) {
      *                expect(data).toBeDefined();
      *            })
      *            .then(done, done);
-     * 
+     *
      *        // because not using $qReal, must flush the $http and $q queues
      *        $rootScope.$apply;
-     *    });        
+     *    });
      */
     /*jshint +W101 */
     function $httpBackendReal($provide) {
@@ -73,14 +74,14 @@
     }
 
     /**
-     *  Replaces the ngMock'ed $q with the real one from ng thus 
+     *  Replaces the ngMock'ed $q with the real one from ng thus
      *  obviating the need to flush $http and $q queues
      *  at the expense of ability to control $q timing.
      *
      *  This alternative to the ngMidwayTester preserves the other ngMocks features
      *
      *  Usage:
-     *  
+     *
      *    var myService;
      *
      *    // Consider: beforeEach(specHelper.asyncModule('app'));
@@ -90,7 +91,7 @@
      *    beforeEach(inject(function(_myService_) {
      *        myService = _myService_;
      *    }));
-     * 
+     *
      *    it('should return valid data', function(done) {
      *        myService.remoteCall()
      *            .then(function(data) {
@@ -99,11 +100,11 @@
      *            .then(done, done);
      *
      *        // not need to flush
-     *    });        
+     *    });
      */
     function $qReal($provide) {
         $provide.provider('$q', function() {
-            /*jshint validthis:true */        
+            /*jshint validthis:true */
             this.$get = function() {
                 return angular.injector(['ng']).get('$q');
             };
@@ -111,23 +112,23 @@
     }
 
     /**
-     * Prepare ngMocked application feature module 
+     * Prepare ngMocked application feature module
      * along with faked toastr and routehelper
      * Especially useful for controller testing
      * Use it as you would the ngMocks#module method
-     * 
+     *
      *  Useage:
      *     beforeEach(specHelper.appModule('app.avengers'));
      *
      *     Equivalent to:
      *       beforeEach(module(
      *          'app.avengers',
-     *          specHelper.fakeToastr, 
+     *          specHelper.fakeToastr,
      *          specHelper.fakeRouteHelperProvider)
      *       );
      */
     function appModule() {
-        var args = Array.prototype.slice.call(arguments, 0); 
+        var args = Array.prototype.slice.call(arguments, 0);
         args = args.concat(fakeToastr, fakeRouteHelperProvider);
         angular.mock.module.apply(angular.mock, args);
     }
@@ -136,7 +137,7 @@
      * Prepare ngMocked module definition that makes real $http and $q calls
      * Also adds fakeLogger to the end of the definition
      * Use it as you would the ngMocks#module method
-     * 
+     *
      *  Useage:
      *     beforeEach(specHelper.asyncModule('app'));
      *
@@ -145,9 +146,9 @@
      */
     function asyncModule() {
         var args = Array.prototype.slice.call(arguments, 0);
-        args = args.concat($httpBackendReal, $qReal, fakeToastr);      
+        args = args.concat($httpBackendReal, $qReal, fakeToastr);
         // build and return the ngMocked test module
-        return angular.mock.module.apply(angular.mock, args); 
+        return angular.mock.module.apply(angular.mock, args);
     }
 
     function fakeLogger($provide) {
@@ -170,7 +171,7 @@
 
     function fakeRouteHelperProvider($provide) {
         $provide.provider('routehelper', function() {
-            /* jshint validthis:true */            
+            /* jshint validthis:true */
             this.config = {
                $routeProvider: undefined,
                docTitle: 'Testing'
@@ -302,6 +303,95 @@
         //
         // Then caller must say something like:
         //     eval(specHelper.injector('$log', 'foo'));
+    }
+
+    /**
+     * Mocks out a service with sinon stubbed functions
+     * that return the values specified in the config
+     *
+     * If the config value is `undefined`,
+     * stub the service method with a dummy that doesn't return a value
+     *
+     * If the config value is a function, set service property with it
+     *
+     * If a service member is a property, not a function,
+     * set it with the config value
+
+     * If a service member name is not a key in config,
+     * follow the same logic as above to set its members
+     * using the config._default value (which is `undefined` if omitted)
+     *
+     * If there is a config entry that is NOT a member of the service
+     * add mocked function to the service using the config value
+     *
+     * Usage:
+     *   Given this service:
+     *      {
+     *          doWork1:  a function,
+     *          doWork2:  a function,
+     *          doWork3:  a function,
+     *          doWork4:  a function,
+     *          isActive: true
+     *      }
+     *
+     *   Given this config:
+     *      {
+     *          doWork1:  $q.when([{name: 'Bob'}, {name: 'Sally'}]),
+     *          doWork2:  undefined,
+     *          doWork4:  an alternate doWork4 function
+     *          doWork5:  {name: 'John'}
+     *          isActive: false,
+     *          _default: $q.when([])
+     *      }
+     *
+     *   Service becomes
+     *      {
+     *          doWork1:  a stub returning $q.when([{name: 'Bob'}, {name: 'Sally'}]),
+     *          doWork2:  do-nothing stub,
+     *          doWork3:  a stub returning $q.when([]),
+     *          doWork4:  an alternate doWork4 function,
+     *          doWork5:  a stub returning {name: 'John'},
+     *          isActive: false,
+     *      }
+     */
+    function mockService(service, config) {
+
+        var serviceKeys = Object.keys(service);
+        var configKeys  = Object.keys(config);
+
+        serviceKeys.forEach(function(key) {
+            var value = configKeys.indexOf(key) > -1 ?
+                 config[key] : config._default;
+
+            if (typeof service[key] === 'function') {
+                if (typeof value === 'function') {
+                    service[key] = value;
+                } else {
+                    sinon.stub(service, key, function() {
+                        return value;
+                    });
+                }
+            } else {
+                service[key] = value;
+            }
+        });
+
+        // for all unused config entries add a sinon stubbed
+        // async method that returns the config value
+        configKeys.forEach(function(key) {
+            if (serviceKeys.indexOf(key) === -1) {
+                var value = config[key];
+                if (typeof value === 'function') {
+                    service[key] = value;
+                } else {
+                    service[key] = sinon.spy(function() {
+                        return value;
+                    });
+                }
+            }
+        });
+
+        return service;
     }
 
     // Replaces the accented characters of many European languages w/ unaccented chars

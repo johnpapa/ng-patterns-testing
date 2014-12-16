@@ -3,7 +3,7 @@ describe('core dataservice', function () {
 
     beforeEach(function () {
         module('app.core', specHelper.fakeToastr);
-        specHelper.injector(function($httpBackend, $rootScope, dataservice) {});        
+        specHelper.injector(function($httpBackend, $rootScope, dataservice) {});
         $httpFlush = $httpBackend.flush;
     });
 
@@ -73,14 +73,11 @@ describe('core dataservice', function () {
 
     describe('ready function', function () {
 
-        it('should return a resolved promise', function (done) {
+        it('should return a resolved promise with the dataservice itself', function (done) {
             dataservice.ready()
-            .then(
-                function(data) {
-                    expect(true).to.be.true;
-                }, function(data) {
-                    expect('promise rejected').to.be.true;
-                })
+            .then(function(data) {
+                expect(data).to.equal(dataservice);
+            })
             .then(done, done);
             $rootScope.$apply(); // no $http so just flush $q
         });
