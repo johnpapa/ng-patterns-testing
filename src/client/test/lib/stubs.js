@@ -1,4 +1,4 @@
-/*jshint -W079, -W101, -W109 */
+/*jshint -W079, -W101, -W109, -W117 */
 var stubs = (function() {
     return {
         getAvengers: getAvengers,
