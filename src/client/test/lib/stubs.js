@@ -1,4 +1,4 @@
-/*jshint -W079, -W101, -W109, -W117 */
+/*jshint -W117 */
 /**
  * Stubs for commonly stubbed dataservice methods.
  **/
@@ -37,10 +37,12 @@ var stubs = (function() {
     // dataservice and $q were previously injected and are global
 
     function happyService() {
+        var ok = $q.when.bind($q);
         return specHelper.mockService(dataservice, {
-            getAvengers: $q.when(mockData.getAvengers()),
-            ready:       $q.when(dataservice),
-            _default:    $q.when([])
+            getAvengers:     ok(mockData.getAvengers()),
+            getAvengersCast: ok(mockData.getAvengersCast()),
+            ready:           ok(dataservice),
+            _default:        ok([])
         });
     }
 

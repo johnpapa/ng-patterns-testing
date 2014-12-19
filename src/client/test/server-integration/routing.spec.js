@@ -9,6 +9,7 @@ describe('Server: routing', function() {
     beforeEach(function() {
         tester = ngMidwayTester('testerApp', {mockLocationPaths: false});
         $route = tester.inject('$route');
+        wrap = specHelper.wrapWithDone;
     });
 
     afterEach(function () {
@@ -18,10 +19,9 @@ describe('Server: routing', function() {
     describe('when go to `/`', function() {
 
         beforeEach(function(done) {
-            tester.visit('/', function() {
+            tester.visit('/', wrap(function() {
                 current = $route.current;
-                done();
-            });
+            }, done));
         });
 
         it('the current path should be `/`', function() {
@@ -33,23 +33,25 @@ describe('Server: routing', function() {
         it('the view template should be for the `Dashboard` view', function() {
             expect(current.templateUrl).to.match(/dashboard\/dashboard\.html/);
         });
-        it('should have loaded the `Dashboard` view', function() {
-            tester.until(elemIsReady, function() {
+        it('should have loaded the `Dashboard` view', function(done) {
+            // When the DOM is ready, assert got the dashboard view
+            tester.until(elemIsReady, wrap(hasDashboardView, done));
+
+            function hasDashboardView() {
                 var elem = tester.viewElement();
-                // use jQuery's find() to look for the tell-tale id
+                // look for the tell-tale id with jQuery's find()
                 expect(elem.find('#dashboard-view'))
                     .to.have.length(1, elem.html());
-            });
+            }
         });
     });
 
     describe('when go to `/avengers`', function() {
 
         beforeEach(function(done) {
-            tester.visit('/avengers', function() {
+            tester.visit('/avengers', wrap(function() {
                 current = $route.current;
-                done();
-            });
+            }, done));
         });
 
         it('the current path should be `/avengers`', function() {
@@ -61,13 +63,17 @@ describe('Server: routing', function() {
         it('the view template should be for the `Avengers` view', function() {
             expect(current.templateUrl).to.match(/avengers\/avengers\.html/);
         });
-        it('should have loaded the `Avengers` view', function() {
-            tester.until(elemIsReady, function() {
+        it('should have loaded the `Avengers` view', function(done) {
+            // When the DOM is ready, assert got the avengers view
+            tester.until(elemIsReady, wrap(hasAvengersView, done));
+
+            function hasAvengersView() {
                 var elem = tester.viewElement();
-                // if no jQuery, unwrap and look for the tell-tale id
+                // look for the tell-tale id with vanilla JS
                 expect(elem[0].querySelector('#avengers-view'))
                     .to.not.equal(null, elem.html());
-            });
+            }
+
         });
     });
 

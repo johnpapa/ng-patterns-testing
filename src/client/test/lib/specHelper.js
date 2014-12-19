@@ -13,7 +13,8 @@
         injector: injector,
         mockService: mockService,
         replaceAccentChars: replaceAccentChars,
-        verifyNoOutstandingHttpRequests: verifyNoOutstandingHttpRequests
+        verifyNoOutstandingHttpRequests: verifyNoOutstandingHttpRequests,
+        wrapWithDone: wrapWithDone
     };
     window.specHelper = specHelper;
 
@@ -424,5 +425,26 @@
             $httpBackend.verifyNoOutstandingExpectation();
             $httpBackend.verifyNoOutstandingRequest();
         }));
+    }
+
+    /**
+     * Returns a function that execute a callback function
+     * (typically a fn making asserts) within a try/catch
+     * The try/catch then calls the ambient "done" function
+     * in the appropriate way for both success and failure
+     *
+     * Useage:
+     *    // When the DOM is ready, assert got the dashboard view
+     *    tester.until(elemIsReady, wrap(hasDashboardView, done));
+     */
+    function wrapWithDone(callback, done) {
+        return function() {
+            try {
+                callback();
+                done();
+            } catch (err) {
+                done(err);
+            }
+        };
     }
 })();
