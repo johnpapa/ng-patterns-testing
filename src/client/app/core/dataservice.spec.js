@@ -21,22 +21,22 @@ describe('core dataservice', function () {
 
         it('should return Avengers', function (done) {
             dataservice.getAvengers()
-            .then(function(data) {
-                expect(data.length).to.equal(avengers.length);
-            })
-            .then(done, done);
+                .then(function(data) {
+                    expect(data.length).to.equal(avengers.length);
+                })
+                .then(done, done);
             $httpFlush();
         });
 
         it('should contain Black Widow', function (done) {
             dataservice.getAvengers()
-            .then(function(data) {
-                var hasBlackWidow = data.some(function (a) {
-                    return a.name.indexOf('Black Widow') >= 0;
-                });
-                expect(hasBlackWidow).to.be.true;
-            })
-            .then(done, done);
+                .then(function(data) {
+                    var hasBlackWidow = data.some(function (a) {
+                        return a.name.indexOf('Black Widow') >= 0;
+                    });
+                    expect(hasBlackWidow).to.be.true;
+                })
+                .then(done, done);
             $httpFlush();
         });
     });

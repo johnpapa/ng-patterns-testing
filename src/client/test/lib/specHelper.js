@@ -338,6 +338,7 @@
      *      {
      *          doWork1:  $q.when([{name: 'Bob'}, {name: 'Sally'}]),
      *          doWork2:  undefined,
+     *          //doWork3: not in config therefore will get _default value
      *          doWork4:  an alternate doWork4 function
      *          doWork5:  $q.reject('bad boy!')
      *          isActive: false,

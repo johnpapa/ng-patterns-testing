@@ -13,20 +13,16 @@ describe('avengers controller', function() {
     // no lingering http requests at the end of a test
     specHelper.verifyNoOutstandingHttpRequests();
 
-    describe('when fake the dataservice in vanilla JS', function() {
+    describe('when stub `getAvengers` of the real dataservice', function() {
 
-        var dataservice;
         beforeEach(function() {
-
             specHelper.appModule('app.avengers');
-            specHelper.injector(function($controller, $log, $q, $rootScope) { });
+            specHelper.injector(function($controller, $log, $q, $rootScope, dataservice) { });
 
-            dataservice = {
-                getAvengers: getAvengersFake() // fake is also a spy
-            };
-
-            var ctorArgs = {dataservice: dataservice};
-            controller = $controller('Avengers', ctorArgs);
+            sinon.stub(dataservice, 'getAvengers')
+                .returns($q.when(avengers));
+            
+            controller = $controller('Avengers');
             $rootScope.$apply();
         });
 
@@ -199,7 +195,7 @@ describe('avengers controller', function() {
                 ready:       $q.when(dataservice),
                 _default:    $q.when([])
             });
-
+            
             getAvengersSpy = ds.getAvengers; // it's a spy!
 
             controller = $controller('Avengers', {dataservice: ds});
