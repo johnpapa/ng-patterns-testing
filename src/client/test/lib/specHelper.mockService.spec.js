@@ -14,7 +14,7 @@ describe('specHelper.mockService', function() {
     describe('when execute the "real" DoWork service described in the usage example', function() {
         var service = getDoWorkService();
 
-        it('`doWork1` returns the "real" results', function() {
+        it('`doWork1` returns a resolved promise with the "real" results', function() {
             service.doWork1(1, 2)
                 .then(function(results) {
                     expect(results).to.deep.equal([1, 2]);
@@ -29,7 +29,7 @@ describe('specHelper.mockService', function() {
             expect(alert).to.have.been.calledWith('Hi there');
         });
 
-        it('`doWork3` returns the "real" results', function() {
+        it('`doWork3` returns a resolved promise with the "real" results', function() {
             service.doWork3(1, 2)
                 .then(function(results) {
                     expect(results).to.deep.equal(['a1', 'a2']);
@@ -66,7 +66,7 @@ describe('specHelper.mockService', function() {
             });
         });
 
-        it('`doWork1` returns the fake results', function() {
+        it('`doWork1` returns a resolved promise with the fake results', function() {
             service.doWork1(1, 2)
                 .then(function(results) {
                     expect(results).to.deep.equal([{name: 'Bob'}, {name: 'Sally'}]);
@@ -83,7 +83,7 @@ describe('specHelper.mockService', function() {
             expect(service.doWork2).to.have.been.calledWith(1, 2);
         });
 
-        it('`doWork3` returns the config._default (an empty array)', function() {
+        it('`doWork3` returns a resolved promise with the config._default (an empty array)', function() {
             service.doWork3(1, 2).then(expectEmptyArray);
             // verify `doWork3` is a spy
             expect(service.doWork3).to.have.been.calledWith(1, 2);
@@ -97,7 +97,7 @@ describe('specHelper.mockService', function() {
             expect(service.doWork4).to.not.have.property('restore');
         });
 
-        it('`doWork5` returns the faked exception', function() {
+        it('`doWork5` returns a rejected promise with the faked error', function() {
             service.doWork5()
                 .then(function() {
                     // Should not come here!
@@ -129,17 +129,47 @@ describe('specHelper.mockService', function() {
             });
         });
 
-        it('`doWork1` resolves with the fake results', function() {
+        it('`doWork1` returns a resolved promise with the fake results', function() {
             service.doWork1('foo').then(function(results) {
                 expect(results).to.deep.equal([1, 2, 3]);
             });
             flush();
         });
 
-        it('`doWork2`-`doWork4` resolve to the default empty array', function() {
+        it('`doWork2`-`doWork4` each return a resolved promise with the default empty array', function() {
             service.doWork2('could').then(expectEmptyArray);
             service.doWork3('be').then(expectEmptyArray);
             service.doWork4('anything').then(expectEmptyArray);
+            flush();
+        });
+    });
+
+    describe('when mock one async method of the DoWork service and omit _default', function() {
+        var service;
+
+        beforeEach(function() {
+            service = mockService(getDoWorkService(),
+            {   // config in the usage example
+                doWork1:  $q.when([1, 2, 3])
+            });
+        });
+
+        it('`doWork1` returns a resolved promise with the fake results', function() {
+            service.doWork1('foo').then(function(results) {
+                expect(results).to.deep.equal([1, 2, 3]);
+            });
+            flush();
+        });
+
+        it('`doWork2`-`doWork4` are stubbed to return nothing', function() {
+            expect(service.doWork2('could')).to.not.be.defined;
+            expect(service.doWork3('be')).to.not.be.defined;
+            expect(service.doWork4('anything')).to.not.be.defined;
+            // but they are stubbed
+            expect(service.doWork2).to.have.been.calledWith('could');
+            expect(service.doWork3).to.have.been.calledWith('be');
+            expect(service.doWork4).to.have.been.calledWith('anything');
+
             flush();
         });
     });

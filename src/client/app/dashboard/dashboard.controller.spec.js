@@ -25,6 +25,10 @@ describe('dashboard controller', function() {
         expect(controller.title).to.equal('Dashboard');
     });
 
+    it('should have called `dataservice.getAvengersCast` once', function() {
+        expect(dataservice.getAvengersCast).to.have.been.calledOnce;
+    });
+
     it('should have the expected avengers cast', function () {
         expect(controller.cast).to.have.length(cast.length);
     });
@@ -34,7 +38,6 @@ describe('dashboard controller', function() {
     });
 
     it('should have logged "Activated"', function() {
-        // passes if ANY of the logs matches
         expect($log.info.logs).to.match(/Activated/);
     });
 

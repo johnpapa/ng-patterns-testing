@@ -15,9 +15,13 @@
         activate();
 
         function activate() {
-            return getAvengersCast().then(function() {
-                logger.info('Activated Dashboard View');
-            });
+            return getAvengersCast()
+                .then(function() {
+                    logger.info('Activated Dashboard View');
+                })
+                .catch(function(err) {
+                    logger.error('Dashboard view activation failed: ' + err);
+                });
         }
 
         function getAvengersCast() {

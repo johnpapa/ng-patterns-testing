@@ -19,8 +19,9 @@ describe('avengers controller', function() {
             specHelper.appModule('app.avengers');
             specHelper.injector('$controller', '$log', '$q', '$rootScope', 'dataservice');
 
-            sinon.stub(dataservice, 'getAvengers').returns($q.when(avengers));
-            
+            sinon.stub(dataservice, 'getAvengers')
+                 .returns($q.when(avengers));
+
             controller = $controller('Avengers');
             $rootScope.$apply();
         });
@@ -33,7 +34,7 @@ describe('avengers controller', function() {
             expect(controller.title).to.equal('Avengers');
         });
 
-        it('should have called `dataservice.getAvengers`', function() {
+        it('should have called `dataservice.getAvengers` once', function() {
             expect(dataservice.getAvengers).to.have.been.calledOnce;
         });
 
@@ -43,7 +44,6 @@ describe('avengers controller', function() {
         });
 
         it('should have logged "Activated"', function() {
-            // test passes if ANY of the logs matches
             expect($log.info.logs).to.match(/Activated/);
         });
     });
@@ -75,16 +75,58 @@ describe('avengers controller', function() {
      *
      * Here we demonstrate other ways to fake that method with sinon
      */
+    describe('when stub `getAvengers` of the real dataservice ... with stubs helper', function() {
+
+        beforeEach(function() {
+
+            specHelper.appModule('app.avengers');
+            specHelper.injector('$controller', '$q', '$rootScope', 'dataservice');
+
+            // Use when you repeatedly stub this method ... and only this method
+            // if you often stub out a bunch of the same methods
+            // see the "mockService" example below
+            getAvengersSpy = stubs.getAvengers();
+
+            controller = $controller('Avengers');
+            $rootScope.$apply();
+        });
+
+        getAvengersExpectations();
+    });
+
     describe('when monkey patch `getAvengers` of the real dataservice', function() {
 
         beforeEach(function() {
 
             specHelper.appModule('app.avengers');
-            specHelper.injector(function($controller, $q, $rootScope, dataservice) { });
+            specHelper.injector('$controller', '$q', '$rootScope', 'dataservice');
 
+            // Replace the `getAvengers` method with a spy;
+            // almost the same as stubbing `getAvengers`
             dataservice.getAvengers = getAvengersFake();
 
             controller = $controller('Avengers');
+            $rootScope.$apply();
+        });
+
+        getAvengersExpectations();
+    });
+
+    describe('when create fake dataservice with a `getAvengers` stub', function() {
+
+        beforeEach(function() {
+
+            specHelper.appModule('app.avengers');
+            specHelper.injector('$controller', '$q', '$rootScope');
+
+            // Shows EXACTLY what the controller needs from the service
+            // Controller throws if it asks for anything else.
+            var dataservice = {
+                getAvengers: getAvengersFake()
+            };
+
+            var ctorArgs = {dataservice: dataservice};
+            controller = $controller('Avengers', ctorArgs);
             $rootScope.$apply();
         });
 
@@ -95,16 +137,20 @@ describe('avengers controller', function() {
 
         beforeEach(function() {
 
-            specHelper.appModule('app.avengers', registerFakeDataservice);
-
+            // When the service method is widely used, you can
+            // re-register the `dataservice` with a fake version.
+            // Then enlist it in the appModule where needed as shown below.
+            // You would put this function in `specHelper`
+            // N.B.: this service defines only the faked members;
+            // a controller throws if it calls anything else.
             function registerFakeDataservice($provide) {
-                // re-register the `dataservice` with a fake version
                 $provide.service('dataservice', function() {
                     this.getAvengers = getAvengersFake();
                 });
             }
 
-            specHelper.injector(function($controller, $q, $rootScope) { });
+            specHelper.appModule('app.avengers', registerFakeDataservice);
+            specHelper.injector('$controller', '$q', '$rootScope');
 
             controller = $controller('Avengers');
             $rootScope.$apply();
@@ -113,17 +159,19 @@ describe('avengers controller', function() {
         getAvengersExpectations();
     });
 
-    describe('when next inject the real dataservice', function() {
-        // demonstrate that real dataservice is untouched
-        // in other tests; no cross-test pollution
+    // demonstrate that the real dataservice is untouched
+    // by distortions of it in other tests; no cross-test pollution
+    describe('when next inject the real dataservice (no harm from previous faking)', function() {
+
         beforeEach(function () {
             specHelper.appModule('app.avengers');
             specHelper.injector('dataservice');
         });
 
         it('has the real `getAvengers` method', function() {
-            // inspect the method body;
-            // the real version calls $http
+            // In this test we inspect the method body to prove
+            // we've got the real service method, not a fake.
+            // The real method calls $http
             var fn = dataservice.getAvengers.toString();
             expect(fn).to.match(/\$http/);
         });
@@ -133,22 +181,25 @@ describe('avengers controller', function() {
         });
     });
 
-    describe('when decorate the real dataservice with a fake `getAvengers`', function() {
+    describe('when decorate the real dataservice with a stub `getAvengers`', function() {
 
         beforeEach(function() {
 
-            specHelper.appModule('app.avengers', decorateDataservice);
-
             function decorateDataservice($provide) {
-                // decorate the real `dataservice`
-                // with a fake version of `getAvengers`
+            // When the service method is widely used, you can
+            // decorate the real `dataservice` methods with
+            // stubbed versions such as `getAvengers`.
+            // Then enlist it in the appModule where needed as shown below.
+            // You would put this function in `specHelper`
+            // N.B.: this service leaves other real members intact
                 $provide.decorator('dataservice', function($delegate) {
                     $delegate.getAvengers = getAvengersFake();
                     return $delegate;
                 });
             }
 
-            specHelper.injector(function($controller, $q, $rootScope) { });
+            specHelper.appModule('app.avengers', decorateDataservice);
+            specHelper.injector('$controller', '$q', '$rootScope');
 
             controller = $controller('Avengers');
             $rootScope.$apply();
@@ -176,28 +227,33 @@ describe('avengers controller', function() {
             $httpBackend.flush();
         });
 
-        getAvengersExpectations();
-
         specHelper.verifyNoOutstandingHttpRequests();
+
+        getAvengersExpectations();
     });
 
     describe('when stub all dataservice members with mockService', function() {
-        var ds; // for brevity
 
         beforeEach(function() {
 
             specHelper.appModule('app.avengers');
-            specHelper.injector(function($controller, $q, $rootScope, dataservice) { });
+            specHelper.injector('$controller', '$q', '$rootScope', 'dataservice');
 
-            ds = specHelper.mockService(dataservice, {
+            // Mock multiple service members with a single configuration
+            // Every service function is stubbed.
+            // The `_default` is the stubbed return for every unnamed service function
+            // You could put common stub configurations in stubs.js, e.g.
+
+            // stubs.happyService();
+            specHelper.mockService(dataservice, {
                 getAvengers: $q.when(avengers),
                 ready:       $q.when(dataservice),
                 _default:    $q.when([])
             });
-            
-            getAvengersSpy = ds.getAvengers; // it's a spy!
 
-            controller = $controller('Avengers', {dataservice: ds});
+            getAvengersSpy = dataservice.getAvengers; // it's a spy!
+
+            controller = $controller('Avengers');
             $rootScope.$apply();
         });
 
@@ -206,24 +262,76 @@ describe('avengers controller', function() {
         //// tests of the mocked dataservice, not the controller ////
 
         it('can call fake `dataservice.getAvengersCast`', function() {
-            ds.getAvengersCast().then(function(cast) {
+            dataservice.getAvengersCast().then(function(cast) {
                 expect(cast).to.have.length(0);
             });
             $rootScope.$apply();
             // verify this is actually a spy
-            expect(ds.getAvengersCast).to.have.been.calledOnce;
+            expect(dataservice.getAvengersCast).to.have.been.calledOnce;
         });
 
         it('can call fake `dataservice.ready`', function() {
-            ds.ready().then(function(data) {
-                expect(data).to.equal(ds);
+            dataservice.ready().then(function(data) {
+                expect(data).to.equal(dataservice);
             });
             $rootScope.$apply();
             // verify this is actually a spy
-            expect(ds.ready).to.have.been.calledOnce;
+            expect(dataservice.ready).to.have.been.calledOnce;
         });
     });
 
+    describe('when stub all dataservice members with canned, failing mockService', function() {
+
+        beforeEach(function() {
+
+            specHelper.appModule('app.avengers');
+            specHelper.injector('$controller', '$log', '$q', '$rootScope', 'dataservice');
+            stubs.sadService();
+
+            controller = $controller('Avengers');
+            $rootScope.$apply();
+        });
+
+        it ('`dataservice.getAvengers` was called', function() {
+            expect(dataservice.getAvengers).to.have.been.calledOnce;
+        });
+
+        it('have no avengers because `dataservice.getAvengers` failed', function() {
+            expect(controller.avengers).to.have.length(0);
+        });
+
+        it('should have logged activation failure as error', function() {
+            expect($log.error.logs[0]).to.match(/doomed/);
+        });
+
+        //// tests of the mocked dataservice, not the controller ////
+
+        it('calling fake `dataservice.getAvengersCast` fails', function() {
+            dataservice.getAvengersCast()
+                .then(success)
+                .catch(function(err) {
+                    expect(err).to.match(/doomed/);
+                });
+            $rootScope.$apply();
+            // verify this is actually a spy
+            expect(dataservice.getAvengersCast).to.have.been.calledOnce;
+        });
+
+        it('calling fake `dataservice.ready` fails', function() {
+            dataservice.ready()
+                .then(success)
+                .catch(function(err) {
+                    expect(err).to.match(/doomed/);
+                });
+            $rootScope.$apply();
+            // verify this is actually a spy
+            expect(dataservice.ready).to.have.been.calledOnce;
+        });
+
+        function success(data) {
+            expect('should have failed').to.be.false;
+        }
+    });
     /////// helpers /////
 
     function getAvengersExpectations() {

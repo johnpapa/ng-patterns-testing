@@ -17,7 +17,11 @@ describe('dashboard news controller', function() {
         $scope = $rootScope.$new(); // need real $scope for $scope.$on
         controller = $controller('News', {$scope: $scope});
         $rootScope.$apply();
-    }); 
+    });
+
+    it('should be created successfully', function () {
+        expect(controller).to.be.defined;
+    });
 
     it('should have title of "Marvel News"', function () {
         expect($scope.title).to.equal('Marvel News');
@@ -38,9 +42,9 @@ describe('dashboard news controller', function() {
     });
 
     it('refreshes stories periodically', function () {
-        // Must know at least the minimum interval; 
-        // picked big test interval to trigger many refreshes            
-        $interval.flush(100000);        
+        // Must know at least the minimum interval;
+        // picked big test interval to trigger many refreshes
+        $interval.flush(100000);
         expect(newsService.getTopStories.callCount).to.be.above(2);
     });
 
@@ -53,19 +57,19 @@ describe('dashboard news controller', function() {
         });
 
         // trigger some newsService activity as time passes
-        $timeout.flush();           
+        $timeout.flush();
         $interval.flush(100000);
         var lastCount = newsService.getTopStories.callCount;
         expect(lastCount).to.be.above(2);
 
         // now destroy the controller's scope (as when "close" its view)
-        // the controller should no longer ask for news refreshes    
+        // the controller should no longer ask for news refreshes
         $scope.$destroy();
 
-        // let more time pass; 
-        $interval.flush(100000);        
+        // let more time pass;
+        $interval.flush(100000);
 
-        expect($destroyEventRaised).to.equal(true, 
+        expect($destroyEventRaised).to.equal(true,
             'destroy event raised');
 
         expect(newsService.getTopStories.callCount).to.equal(lastCount,

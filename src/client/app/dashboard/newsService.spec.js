@@ -9,15 +9,14 @@ describe('dashboard newsService', function () {
 
         // We know that the newsService is actually a fake
         // so we don't bother pretending we need $httpBackend
-        // as we do in dataservice.spec. 
+        // as we do in dataservice.spec.
 
-        // $timeout is used to simulate latency so we'll need 
-        // $timeout flush rather than $httpBackend flush 
-        flush = $timeout.flush;    
+        // $timeout is used to simulate latency so we'll need
+        // $timeout flush rather than $httpBackend flush
+        flush = $timeout.flush;
     });
 
-
-    describe('#getTopStories', function() {         
+    describe('#getTopStories', function() {
 
         it('should return 3 stories when called w/ no args', function(done) {
             newsService.getTopStories()
@@ -71,12 +70,12 @@ describe('dashboard newsService', function () {
 
         it('should return different story set each call', function(done) {
 
-            // Test could fail if very, very unlucky and service 
+            // Test could fail if very, very unlucky and service
             // randomly returned the same stories in same order twice.
 
             specHelper.injector('$q'); // only need $q in this test.
             $q.all([
-                newsService.getTopStories(5), 
+                newsService.getTopStories(5),
                 newsService.getTopStories(5)
             ])
             .then(function(resolveds) {
@@ -95,4 +94,4 @@ describe('dashboard newsService', function () {
         });
     });
 
-});    
+});

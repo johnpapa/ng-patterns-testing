@@ -34,12 +34,12 @@ describe('Server: routing', function() {
             expect(current.templateUrl).to.match(/dashboard\/dashboard\.html/);
         });
         it('should have loaded the `Dashboard` view', function() {
-            tester.until(elemIsReady, function(){
+            tester.until(elemIsReady, function() {
                 var elem = tester.viewElement();
                 // use jQuery's find() to look for the tell-tale id
                 expect(elem.find('#dashboard-view'))
                     .to.have.length(1, elem.html());
-            })
+            });
         });
     });
 
@@ -62,7 +62,7 @@ describe('Server: routing', function() {
             expect(current.templateUrl).to.match(/avengers\/avengers\.html/);
         });
         it('should have loaded the `Avengers` view', function() {
-            tester.until(elemIsReady, function(){
+            tester.until(elemIsReady, function() {
                 var elem = tester.viewElement();
                 // if no jQuery, unwrap and look for the tell-tale id
                 expect(elem[0].querySelector('#avengers-view'))
@@ -71,7 +71,7 @@ describe('Server: routing', function() {
         });
     });
 
-    function elemIsReady(){
+    function elemIsReady() {
         return !!tester.viewElement()[0];
     }
 });

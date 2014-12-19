@@ -14,9 +14,13 @@
         activate();
 
         function activate() {
-            return getAvengers().then(function() {
-                logger.info('Activated Avengers View');
-            });
+            return getAvengers()
+                .then(function() {
+                    logger.info('Activated Avengers View');
+                })
+                .catch(function(err) {
+                    logger.error('Avengers view activation failed: ' + err);
+                });
         }
 
         function getAvengers() {
