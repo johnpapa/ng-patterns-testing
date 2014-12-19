@@ -1,7 +1,7 @@
 /* jshint -W117, -W030 */
 describe('dashboard controller', function() {
 
-    var cast = mockData.getAvengersCast(); 
+    var cast = mockData.getAvengersCast();
     var controller;
 
     beforeEach(function() {
@@ -15,7 +15,7 @@ describe('dashboard controller', function() {
 
         controller = $controller('Dashboard');
         $rootScope.$apply();
-    });    
+    });
 
     it('should be created successfully', function () {
         expect(controller).to.be.defined;
@@ -37,6 +37,6 @@ describe('dashboard controller', function() {
         // passes if ANY of the logs matches
         expect($log.info.logs).to.match(/Activated/);
     });
-    
+
     specHelper.verifyNoOutstandingHttpRequests();
 });

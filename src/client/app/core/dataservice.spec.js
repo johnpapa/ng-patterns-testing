@@ -3,7 +3,7 @@ describe('core dataservice', function () {
 
     beforeEach(function () {
         module('app.core', specHelper.fakeToastr);
-        specHelper.injector(function($httpBackend, $rootScope, dataservice) {});
+        specHelper.injector('$httpBackend', '$rootScope', 'dataservice');
         $httpFlush = $httpBackend.flush;
     });
 

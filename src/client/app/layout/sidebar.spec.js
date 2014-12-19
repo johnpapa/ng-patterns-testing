@@ -7,7 +7,7 @@ describe('layout sidebar', function () {
         // 'templates' populates $templateCache with all views
         // so that tests don't try to retrieve view templates from the server.
         module('app', 'templates', specHelper.fakeToastr);
-        specHelper.injector(function($controller, $location, $rootScope, $route) {});
+        specHelper.injector('$controller', '$location', '$rootScope', '$route');
     });
 
     beforeEach(function () {
@@ -17,7 +17,7 @@ describe('layout sidebar', function () {
     it('before navigating, isCurrent() should NOT return `current`', function () {
         expect(controller.isCurrent({title: 'invalid'})).not.to.equal('current');
     });
-    
+
     // Confirm that, after navigating successfully,
     // controller.isCurrent() returns the class name `current`
     // for the router's current route (the browser's current address)

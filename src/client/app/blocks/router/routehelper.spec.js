@@ -8,7 +8,7 @@ describe('blocks.router routehelper', function () {
           specHelper.fakeToastr,
           configureRoutehelper);
 
-        specHelper.injector(function($rootScope, $route, routehelper) {});
+        specHelper.injector('$rootScope', '$route', 'routehelper');
 
         testRoute = getTestRoute();
 

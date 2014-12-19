@@ -34,7 +34,7 @@ describe('specHelper.injector', function() {
         // it also removes them after each test by scheduling an afterEach
         // Notice ... no private vars for $log or nutz! ... no injecting of them either.
         it('should set window.$log and window.nutz when call inject with a func', function() {
-            specHelper.injector(function($log, nutz) {});
+            specHelper.injector('$log', 'nutz');
 
             expect($log).to.exist;
             expect(nutz).to.exist;

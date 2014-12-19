@@ -5,7 +5,7 @@ describe('layout shell controller', function() {
 
     beforeEach(function() {
         specHelper.appModule('app.layout');
-        specHelper.injector(function($controller, $log, $rootScope, $timeout) { });
+        specHelper.injector('$controller', '$log', '$rootScope', '$timeout');
     });
 
     beforeEach(function () {
@@ -22,6 +22,6 @@ describe('layout shell controller', function() {
         var vm = controller;
         expect(vm.showSplash).to.equal(true, 'showSplash before delay');
         $timeout.flush();
-        expect(vm.showSplash).to.equal(false, 'showSplash after delay');       
+        expect(vm.showSplash).to.equal(false, 'showSplash after delay');
     });
 });

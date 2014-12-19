@@ -4,18 +4,19 @@ var browserSync = require('browser-sync');
 var del = require('del');
 var glob = require('glob');
 var paths = require('./gulp.config.json');
-var plug = require('gulp-load-plugins')();
+var $ = require('gulp-load-plugins')();
 var reload = browserSync.reload;
 
-var colors = plug.util.colors;
-var env = plug.util.env;
-var log = plug.util.log;
+var colors = $.util.colors;
+var env = $.util.env;
+var log = $.util.log;
 var port = process.env.PORT || 7202;
 
 /**
  * List the available gulp tasks
  */
-gulp.task('help', plug.taskListing);
+gulp.task('help', $.taskListing);
+gulp.task('default', ['help']);
 
 /**
  * Lint the code, create coverage report, and a visualizer
@@ -61,7 +62,7 @@ gulp.task('build-specs', ['templatecache'], function() {
             read: false
         };
         if (name) { options.name = name; }
-        return plug.inject(gulp.src(path), options);
+        return $.inject(gulp.src(path), options);
     }
 });
 
@@ -74,10 +75,10 @@ gulp.task('templatecache', function() {
 
     return gulp
         .src(paths.htmltemplates)
-        //.pipe(plug.bytediff.start())
-        .pipe(plug.minifyHtml({empty:true}))
-        //.pipe(plug.bytediff.stop(bytediffFormatter))
-        .pipe(plug.angularTemplatecache('templates.js', {
+        //.pipe($.bytediff.start())
+        .pipe($.minifyHtml({empty:true}))
+        //.pipe($.bytediff.stop(bytediffFormatter))
+        .pipe($.angularTemplatecache('templates.js', {
             module: 'templates',
             standalone: true,
             root: 'app/'
@@ -115,7 +116,7 @@ gulp.task('wiredep', function () {
  */
 gulp.task('clean', function(cb) {
     var delPaths = [].concat(paths.build, paths.temp, paths.report);
-    log('Cleaning: ' + plug.util.colors.blue(delPaths));
+    log('Cleaning: ' + $.util.colors.blue(delPaths));
     del(delPaths, cb);
 });
 
@@ -182,9 +183,9 @@ function analyzejshint(sources, overrideRcFile) {
     log('Running JSHint');
     return gulp
         .src(sources)
-//        .pipe(plug.print()) // list the files in sources
-        .pipe(plug.jshint(jshintrcFile))
-        .pipe(plug.jshint.reporter('jshint-stylish', {verbose: true}));
+//        .pipe($.print()) // list the files in sources
+        .pipe($.jshint(jshintrcFile))
+        .pipe($.jshint.reporter('jshint-stylish', {verbose: true}));
 }
 
 /**
@@ -196,7 +197,7 @@ function analyzejscs(sources) {
     log('Running JSCS');
     return gulp
         .src(sources)
-        .pipe(plug.jscs('./.jscsrc'));
+        .pipe($.jscs('./.jscsrc'));
 }
 
 /**
@@ -225,7 +226,7 @@ function serve(args) {
         options.nodeArgs = [args.debug + '=5858'];
     }
 
-    return plug.nodemon(options)
+    return $.nodemon(options)
         .on('start', function() {
             startBrowserSync();
         })
