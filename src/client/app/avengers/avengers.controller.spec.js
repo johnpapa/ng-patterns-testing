@@ -19,8 +19,7 @@ describe('avengers controller', function() {
             specHelper.appModule('app.avengers');
             specHelper.injector('$controller', '$log', '$q', '$rootScope', 'dataservice');
 
-            sinon.stub(dataservice, 'getAvengers')
-                .returns($q.when(avengers));
+            sinon.stub(dataservice, 'getAvengers').returns($q.when(avengers));
             
             controller = $controller('Avengers');
             $rootScope.$apply();

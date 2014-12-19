@@ -5,7 +5,7 @@ describe('avengers-route', function () {
 
     beforeEach(function() {
         module('app.avengers', specHelper.fakeToastr);
-        specHelper.injector(function($location, $route, $rootScope, $templateCache) {});
+        specHelper.injector('$location', '$route', '$rootScope', '$templateCache');
         $templateCache.put(view, '');   
     });
 

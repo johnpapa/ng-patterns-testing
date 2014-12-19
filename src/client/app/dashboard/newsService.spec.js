@@ -5,7 +5,7 @@ describe('dashboard newsService', function () {
 
     beforeEach(function () {
         specHelper.appModule('app.dashboard');
-        specHelper.injector(function($timeout, newsService) {});
+        specHelper.injector('$timeout', 'newsService');
 
         // We know that the newsService is actually a fake
         // so we don't bother pretending we need $httpBackend

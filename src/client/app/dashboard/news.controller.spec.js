@@ -6,8 +6,7 @@ describe('dashboard news controller', function() {
 
     beforeEach(function() {
         specHelper.appModule('app.dashboard');
-        specHelper.injector(
-            function($controller, $interval, $q, $rootScope, $timeout, newsService) { });
+        specHelper.injector('$controller', '$interval', '$q', '$rootScope', '$timeout', 'newsService');
     });
 
     beforeEach(function () {

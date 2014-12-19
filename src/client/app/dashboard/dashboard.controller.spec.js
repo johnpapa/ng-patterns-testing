@@ -6,7 +6,7 @@ describe('dashboard controller', function() {
 
     beforeEach(function() {
         specHelper.appModule('app.dashboard');
-        specHelper.injector(function($controller, $log, $q, $rootScope, dataservice) { });
+        specHelper.injector('$controller', '$log', '$q', '$rootScope', 'dataservice');
     });
 
     beforeEach(function () {
