@@ -35,15 +35,18 @@
 
 
     <!-- inject-testharness:js -->
-    <script src="node_modules/chai/chai.js"></script>
     <script src="node_modules/mocha/mocha.js"></script>
+    <script src="node_modules/chai/chai.js"></script>
+    <script src="node_modules/mocha-clean/index.js"></script>
     <script src="bower_components/sinon/index.js"></script>
     <script src="node_modules/sinon-chai/lib/sinon-chai.js"></script>
     <!-- endinject -->
 
     <script>
         expect = chai.expect;
+        AssertionError = chai.AssertionError;
         mocha.setup('bdd');
+        mocha.traceIgnores = ['mocha.js', 'chai.js', 'angular.js'];
     </script>
 
     <!-- inject-testvendor:js -->
@@ -64,8 +67,8 @@
     <script src="src/client/app/avengers/avengers.module.js"></script>
     <script src="src/client/app/core/core.module.js"></script>
     <script src="src/client/app/dashboard/dashboard.module.js"></script>
-    <script src="src/client/app/widgets/widgets.module.js"></script>
     <script src="src/client/app/layout/layout.module.js"></script>
+    <script src="src/client/app/widgets/widgets.module.js"></script>
     <script src="src/client/app/blocks/exception/exception.module.js"></script>
     <script src="src/client/app/blocks/logger/logger.module.js"></script>
     <script src="src/client/app/blocks/router/router.module.js"></script>
@@ -78,10 +81,10 @@
     <script src="src/client/app/dashboard/dashboard.route.js"></script>
     <script src="src/client/app/dashboard/news.controller.js"></script>
     <script src="src/client/app/dashboard/newsService.js"></script>
-    <script src="src/client/app/widgets/ccSidebar.js"></script>
-    <script src="src/client/app/widgets/ccWidgetHeader.js"></script>
     <script src="src/client/app/layout/shell.controller.js"></script>
     <script src="src/client/app/layout/sidebar.controller.js"></script>
+    <script src="src/client/app/widgets/ccSidebar.js"></script>
+    <script src="src/client/app/widgets/ccWidgetHeader.js"></script>
     <script src="src/client/app/blocks/exception/exception-handler.provider.js"></script>
     <script src="src/client/app/blocks/exception/exception.js"></script>
     <script src="src/client/app/blocks/logger/logger.js"></script>
@@ -104,9 +107,9 @@
     <script src="src/client/app/dashboard/dashboard.route.spec.js"></script>
     <script src="src/client/app/dashboard/news.controller.spec.js"></script>
     <script src="src/client/app/dashboard/newsService.spec.js"></script>
-    <script src="src/client/app/widgets/ccSidebar.spec.js"></script>
     <script src="src/client/app/layout/shell.spec.js"></script>
     <script src="src/client/app/layout/sidebar.spec.js"></script>
+    <script src="src/client/app/widgets/ccSidebar.spec.js"></script>
     <script src="src/client/app/blocks/exception/exception-handler.provider.spec.js"></script>
     <script src="src/client/app/blocks/router/routehelper.spec.js"></script>
     <script src="src/client/test/assertions.spec.js"></script>

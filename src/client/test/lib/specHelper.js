@@ -5,6 +5,7 @@
         $httpBackend: $httpBackendReal,
         $q: $qReal,
         appModule: appModule,
+        assertFail: assertFail,
         asyncModule: asyncModule,
         fakeLogger: fakeLogger,
         fakeRouteHelperProvider: fakeRouteHelperProvider,
@@ -132,6 +133,24 @@
         var args = Array.prototype.slice.call(arguments, 0);
         args = args.concat(fakeToastr, fakeRouteHelperProvider);
         angular.mock.module.apply(angular.mock, args);
+    }
+
+    /**
+     * Assert a failure in mocha, without condition
+     *
+     *  Useage:
+     *     assertFail('you are hosed')
+     *
+     *     Responds:
+     *       AssertionError: you are hosed
+     *       at Object.assertFail (..../test/lib/specHelper.js:153:15)
+     *       at Context.<anonymous> (.../....spec.js:329:15)
+     *
+     *  OR JUST THROW the chai.AssertionError  and treat this
+     *  as a reminder of how to do it.
+     */
+    function assertFail(message) {
+        throw new chai.AssertionError(message);
     }
 
     /**

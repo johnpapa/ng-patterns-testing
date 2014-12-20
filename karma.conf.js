@@ -1,3 +1,5 @@
+// Karma configuration
+require('mocha-clean');
 module.exports = function (config) {
     config.set({
 
