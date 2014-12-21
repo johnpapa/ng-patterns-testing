@@ -33,7 +33,9 @@ describe('specHelper.injector', function() {
         // Although inject() puts injectables in the window,
         // it also removes them after each test by scheduling an afterEach
         // Notice ... no private vars for $log or nutz! ... no injecting of them either.
-        it('should set window.$log and window.nutz when call inject with a func', function() {
+
+        it('should set window.$log and window.nutz when call inject with string params', function() {
+
             specHelper.injector('$log', 'nutz');
 
             expect($log).to.exist;
@@ -52,17 +54,26 @@ describe('specHelper.injector', function() {
         });
 
         it('should set window.$log and window.nutz when call inject with string array', function() {
+
             specHelper.injector(['$log', 'nutz']);
 
             expect($log).to.exist;
             expect(nutz).to.exist;
         });
 
-        it('should set window.$log and window.nutz when call inject with string params', function() {
-            specHelper.injector('$log', 'nutz');
+        it('should set window.$log and window.nutz when call inject with a function', function() {
+
+            specHelper.injector(function($log, nutz) {
+                // do stuff just as if we called ngMocks.inject
+                $log.info('use the injected $log');
+            });
 
             expect($log).to.exist;
             expect(nutz).to.exist;
+
+            expect($log.info.logs[0][0])
+                .to.equal('use the injected $log',
+                '$log.info should have been called: ');
         });
 
         // reinforcing the point that inject adds to globals, not local fn scope
