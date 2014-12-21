@@ -328,7 +328,7 @@
         var annotation = '\'' + params.join('\',\'') + '\',';
 
         angular.forEach(params, function(name, ix) {
-            var _name,
+            var _name_,
                 pathName = name.split('.'),
                 pathLen = pathName.length;
 
@@ -353,6 +353,7 @@
         var exp = 'inject(' + fn + ');' +
                   'afterEach(function() {' + cleanupBody + '});'; // remove from window.
 
+        /* jshint evil:true */
         new Function(exp)();
     }
 
