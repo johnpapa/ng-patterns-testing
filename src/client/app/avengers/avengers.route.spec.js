@@ -4,9 +4,9 @@ describe('avengers-route', function () {
     var view = 'app/avengers/avengers.html';
 
     beforeEach(function() {
-        module('app.avengers', specHelper.fakeToastr);
-        specHelper.injector('$location', '$route', '$rootScope', '$templateCache');
-        $templateCache.put(view, '');   
+        module('app.avengers', bard.fakeToastr);
+        bard.inject('$location', '$route', '$rootScope', '$templateCache');
+        $templateCache.put(view, '');
     });
 
     it('should map /avengers route to avengers View template', function () {

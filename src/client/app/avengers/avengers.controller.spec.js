@@ -11,13 +11,13 @@ describe('avengers controller', function() {
     });
 
     // no lingering http requests at the end of a test
-    specHelper.verifyNoOutstandingHttpRequests();
+    bard.verifyNoOutstandingHttpRequests();
 
     describe('when stub `getAvengers` of the real dataservice', function() {
 
         beforeEach(function() {
-            specHelper.appModule('app.avengers');
-            specHelper.injector('$controller', '$log', '$q', '$rootScope', 'dataservice');
+            bard.appModule('app.avengers');
+            bard.inject('$controller', '$log', '$q', '$rootScope', 'dataservice');
 
             sinon.stub(dataservice, 'getAvengers')
                  .returns($q.when(avengers));
@@ -79,8 +79,8 @@ describe('avengers controller', function() {
 
         beforeEach(function() {
 
-            specHelper.appModule('app.avengers');
-            specHelper.injector('$controller', '$q', '$rootScope', 'dataservice');
+            bard.appModule('app.avengers');
+            bard.inject('$controller', '$q', '$rootScope', 'dataservice');
 
             // Use when you repeatedly stub this method ... and only this method
             // if you often stub out a bunch of the same methods
@@ -98,8 +98,8 @@ describe('avengers controller', function() {
 
         beforeEach(function() {
 
-            specHelper.appModule('app.avengers');
-            specHelper.injector('$controller', '$q', '$rootScope', 'dataservice');
+            bard.appModule('app.avengers');
+            bard.inject('$controller', '$q', '$rootScope', 'dataservice');
 
             // Replace the `getAvengers` method with a spy;
             // almost the same as stubbing `getAvengers`
@@ -116,8 +116,8 @@ describe('avengers controller', function() {
 
         beforeEach(function() {
 
-            specHelper.appModule('app.avengers');
-            specHelper.injector('$controller', '$q', '$rootScope');
+            bard.appModule('app.avengers');
+            bard.inject('$controller', '$q', '$rootScope');
 
             // Shows EXACTLY what the controller needs from the service
             // Controller throws if it asks for anything else.
@@ -140,7 +140,7 @@ describe('avengers controller', function() {
             // When the service method is widely used, you can
             // re-register the `dataservice` with a fake version.
             // Then enlist it in the appModule where needed as shown below.
-            // You would put this function in `specHelper`
+            // You would put this function in `bard`
             // N.B.: this service defines only the faked members;
             // a controller throws if it calls anything else.
             function registerFakeDataservice($provide) {
@@ -149,8 +149,8 @@ describe('avengers controller', function() {
                 });
             }
 
-            specHelper.appModule('app.avengers', registerFakeDataservice);
-            specHelper.injector('$controller', '$q', '$rootScope');
+            bard.appModule('app.avengers', registerFakeDataservice);
+            bard.inject('$controller', '$q', '$rootScope');
 
             controller = $controller('Avengers');
             $rootScope.$apply();
@@ -164,8 +164,8 @@ describe('avengers controller', function() {
     describe('when next inject the real dataservice (no harm from previous faking)', function() {
 
         beforeEach(function () {
-            specHelper.appModule('app.avengers');
-            specHelper.injector('dataservice');
+            bard.appModule('app.avengers');
+            bard.inject('dataservice');
         });
 
         it('has the real `getAvengers` method', function() {
@@ -190,7 +190,7 @@ describe('avengers controller', function() {
             // decorate the real `dataservice` methods with
             // stubbed versions such as `getAvengers`.
             // Then enlist it in the appModule where needed as shown below.
-            // You would put this function in `specHelper`
+            // You would put this function in `bard`
             // N.B.: this service leaves other real members intact
                 $provide.decorator('dataservice', function($delegate) {
                     $delegate.getAvengers = getAvengersFake();
@@ -198,8 +198,8 @@ describe('avengers controller', function() {
                 });
             }
 
-            specHelper.appModule('app.avengers', decorateDataservice);
-            specHelper.injector('$controller', '$q', '$rootScope');
+            bard.appModule('app.avengers', decorateDataservice);
+            bard.inject('$controller', '$q', '$rootScope');
 
             controller = $controller('Avengers');
             $rootScope.$apply();
@@ -211,8 +211,8 @@ describe('avengers controller', function() {
     describe('when fake the server\'s response with $httpBackend', function() {
 
         beforeEach(function() {
-            specHelper.appModule('app.avengers');
-            specHelper.injector(
+            bard.appModule('app.avengers');
+            bard.inject(
                 function($controller, $q, $rootScope, $httpBackend, dataservice) { });
 
             // when `dataservice.getAvengers` sends GET request
@@ -227,7 +227,7 @@ describe('avengers controller', function() {
             $httpBackend.flush();
         });
 
-        specHelper.verifyNoOutstandingHttpRequests();
+        bard.verifyNoOutstandingHttpRequests();
 
         getAvengersExpectations();
     });
@@ -236,8 +236,8 @@ describe('avengers controller', function() {
 
         beforeEach(function() {
 
-            specHelper.appModule('app.avengers');
-            specHelper.injector('$controller', '$q', '$rootScope', 'dataservice');
+            bard.appModule('app.avengers');
+            bard.inject('$controller', '$q', '$rootScope', 'dataservice');
 
             // Mock multiple service members with a single configuration
             // Every service function is stubbed.
@@ -245,7 +245,7 @@ describe('avengers controller', function() {
             // You could put common stub configurations in stubs.js, e.g.
 
             // stubs.happyService();
-            specHelper.mockService(dataservice, {
+            bard.mockService(dataservice, {
                 getAvengers: $q.when(avengers),
                 ready:       $q.when(dataservice),
                 _default:    $q.when([])
@@ -284,8 +284,8 @@ describe('avengers controller', function() {
 
         beforeEach(function() {
 
-            specHelper.appModule('app.avengers');
-            specHelper.injector('$controller', '$log', '$q', '$rootScope', 'dataservice');
+            bard.appModule('app.avengers');
+            bard.inject('$controller', '$log', '$q', '$rootScope', 'dataservice');
             stubs.sadService();
 
             controller = $controller('Avengers');

@@ -25,8 +25,6 @@
     "!./src/client/test/server-integration/**/*.spec.js"
   ],
   "specHelpers": [
-      "./src/client/test/lib/specHelper.js",
-      "./src/client/test/lib/appSpecHelper.js",
       "./src/client/test/lib/**/*.js"
   ],
   "serverIntegrationSpecs":[
@@ -53,6 +51,7 @@
       "./bower_components/angular-animate/angular-animate.js",
       "./bower_components/angular-route/angular-route.js",
       "./bower_components/angular-sanitize/angular-sanitize.js",
+      "./bower_components/bardjs/dist/bard.js",
 
       "./bower_components/toastr/toastr.js",
       "./bower_components/moment/moment.js",

@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe('specHelper.injector', function() {
+describe('bard.inject', function() {
     'use strict';
 
     beforeEach(module(function($provide) {
@@ -36,7 +36,7 @@ describe('specHelper.injector', function() {
 
         it('should set window.$log and window.nutz when call inject with string params', function() {
 
-            specHelper.injector('$log', 'nutz');
+            bard.inject('$log', 'nutz');
 
             expect($log).to.exist;
             expect(nutz).to.exist;
@@ -45,7 +45,7 @@ describe('specHelper.injector', function() {
             expect(window.$log).to.exist;
             expect(window.nutz).to.exist;
 
-            // THIS afterEach is registered AFTER the one created by specHelper.injector
+            // THIS afterEach is registered AFTER the one created by bard.inject
             afterEach(function() {
                 // Should have cleaned up after itself
                 expect(window.$log).to.not.exist;
@@ -55,7 +55,7 @@ describe('specHelper.injector', function() {
 
         it('should set window.$log and window.nutz when call inject with string array', function() {
 
-            specHelper.injector(['$log', 'nutz']);
+            bard.inject(['$log', 'nutz']);
 
             expect($log).to.exist;
             expect(nutz).to.exist;
@@ -63,7 +63,7 @@ describe('specHelper.injector', function() {
 
         it('should set window.$log and window.nutz when call inject with a function', function() {
 
-            specHelper.injector(function($log, nutz) {
+            bard.inject(function($log, nutz) {
                 // do stuff just as if we called ngMocks.inject
                 $log.info('use the injected $log');
             });
@@ -80,7 +80,7 @@ describe('specHelper.injector', function() {
         it('locally defined $log hides the $log injected by inject', function() {
             var $log; // declaration hides the one in window.$log created by inject
 
-            specHelper.injector('$log');
+            bard.inject('$log');
 
             expect($log).to.not.exist;
             expect(window.$log).to.exist;
@@ -93,7 +93,7 @@ describe('specHelper.injector', function() {
             });
 
             // Can inject a service with a dotted name!
-            specHelper.injector('$log', 'block.foo');
+            bard.inject('$log', 'block.foo');
 
             expect($log).to.exist;
             expect(foo).to.exist;
@@ -107,7 +107,7 @@ describe('specHelper.injector', function() {
         });
 
         /*
-         // Would fail because THIS afterEach is registered BEFORE the one created by specHelper.injector
+         // Would fail because THIS afterEach is registered BEFORE the one created by bard.inject
          afterEach(function() {
          // Should have cleaned up after itself
          expect(window.$log).to.not.exist;
@@ -131,7 +131,7 @@ describe('specHelper.injector', function() {
                 $provide.value('baz', 'baz');
             });
 
-            specHelper.injector('baz'); // get baz in outer describe
+            bard.inject('baz'); // get baz in outer describe
         });
 
         describe('in nested describe', function() {
@@ -141,7 +141,7 @@ describe('specHelper.injector', function() {
 
             it('baz from inject() is same object as baz from direct injection', function() {
 
-                specHelper.injector('baz');
+                bard.inject('baz');
 
                 inject(function(_baz_) {
                     expect(baz).to.equal(_baz_);

@@ -1,13 +1,13 @@
 /* jshint -W117, -W030 */
-describe('specHelper.mockService', function() {
+describe('bard.mockService', function() {
     'use strict';
 
-    var mockService = specHelper.mockService;
+    var mockService = bard.mockService;
     var flush;
 
     beforeEach(function() {
         module();
-        specHelper.injector('$q', '$rootScope', '$window');
+        bard.inject('$q', '$rootScope', '$window');
         flush = function() { $rootScope.$apply(); };
     });
 
@@ -176,7 +176,7 @@ describe('specHelper.mockService', function() {
 
     ///// helpers /////
 
-    // create the exampel DoWork service from specHelper.mockService usage doc
+    // create the exampel DoWork service from bard.mockService usage doc
     function getDoWorkService() {
         return {
             doWork1:  function doWork1(a, b) {

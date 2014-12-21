@@ -4,8 +4,8 @@ describe('layout shell controller', function() {
     var controller;
 
     beforeEach(function() {
-        specHelper.appModule('app.layout');
-        specHelper.injector('$controller', '$log', '$rootScope', '$timeout');
+        bard.appModule('app.layout');
+        bard.inject('$controller', '$log', '$rootScope', '$timeout');
     });
 
     beforeEach(function () {

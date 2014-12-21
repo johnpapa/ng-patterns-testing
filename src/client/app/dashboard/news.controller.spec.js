@@ -5,8 +5,8 @@ describe('dashboard news controller', function() {
     var stories = mockData.getNewsStories();
 
     beforeEach(function() {
-        specHelper.appModule('app.dashboard');
-        specHelper.injector('$controller', '$interval', '$q', '$rootScope', '$timeout', 'newsService');
+        bard.appModule('app.dashboard');
+        bard.inject('$controller', '$interval', '$q', '$rootScope', '$timeout', 'newsService');
     });
 
     beforeEach(function () {

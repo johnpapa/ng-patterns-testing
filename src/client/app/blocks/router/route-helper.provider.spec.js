@@ -5,10 +5,10 @@ describe('blocks.router routehelper', function () {
 
     beforeEach(function () {
         module('blocks.router',
-          specHelper.fakeToastr,
+          bard.fakeToastr,
           configureRoutehelper);
 
-        specHelper.injector('$rootScope', '$route', 'routehelper');
+        bard.inject('$rootScope', '$route', 'routehelper');
 
         testRoute = getTestRoute();
 

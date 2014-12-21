@@ -1,3 +1,4 @@
+/* Help configure the ngRoute router */
 (function() {
     'use strict';
 
@@ -93,7 +94,7 @@
         }
 
         function listenForRouteChange() {
-            if (!routehelperConfig.config.listenForRouteChange) {               
+            if (!routehelperConfig.config.listenForRouteChange) {
                 return; // never listen
             }
             $rootScope.$on('$routeChangeStart',

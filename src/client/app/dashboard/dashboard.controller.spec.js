@@ -5,8 +5,8 @@ describe('dashboard controller', function() {
     var controller;
 
     beforeEach(function() {
-        specHelper.appModule('app.dashboard');
-        specHelper.injector('$controller', '$log', '$q', '$rootScope', 'dataservice');
+        bard.appModule('app.dashboard');
+        bard.inject('$controller', '$log', '$q', '$rootScope', 'dataservice');
     });
 
     beforeEach(function () {
@@ -41,5 +41,5 @@ describe('dashboard controller', function() {
         expect($log.info.logs).to.match(/Activated/);
     });
 
-    specHelper.verifyNoOutstandingHttpRequests();
+    bard.verifyNoOutstandingHttpRequests();
 });

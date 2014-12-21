@@ -1,6 +1,6 @@
 /* jshint -W117, -W030 */
 /**
- *  Demonstrates use of specHelper's real $http and $q
+ *  Demonstrates use of bard's real $http and $q
  *  restoring the ability to make AJAX calls to the server
  *  while retaining all the goodness of ngMocks.
  *
@@ -10,7 +10,7 @@
 describe('Server: dataservice', function() {
     var dataservice;
 
-    beforeEach(specHelper.asyncModule('app'));
+    beforeEach(bard.asyncModule('app'));
 
     beforeEach(inject(function(_dataservice_) {
         dataservice = _dataservice_;

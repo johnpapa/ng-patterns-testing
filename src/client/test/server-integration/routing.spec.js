@@ -9,7 +9,7 @@ describe('Server: routing', function() {
     beforeEach(function() {
         tester = ngMidwayTester('testerApp', {mockLocationPaths: false});
         $route = tester.inject('$route');
-        wrap = specHelper.wrapWithDone;
+        wrap = bard.wrapWithDone;
     });
 
     afterEach(function () {

@@ -38,7 +38,7 @@ var stubs = (function() {
 
     function happyService() {
         var ok = $q.when.bind($q);
-        return specHelper.mockService(dataservice, {
+        return bard.mockService(dataservice, {
             getAvengers:     ok(mockData.getAvengers()),
             getAvengersCast: ok(mockData.getAvengersCast()),
             ready:           ok(dataservice),
@@ -47,7 +47,7 @@ var stubs = (function() {
     }
 
     function sadService() {
-        return specHelper.mockService(dataservice, {
+        return bard.mockService(dataservice, {
             _default:  $q.reject('this method was doomed')
         });
     }

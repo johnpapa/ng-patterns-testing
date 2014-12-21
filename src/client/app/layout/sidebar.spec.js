@@ -6,8 +6,8 @@ describe('layout sidebar', function () {
         // Setup for entire app because each feature module adds its own routes
         // 'templates' populates $templateCache with all views
         // so that tests don't try to retrieve view templates from the server.
-        module('app', 'templates', specHelper.fakeToastr);
-        specHelper.injector('$controller', '$location', '$rootScope', '$route');
+        module('app', 'templates', bard.fakeToastr);
+        bard.inject('$controller', '$location', '$rootScope', '$route');
     });
 
     beforeEach(function () {

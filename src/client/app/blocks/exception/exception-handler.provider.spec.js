@@ -7,7 +7,7 @@ describe('blocks.exception:', function() {
 
     beforeEach(function() {
         module('blocks.exception',
-            specHelper.fakeToastr,
+            bard.fakeToastr,
 
             // configure with mock app error prefix
             function(exceptionHandlerProvider) {
@@ -15,7 +15,7 @@ describe('blocks.exception:', function() {
             }
         );
 
-        specHelper.injector(
+        bard.inject(
             function($exceptionHandler, $log, $rootScope) {});
 
         throwAndCatch();

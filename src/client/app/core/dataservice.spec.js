@@ -2,8 +2,8 @@
 describe('core dataservice', function () {
 
     beforeEach(function () {
-        module('app.core', specHelper.fakeToastr);
-        specHelper.injector('$httpBackend', '$rootScope', 'dataservice');
+        module('app.core', bard.fakeToastr);
+        bard.inject('$httpBackend', '$rootScope', 'dataservice');
         $httpFlush = $httpBackend.flush;
     });
 
@@ -83,5 +83,5 @@ describe('core dataservice', function () {
         });
     });
 
-    specHelper.verifyNoOutstandingHttpRequests();
+    bard.verifyNoOutstandingHttpRequests();
 });
