@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe.skip('blocks.logger:', function() {
+describe('blocks.logger:', function() {
 
     describe('(if allow real toastr)', function() {
 
@@ -20,6 +20,7 @@ describe.skip('blocks.logger:', function() {
         });
     });
 
+
     describe('(stub toastr)', function() {
 
         var msg;
@@ -32,12 +33,10 @@ describe.skip('blocks.logger:', function() {
             inject(function(toastr) {
                 // monkey-patch the real toastr with
                 // a homebrew stub
-                var stub = function(m) {
-                    msg = m;
-                };
+                var stub = function(m) { msg = m; };
 
-                toastr.error = stub;
-                toastr.info = stub;
+                toastr.error   = stub;
+                toastr.info    = stub;
                 toastr.success = stub;
                 toastr.warning = stub;
 
@@ -53,6 +52,7 @@ describe.skip('blocks.logger:', function() {
                 expect(msg).to.equal(testErr);
             });
         });
+
 
         // we're sure it called toaster.error when we attach a sinon spy
         it('calls toastr.error when log an error message', function() {
@@ -83,64 +83,75 @@ describe.skip('blocks.logger:', function() {
             });
         });
     });
-    var testInfo = 'a test info message';
 
-    // starting with the 'blocks.logger' module ...
-    beforeEach(module('blocks.logger',
 
-        // ... revise the 'toastr' recipe with stubs
-        function(toastr) {
-            // blindly stub every method of toastr
-            sinon.stub(toastr);
-            _toastr = toastr;
-        }
-    ));
 
-    it('calls toastr.info when log an info message', function() {
-        inject(function(logger) {
-            logger.info(testInfo);
 
-            expect(_toastr.info).to.be.calledOnce;
-            expect(_toastr.info).to.be.calledWith(testInfo);
-            expect(_toastr.info.getCall(0).args).to.have.length(2,
-                'info should be called w/ two args');
+
+    describe('(stub toastr with sinon)', function() {
+        var _toastr;
+        var testInfo = 'a test info message';
+
+        // starting with the 'blocks.logger' module ...
+        beforeEach(module('blocks.logger',
+
+            // ... revise the 'toastr' recipe with stubs
+            function(toastr) {
+                // blindly stub every method of toastr
+                sinon.stub(toastr);
+                _toastr = toastr;
+            }
+        ));
+
+        it('calls toastr.info when log an info message', function() {
+            inject(function(logger) {
+                logger.info(testInfo);
+
+                expect(_toastr.info).to.be.calledOnce;
+                expect(_toastr.info).to.be.calledWith(testInfo);
+                expect(_toastr.info.getCall(0).args).to.have.length(2,
+                    'info should be called w/ two args');
+            });
         });
     });
-});
 
-describe('(stub toastr routinely with $provide)', function() {
-    var toastr;
-    var testSuccess = 'a test success message';
 
-    // Because we need to fake toastr all over the place
-    // and do so in apps that might not even use toastr
-    // we create a service "constant" for this purpose.
-    //
-    // See this very same method in bard.js
-    function fakeToastr($provide) {
 
-        toastr = sinon.stub({
-            info: function() {},
-            error: function() {},
-            warning: function() {},
-            success: function() {}
-        });
 
-        $provide.constant('toastr', toastr);
-    }
+    describe('(stub toastr routinely with $provide)', function() {
+        var toastr;
+        var testSuccess = 'a test success message';
 
-    // then simply include it among the test module recipes
-    // as needed ... as we do here
-    beforeEach(module('blocks.logger', fakeToastr));
+        // Because we need to fake toastr all over the place
+        // and do so in apps that might not even use toastr
+        // we create a service "constant" for this purpose.
+        //
+        // See this very same method in bard.js
+        function fakeToastr($provide) {
 
-    it('calls toastr.success when log a success message', function() {
-        inject(function(logger) {
-            logger.success(testSuccess);
+            toastr = sinon.stub({
+                info: function() {},
+                error: function() {},
+                warning: function() {},
+                success: function() {}
+            });
 
-            expect(toastr.success).to.be.calledOnce;
-            expect(toastr.success).to.be.calledWith(testSuccess);
-            expect(toastr.success.getCall(0).args).to.have.length(2,
-                'success should be called w/ two args');
+            $provide.constant('toastr', toastr);
+        }
+
+        // then simply include it among the test module recipes
+        // as needed ... as we do here
+        beforeEach(module('blocks.logger', fakeToastr));
+
+        it('calls toastr.success when log a success message', function() {
+            inject(function(logger) {
+                logger.success(testSuccess);
+
+                expect(toastr.success).to.be.calledOnce;
+                expect(toastr.success).to.be.calledWith(testSuccess);
+                expect(toastr.success.getCall(0).args).to.have.length(2,
+                    'success should be called w/ two args');
+            });
         });
     });
 });

@@ -22,8 +22,7 @@ module.exports = function() {
             '!' + clientApp + '/**/*.spec.js'
         ],
         specs: [
-            clientApp + '/**/*.spec.js',
-            '!' + clientApp + '/test-helpers/server-integration/**/*.spec.js'
+            clientApp + '/**/*.spec.js'
         ],
         alljs: [
             './src/**/*.js',
@@ -48,7 +47,7 @@ module.exports = function() {
             'node_modules/sinon-chai/lib/sinon-chai.js'
         ],
         serverIntegrationSpecs:[
-            clientApp + '/test-helpers/server-integration/**/*.spec.js'
+            client + '/test-helpers/server-integration/**/*.spec.js'
         ],
 
         nodeServer: './src/server/app.js',
