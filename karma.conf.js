@@ -19,11 +19,11 @@ module.exports = function (config) {
             './src/client/app/app.module.js',
             './src/client/app/**/*.module.js',
             './src/client/app/**/*.js',
-            './.tmp/templates.js',
+            './.tmp/templates.js'
+            //TODO: do we need these?
+            // './node_modules/ng-midway-tester/src/ngMidwayTester.js',
+            // './src/client/test/server-integration/**/*.spec.js'
         ]),
-        //TODO: do we need these?
-        // './node_modules/ng-midway-tester/src/ngMidwayTester.js',
-        // './src/client/test/server-integration/**/*.spec.js'
 
         // list of files to exclude
         exclude: [
