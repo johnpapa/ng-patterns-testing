@@ -1,6 +1,9 @@
-// Karma configuration
 require('mocha-clean');
 module.exports = function (config) {
+    var wiredep = require('wiredep');
+
+    var bowerFiles = wiredep({devDependencies: true})['js'];
+
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -11,34 +14,16 @@ module.exports = function (config) {
         frameworks: ['mocha', 'chai', 'sinon', 'chai-sinon'],
 
         // list of files / patterns to load in the browser
-        files: [
-
-            './node_modules/ng-midway-tester/src/ngMidwayTester.js',
-
-            './bower_components/jquery/dist/jquery.js',
-            './bower_components/angular/angular.js',
-            './bower_components/angular-mocks/angular-mocks.js',
-            './bower_components/angular-animate/angular-animate.js',
-            './bower_components/angular-route/angular-route.js',
-            './bower_components/angular-sanitize/angular-sanitize.js',
-            './bower_components/bardjs/dist/bard.js',
-            './bower_components/bootstrap/dist/js/bootstrap.js',
-            './bower_components/toastr/toastr.js',
-            './bower_components/moment/moment.js',
-            './bower_components/extras.angular.plus/ngplus-overlay.js',
-
-            /* spec helpers */
-            './src/client/test/lib/bindPolyfill.js',
-            './src/client/test/lib/**/*.js',
-
+        files: bowerFiles.concat([
+            './src/client/test-helpers/lib/*.js',
             './src/client/app/app.module.js',
-            './src/client/build/templates.js',
             './src/client/app/**/*.module.js',
-            './src/client/app/**/*.js',
-            './src/client/test/*.spec.js',
-            './src/client/test/server-integration/**/*.spec.js'
-
-        ],
+            './src/client/app/**/*.js'
+        ]),
+        //TODO: do we need these?
+        // './node_modules/ng-midway-tester/src/ngMidwayTester.js',
+        // './src/client/build/templates.js',
+        // './src/client/test/server-integration/**/*.spec.js'
 
         // list of files to exclude
         exclude: [
@@ -53,17 +38,17 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'src/client/app/**/*.js': 'coverage'
+            '{src/client/app,src/client/app/**/!(*.spec).js}': 'coverage'
         },
 
         // test results reporter to use
         // possible values: 'dots', 'progress', 'coverage'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress'],
+        reporters: ['progress', 'coverage'],
 
         coverageReporter: {
             type: 'lcov',
-            dir: 'test/coverage'
+            dir: 'report/coverage'
         },
 
         // web server port

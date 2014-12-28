@@ -38,10 +38,9 @@ module.exports = function() {
         temp: temp,
         report: './report/',
 
-        specHelpers: [client + '/test-helpers/*.js'],
+        specHelpers: [client + '/test-helpers/lib/*.js'],
         specRunner: client + specRunnerFile,
         specRunnerFile: specRunnerFile,
-        midwaySpecs: client + '/test/midway/**/*.spec.js',
         testlibraries: [
             'node_modules/mocha/mocha.js',
             'node_modules/chai/chai.js',
@@ -56,7 +55,8 @@ module.exports = function() {
         defaultPort: '7202',
         browserReloadDelay: 1000,
         templateCache: {
-            module: 'app.core',
+            module: 'templates',
+            standAlone: true,
             file: 'templates.js',
             root: 'app/'
         },

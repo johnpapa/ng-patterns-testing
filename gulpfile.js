@@ -71,7 +71,8 @@ gulp.task('templatecache', ['clean-code'], function() {
             standalone: false,
             root: config.templateCache.root
         }))
-        .pipe(gulp.dest(config.temp));
+        .pipe(gulp.dest(config.temp))
+        .pipe(gulp.dest(config.build));
 });
 
 /**
@@ -154,7 +155,7 @@ gulp.task('serve-specs', ['build-specs'], function(done) {
  * Inject all the spec files into the specs.html
  * @return {Stream}
  */
-gulp.task('build-specs', function(done) {
+gulp.task('build-specs', ['templatecache'], function(done) {
     log('building the spec runner');
 
     var wiredep = require('wiredep').stream;
@@ -168,6 +169,7 @@ gulp.task('build-specs', function(done) {
         .pipe($.inject(gulp.src(config.testlibraries), {name: 'testlibraries', read: false}))
         .pipe($.inject(gulp.src(config.specHelpers), {name: 'spechelpers', read: false}))
         .pipe($.inject(gulp.src(config.specs), {name: 'specs', read: false}))
+        .pipe($.inject(gulp.src(config.serverIntegrationSpecs), {name: 'serverspecs', read: false}))
         .pipe(gulp.dest(config.client));
 });
 

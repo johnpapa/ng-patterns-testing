@@ -44,12 +44,14 @@ switch (environment){
         break;
     default:
         console.log('** DEV **');
-        app.use('/bower_components', staticFiles('./bower_components/'));
-        app.use('/node_modules', staticFiles('./node_modules/'));
-        app.use('/src/client', staticFiles('./src/client/'));
-        app.use('/build', staticFiles('./build/'));
-        app.use('/', staticFiles('./src/client/'));
-        break;
+        // app.use('/bower_components', staticFiles('./bower_components/'));
+        // app.use('/node_modules', staticFiles('./node_modules/'));
+        app.use(staticFiles('./src/client/'));
+        app.use(staticFiles('./'));
+        // app.use('/', staticFiles('./src/client/'));
+        app.use(staticFiles('./.tmp/'));
+        app.use('/*', express.static('./src/client/index.html'));
+       break;
 }
 
 app.listen(port, function() {

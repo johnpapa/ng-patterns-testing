@@ -21,16 +21,19 @@
         }
     </style>
 
-    <!-- inject-vendor:css -->
-    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="/bower_components/toastr/toastr.css" rel="stylesheet" />
-    <!-- endinject -->
+    <!-- build:css styles/lib.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/bower_components/toastr/toastr.css" />
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
 
+    <!-- build:css styles/app.css-->
     <!-- inject:css -->
-    <link href="/src/client/content/customtheme.css" rel="stylesheet">
-    <link href="/src/client/content/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/.tmp/styles.css">
     <!-- endinject -->
+    <!-- endbuild -->
 </head>
 <body>
     <div>
@@ -47,59 +50,52 @@
         </div>
     </div>
 
-    <!-- inject-vendor:js -->
+    <!-- build:js js/lib.js -->
+    <!-- bower:js -->
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
-    <script src="/bower_components/angular-animate/angular-animate.js"></script>
     <script src="/bower_components/angular-route/angular-route.js"></script>
+    <script src="/bower_components/angular-animate/angular-animate.js"></script>
     <script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="/bower_components/toastr/toastr.js"></script>
     <script src="/bower_components/moment/moment.js"></script>
+    <script src="/bower_components/toastr/toastr.js"></script>
     <script src="/bower_components/extras.angular.plus/ngplus-overlay.js"></script>
-    <!-- endinject -->
+    <!-- endbower -->
+    <!-- endbuild -->
 
-
+    <!-- build:js js/app.js-->
     <!-- inject:js -->
-    <!-- Bootstrapping -->
     <script src="/src/client/app/app.module.js"></script>
-
-    <!-- Reusable Blocks/Modules -->
-    <script src="/src/client/app/blocks/exception/exception.module.js"></script>
-    <script src="/src/client/app/blocks/exception/exception-handler.provider.js"></script>
-    <script src="/src/client/app/blocks/exception/exception.js"></script>
-    <script src="/src/client/app/blocks/logger/logger.module.js"></script>
-    <script src="/src/client/app/blocks/logger/logger.js"></script>
-    <script src="/src/client/app/blocks/router/router.module.js"></script>
-    <script src="/src/client/app/blocks/router/route-helper.provider.js"></script>
-
-    <!-- core module -->
+    <script src="/src/client/app/avengers/avengers.module.js"></script>
     <script src="/src/client/app/core/core.module.js"></script>
-    <script src="/src/client/app/core/constants.js"></script>
+    <script src="/src/client/app/dashboard/dashboard.module.js"></script>
+    <script src="/src/client/app/layout/layout.module.js"></script>
+    <script src="/src/client/app/widgets/widgets.module.js"></script>
+    <script src="/src/client/app/blocks/exception/exception.module.js"></script>
+    <script src="/src/client/app/blocks/router/router.module.js"></script>
+    <script src="/src/client/app/blocks/logger/logger.module.js"></script>
+    <script src="/src/client/app/avengers/avengers.controller.js"></script>
+    <script src="/src/client/app/avengers/avengers.route.js"></script>
     <script src="/src/client/app/core/config.js"></script>
     <script src="/src/client/app/core/dataservice.js"></script>
-
-    <!-- layout -->
-    <script src="/src/client/app/layout/layout.module.js"></script>
-    <script src="/src/client/app/layout/shell.controller.js"></script>
-    <script src="/src/client/app/layout/sidebar.controller.js"></script>
-
-    <!--widgets-->
-    <script src="/src/client/app/widgets/widgets.module.js"></script>
-    <script src="/src/client/app/widgets/ccSidebar.js"></script>
-    <script src="/src/client/app/widgets/ccWidgetHeader.js"></script>
-
-    <!-- dashboard -->
-    <script src="/src/client/app/dashboard/dashboard.module.js"></script>
-    <script src="/src/client/app/dashboard/dashboard.route.js"></script>
     <script src="/src/client/app/dashboard/dashboard.controller.js"></script>
+    <script src="/src/client/app/dashboard/dashboard.route.js"></script>
     <script src="/src/client/app/dashboard/news.controller.js"></script>
     <script src="/src/client/app/dashboard/newsService.js"></script>
-
-    <!--avengers module-->
-    <script src="/src/client/app/avengers/avengers.module.js"></script>
-    <script src="/src/client/app/avengers/avengers.route.js"></script>
-    <script src="/src/client/app/avengers/avengers.controller.js"></script>
+    <script src="/src/client/app/layout/shell.controller.js"></script>
+    <script src="/src/client/app/layout/sidebar.controller.js"></script>
+    <script src="/src/client/app/widgets/ccSidebar.js"></script>
+    <script src="/src/client/app/widgets/ccWidgetHeader.js"></script>
+    <script src="/src/client/app/blocks/exception/exception-handler.provider.js"></script>
+    <script src="/src/client/app/blocks/exception/exception.js"></script>
+    <script src="/src/client/app/blocks/router/route-helper.provider.js"></script>
+    <script src="/src/client/app/blocks/logger/logger.js"></script>
     <!-- endinject -->
+
+    <!-- inject:templates:js -->
+    <!-- endinject -->
+
+    <!-- endbuild -->
 </body>
 </html>
