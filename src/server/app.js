@@ -51,7 +51,7 @@ switch (environment){
         // app.use('/', staticFiles('./src/client/'));
         app.use(staticFiles('./.tmp/'));
         app.use('/*', express.static('./src/client/index.html'));
-       break;
+        break;
 }
 
 app.listen(port, function() {

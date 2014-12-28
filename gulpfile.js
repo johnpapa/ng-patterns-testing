@@ -68,7 +68,7 @@ gulp.task('templatecache', ['clean-code'], function() {
         .pipe($.if(args.verbose, $.bytediff.stop(bytediffFormatter)))
         .pipe($.angularTemplatecache(config.templateCache.file, {
             module: config.templateCache.module,
-            standalone: false,
+            standalone: config.templateCache.standAlone,
             root: config.templateCache.root
         }))
         .pipe(gulp.dest(config.temp));
@@ -159,6 +159,7 @@ gulp.task('build-specs', ['templatecache'], function(done) {
 
     var wiredep = require('wiredep').stream;
     var options = getWiredepDefaultOptions();
+    var templateCache = config.temp + config.templateCache.file;
     options.devDependencies = true;
 
     return gulp
@@ -169,6 +170,9 @@ gulp.task('build-specs', ['templatecache'], function(done) {
         .pipe($.inject(gulp.src(config.specHelpers), {name: 'spechelpers', read: false}))
         .pipe($.inject(gulp.src(config.specs), {name: 'specs', read: false}))
         .pipe($.inject(gulp.src(config.serverIntegrationSpecs), {name: 'serverspecs', read: false}))
+        .pipe($.inject(gulp.src(templateCache, {read: false}), {
+            starttag: '<!-- inject:templates:js -->'
+        }))
         .pipe(gulp.dest(config.client));
 });
 
@@ -193,7 +197,7 @@ gulp.task('build', ['html', 'images', 'fonts'], function() {
  * and inject them into the new index.html
  * @return {Stream}
  */
-gulp.task('html', ['test', 'inject'], function() {
+gulp.task('html', [/*'test'*/, 'inject'], function() {
     log('Optimizing the js, css, and html');
 
     var assets = $.useref.assets({searchPath: './'});

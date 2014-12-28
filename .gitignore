@@ -12,6 +12,7 @@ obj
 node_modules
 /src/client/build
 /src/build
+/build
 bower_components
 **/test/coverage
 
