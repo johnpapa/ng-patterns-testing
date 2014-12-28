@@ -70,9 +70,9 @@
     <script src="/src/client/app/dashboard/dashboard.module.js"></script>
     <script src="/src/client/app/layout/layout.module.js"></script>
     <script src="/src/client/app/widgets/widgets.module.js"></script>
-    <script src="/src/client/app/blocks/exception/exception.module.js"></script>
     <script src="/src/client/app/blocks/logger/logger.module.js"></script>
     <script src="/src/client/app/blocks/router/router.module.js"></script>
+    <script src="/src/client/app/blocks/exception/exception.module.js"></script>
     <script src="/src/client/app/avengers/avengers.controller.js"></script>
     <script src="/src/client/app/avengers/avengers.route.js"></script>
     <script src="/src/client/app/core/config.js"></script>
@@ -85,19 +85,24 @@
     <script src="/src/client/app/layout/sidebar.controller.js"></script>
     <script src="/src/client/app/widgets/ccSidebar.js"></script>
     <script src="/src/client/app/widgets/ccWidgetHeader.js"></script>
-    <script src="/src/client/app/blocks/exception/exception-handler.provider.js"></script>
-    <script src="/src/client/app/blocks/exception/exception.js"></script>
     <script src="/src/client/app/blocks/logger/logger.js"></script>
     <script src="/src/client/app/blocks/router/route-helper.provider.js"></script>
+    <script src="/src/client/app/blocks/exception/exception-handler.provider.js"></script>
+    <script src="/src/client/app/blocks/exception/exception.js"></script>
     <!-- endinject -->
 
     <!-- inject:specHelpers:js -->
-    <script src="/src/client/test-helpers/lib/bindPolyfill.js"></script>
-    <script src="/src/client/test-helpers/lib/mockData.js"></script>
-    <script src="/src/client/test-helpers/lib/stubs.js"></script>
+    <script src="/src/client/test-helpers/bard.inject.spec.js"></script>
+    <script src="/src/client/test-helpers/bard.mockService.spec.js"></script>
+    <script src="/src/client/test-helpers/bindPolyfill.js"></script>
+    <script src="/src/client/test-helpers/mockData.js"></script>
+    <script src="/src/client/test-helpers/stubs.js"></script>
+    <script src="/node_modules/ng-midway-tester/src/ngMidwayTester.js"></script>
     <!-- endinject -->
 
     <!-- inject:specs:js -->
+   
+    <script src="/src/client/tests/assertions.spec.js"></script>
    
     <script src="/src/client/app/avengers/avengers.controller.spec.js"></script>
    
@@ -119,17 +124,17 @@
    
     <script src="/src/client/app/widgets/ccSidebar.spec.js"></script>
    
-    <script src="/src/client/app/blocks/exception/exception-handler.provider.spec.js"></script>
-   
     <script src="/src/client/app/blocks/logger/logger.spec.js"></script>
    
     <script src="/src/client/app/blocks/router/route-helper.provider.spec.js"></script>
    
+    <script src="/src/client/app/blocks/exception/exception-handler.provider.spec.js"></script>
+   
     <!-- endinject -->
 
     <!-- inject:serverspecs:js -->
-    <script src="/src/client/test-helpers/server-integration/dataservice.spec.js"></script>
-    <script src="/src/client/test-helpers/server-integration/routing.spec.js"></script>
+    <script src="/src/client/tests/server-integration/dataservice.spec.js"></script>
+    <script src="/src/client/tests/server-integration/routing.spec.js"></script>
     <!-- endinject -->
 
     <!-- inject:templates:js -->

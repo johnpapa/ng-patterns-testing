@@ -10,7 +10,7 @@ var compress = require('compression');
 var errorHandler = require('./utils/errorHandler')();
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var port = process.env.PORT || 7202;
+var port = process.env.PORT || 7206;
 var staticFiles = express.static;
 var routes;
 

@@ -15,20 +15,20 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: bowerFiles.concat([
-            './src/client/test-helpers/lib/*.js',
+            './src/client/test-helpers/**/*.js',
             './src/client/app/app.module.js',
             './src/client/app/**/*.module.js',
             './src/client/app/**/*.js',
-            './.tmp/templates.js'
-            //TODO: do we need these?
-            // './node_modules/ng-midway-tester/src/ngMidwayTester.js',
-            // './src/client/test/server-integration/**/*.spec.js'
+            './.tmp/templates.js',
+            // Server Integration
+            './node_modules/ng-midway-tester/src/ngMidwayTester.js',
+            './src/client/tests/**/*.spec.js'
         ]),
 
         // list of files to exclude
         exclude: [
             // Including server-integration tests for now; comment this line out when you want to run them
-            //'./src/client/test/server-integration/**/*.spec.js'
+            //'./src/client/tests/server-integration/**/*.spec.js'
         ],
 
         proxies: {

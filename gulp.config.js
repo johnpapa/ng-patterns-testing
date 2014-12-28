@@ -22,6 +22,7 @@ module.exports = function() {
             '!' + clientApp + '/**/*.spec.js'
         ],
         specs: [
+            client + '/tests/assertions.spec.js',
             clientApp + '/**/*.spec.js'
         ],
         alljs: [
@@ -37,7 +38,10 @@ module.exports = function() {
         temp: temp,
         report: './report/',
 
-        specHelpers: [client + '/test-helpers/lib/*.js'],
+        specHelpers: [
+            client + '/test-helpers/**/*.js',
+            'node_modules/ng-midway-tester/src/ngMidwayTester.js'
+        ],
         specRunner: client + specRunnerFile,
         specRunnerFile: specRunnerFile,
         testlibraries: [
@@ -47,11 +51,11 @@ module.exports = function() {
             'node_modules/sinon-chai/lib/sinon-chai.js'
         ],
         serverIntegrationSpecs:[
-            client + '/test-helpers/server-integration/**/*.spec.js'
+            client + '/tests/server-integration/**/*.spec.js'
         ],
 
         nodeServer: './src/server/app.js',
-        defaultPort: '7202',
+        defaultPort: '7206',
         browserReloadDelay: 1000,
         templateCache: {
             module: 'templates',
