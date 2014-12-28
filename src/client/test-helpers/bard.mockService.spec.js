@@ -83,7 +83,7 @@ describe('bard.mockService', function() {
             expect(service.doWork2).to.have.been.calledWith(1, 2);
         });
 
-        it('`doWork3` returns a resolved promise with the config._default (an empty array)', function() {
+        it('`doWork3` returns a resolved promise with config._default (empty array)', function() {
             service.doWork3(1, 2).then(expectEmptyArray);
             // verify `doWork3` is a spy
             expect(service.doWork3).to.have.been.calledWith(1, 2);
@@ -136,7 +136,7 @@ describe('bard.mockService', function() {
             flush();
         });
 
-        it('`doWork2`-`doWork4` each return a resolved promise with the default empty array', function() {
+        it('`doWork2`-`doWork4` each return resolved promise with empty array', function() {
             service.doWork2('could').then(expectEmptyArray);
             service.doWork3('be').then(expectEmptyArray);
             service.doWork4('anything').then(expectEmptyArray);

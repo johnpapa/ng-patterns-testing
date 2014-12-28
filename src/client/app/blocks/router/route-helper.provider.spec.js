@@ -11,7 +11,6 @@ describe('blocks.router routehelper', function () {
         bard.inject('$rootScope', '$route', 'routehelper');
 
         testRoute = getTestRoute();
-
     });
 
     it('has no routes before configuration', function() {
@@ -144,5 +143,4 @@ describe('blocks.router routehelper', function () {
           }
         };
     }
-
 });

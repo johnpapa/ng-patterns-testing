@@ -1,6 +1,6 @@
 // A $scope controller
 // We strongly favor "controller as" style and discourage mixing styles
-// We're deviating from our standard in this one case 
+// We're deviating from our standard in this one case
 // to demonstrate testing of $scope style controllers.
 (function() {
     'use strict';
@@ -35,7 +35,7 @@
             return newsService.getTopStories(5)
                 .then(function(news) {
                     $scope.news = news;
-                });	    	
+                });
         }
 
         $scope.$on('$destroy', function() {
@@ -43,4 +43,4 @@
             $interval.cancel(refreshHandle);
         });
     }
-})();        
+})();

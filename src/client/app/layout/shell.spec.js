@@ -5,7 +5,7 @@ describe('layout shell controller', function() {
 
     beforeEach(function() {
         bard.appModule('app.layout');
-        bard.inject('$controller', '$log','$timeout');
+        bard.inject('$controller', '$log', '$timeout');
     });
 
     beforeEach(function () {

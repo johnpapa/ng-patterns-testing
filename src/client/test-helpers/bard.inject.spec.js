@@ -32,9 +32,10 @@ describe('bard.inject', function() {
 
         // Although inject() puts injectables in the window,
         // it also removes them after each test by scheduling an afterEach
-        // Notice ... no private vars for $log or nutz! ... no injecting of them either.
+        // Notice ... no private vars for $log or nutz!
+        // ... no injecting of them either.
 
-        it('should set window.$log and window.nutz when call inject with string params', function() {
+        it('should set window.$log and window.nutz when call inject w/ string params', function() {
 
             bard.inject('$log', 'nutz');
 
@@ -86,7 +87,7 @@ describe('bard.inject', function() {
             expect(window.$log).to.exist;
         });
 
-        it('should set window.$log and window.foo when call inject("$log","block.foo")', function() {
+        it('should set window.$log & window.foo when call inject("$log","block.foo")', function() {
             // register this ridiculous value for just this test
             module(function($provide) {
                 $provide.value('block.foo', 'foo');

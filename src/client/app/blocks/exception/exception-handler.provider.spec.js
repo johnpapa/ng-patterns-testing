@@ -42,5 +42,4 @@ describe('blocks.exception:', function() {
             error = ex;
         }
     }
-
 });

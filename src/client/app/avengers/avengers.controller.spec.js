@@ -59,15 +59,15 @@ describe('avengers controller', function() {
         return getAvengersSpy;
     }
 
-
-
-
-
-
-
-
-
     /*****
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      * Alternative ways to fake the dataservice dependency
      *
      * The avengers.spec uses a fake vanilla JS dataservice whose

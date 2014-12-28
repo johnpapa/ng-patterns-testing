@@ -21,13 +21,6 @@
             return deferred.promise;
         }
 
-
-
-
-
-
-
-
         // Test data. Source: http://marvel.com/news/
         function topStories(count) {
             count = Math.max(1, Math.min(count, 5));
@@ -37,7 +30,7 @@
                 {title: 'Avengers Romance',
                  description: 'Ooo la la: are Dr. Banner and Natasha getting busy?'},
                 {title: 'Marvel PSA',
-                 description: 'Earth\'s Mightiest Heroes Take a Stand in Avengers: No More Bullying #1'},
+                 description: 'Earth\'s Heroes Take a Stand in Avengers: No More Bullying #1'},
                 {title: 'Marvel TV',
                  description: 'Marvel\'s Agent Carter Debriefs Her First 2 Missions'},
                 {title: 'Marvel Comics',
@@ -49,11 +42,12 @@
                 {title: 'Marvel Merchandise',
                  description: 'Let Some Gamma Rays Into Your Life With Hulk Collectibles'},
                 {title: 'Marvel Animated',
-                 description: 'Spidey Fights Visions of the Future in a New Web Warriors Clip'},
+                 description: 'Spidey Fights Visions of the Future'},
                 {title: 'Marvel TV',
-                 description: 'Agent Skye Faces Off Against A Familiar Foe in a New Agents of S.H.I.E.L.D. Clip'},
+                 description: 'Agent Skye Faces Off Against A Familiar Foe'},
                 {title: 'Marvel Music',
-                 description: 'Guardians of the Galaxy "Awesome Mix Vol. 1" Is Certified Awesome by the Grammys'}
+                 description: 'Guardians of the Galaxy "Awesome Mix Vol. 1"' +
+                    ' Is Certified Awesome by the Grammys'}
             ];
 
             var len = stories.length, results = [];

@@ -48,7 +48,8 @@
         function configureRoutes(routes) {
             routes.forEach(function(route) {
                 route.config.resolve =
-                    angular.extend(route.config.resolve || {}, routehelperConfig.config.resolveAlways);
+                    angular.extend(route.config.resolve || {},
+                        routehelperConfig.config.resolveAlways);
                 $routeProvider.when(route.url, route.config);
             });
             $routeProvider.otherwise({redirectTo: '/'});
@@ -78,7 +79,8 @@
                     }
                     routeCounts.errors++;
                     handlingRouteChangeError = true;
-                    var destination = (current && (current.title || current.name || current.loadedTemplateUrl)) ||
+                    var destination = (current && (current.title ||
+                        current.name || current.loadedTemplateUrl)) ||
                         'unknown target';
                     var msg = 'Error routing to ' + destination + '. ' + (rejection.msg || '');
                     logger.warning(msg, [current]);

@@ -10,7 +10,6 @@ var stubs = (function() {
         sadService:      sadService
     };
 
-
     function getAvengers() {
         return stubIt('getAvengers', mockData.getAvengers());
     }

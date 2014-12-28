@@ -1,4 +1,5 @@
-/*jshint -W079, -W101, -W109 */
+/* jshint -W079, -W101, -W109, maxlen:120, quotmark:double */
+/* jscs:disable validateQuoteMarks, maximumLineLength */
 var mockData = (function() {
     return {
         getAvengers: getAvengers,
@@ -94,16 +95,16 @@ var mockData = (function() {
     }
     function getNewsStories() {
         return [
-            {title: 'Avengers Movies',
-             description: 'The Avengers: Age of Ultron opens in U.S. theaters on May 1st'},
-            {title: 'Avengers Romance',
-             description: 'Ooo la la: are Dr. Banner and Natasha getting busy?'},
-            {title: 'Marvel PSA',
-             description: 'Earth\'s Mightiest Heroes Take a Stand in Avengers'},
-            {title: 'Marvel TV',
-             description: 'Marvel\'s Agent Carter Debriefs Her First 2 Missions'},
-            {title: 'Marvel Comics',
-             description: 'Thor: Meet the new female hero who will wield Mjolnir!'}
+            {title: "Avengers Movies",
+             description: "The Avengers: Age of Ultron opens in U.S. theaters on May 1st"},
+            {title: "Avengers Romance",
+             description: "Ooo la la: are Dr. Banner and Natasha getting busy?"},
+            {title: "Marvel PSA",
+             description: "Earth's Mightiest Heroes Take a Stand in Avengers"},
+            {title: "Marvel TV",
+             description: "Marvel's Agent Carter Debriefs Her First 2 Missions"},
+            {title: "Marvel Comics",
+             description: "Thor: Meet the new female hero who will wield Mjolnir!"}
         ];
     }
 })();
