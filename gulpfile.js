@@ -513,7 +513,7 @@ function startTests(singleRun, done) {
         var savedEnv = process.env;
         savedEnv.NODE_ENV = 'dev';
         savedEnv.PORT = 8888;
-        child = fork(config.nodeServer, childProcessCompleted);
+        child = fork(config.nodeServer, [], childProcessCompleted);
     } else {
         excludeFiles.push(config.midwaySpecs);
     }
