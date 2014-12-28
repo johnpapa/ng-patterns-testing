@@ -5,12 +5,11 @@ describe('layout shell controller', function() {
 
     beforeEach(function() {
         bard.appModule('app.layout');
-        bard.inject('$controller', '$log', '$rootScope', '$timeout');
+        bard.inject('$controller', '$log','$timeout');
     });
 
     beforeEach(function () {
         controller = $controller('Shell');
-        $rootScope.$apply(); // flush $q
     });
 
     it('should have logged success on activation', function() {

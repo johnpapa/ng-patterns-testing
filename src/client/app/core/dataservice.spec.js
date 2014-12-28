@@ -7,6 +7,8 @@ describe('core dataservice', function () {
         $httpFlush = $httpBackend.flush;
     });
 
+    bard.verifyNoOutstandingHttpRequests();
+
     it('should be registered', function() {
         expect(dataservice).not.to.equal(null);
     });
@@ -82,6 +84,4 @@ describe('core dataservice', function () {
             $rootScope.$apply(); // no $http so just flush $q
         });
     });
-
-    bard.verifyNoOutstandingHttpRequests();
 });

@@ -32,7 +32,7 @@ module.exports = function (config) {
             './src/client/test/lib/**/*.js',
 
             './src/client/app/app.module.js',
-            './build/templates.js',
+            './src/client/build/templates.js',
             './src/client/app/**/*.module.js',
             './src/client/app/**/*.js',
             './src/client/test/*.spec.js',

@@ -16,15 +16,15 @@
     "tests"
   ],
   "devDependencies": {
-    "angular-mocks": "~1.3.7",
+    "angular-mocks": "~1.3.8",
+    "bardjs": "~0.0.1",
     "sinon": "http://sinonjs.org/releases/sinon-1.12.1.js"
   },
   "dependencies": {
-    "angular": "~1.3.7",
-    "angular-route": "~1.3.7",
-    "angular-animate": "~1.3.7",
-    "angular-sanitize": "~1.3.7",
-    "bardjs": "~0.0.1",
+    "angular": "~1.3.8",
+    "angular-route": "~1.3.8",
+    "angular-animate": "~1.3.8",
+    "angular-sanitize": "~1.3.8",
     "bootstrap": "~3.3.1",
     "jquery": "~2.1.3",
     "moment": "~2.8.4",
