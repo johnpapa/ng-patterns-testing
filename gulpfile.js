@@ -71,8 +71,7 @@ gulp.task('templatecache', ['clean-code'], function() {
             standalone: false,
             root: config.templateCache.root
         }))
-        .pipe(gulp.dest(config.temp))
-        .pipe(gulp.dest(config.build));
+        .pipe(gulp.dest(config.temp));
 });
 
 /**
