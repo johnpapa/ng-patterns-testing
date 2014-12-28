@@ -166,10 +166,10 @@ gulp.task('build-specs', ['templatecache'], function(done) {
         .src(config.specRunner)
         .pipe(wiredep(options))
         .pipe($.inject(gulp.src(config.js)))
-        .pipe($.inject(gulp.src(config.testlibraries), {name: 'testlibraries', read: false}))
-        .pipe($.inject(gulp.src(config.specHelpers), {name: 'spechelpers', read: false}))
-        .pipe($.inject(gulp.src(config.specs), {name: 'specs', read: false}))
-        .pipe($.inject(gulp.src(config.serverIntegrationSpecs), {name: 'serverspecs', read: false}))
+        .pipe($.inject(gulp.src(config.testlibraries), {name: 'inject:testlibraries', read: false}))
+        .pipe($.inject(gulp.src(config.specHelpers), {name: 'inject:spechelpers', read: false}))
+        .pipe($.inject(gulp.src(config.specs), {name: 'inject:specs', read: false}))
+        .pipe($.inject(gulp.src(config.serverIntegrationSpecs), {name: 'inject:serverspecs', read: false}))
         .pipe($.inject(gulp.src(templateCache, {read: false}), {
             starttag: '<!-- inject:templates:js -->'
         }))
