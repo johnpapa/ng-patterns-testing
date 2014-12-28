@@ -21,6 +21,7 @@ module.exports = function (config) {
             './bower_components/angular-animate/angular-animate.js',
             './bower_components/angular-route/angular-route.js',
             './bower_components/angular-sanitize/angular-sanitize.js',
+            './bower_components/bardjs/dist/bard.js',
             './bower_components/bootstrap/dist/js/bootstrap.js',
             './bower_components/toastr/toastr.js',
             './bower_components/moment/moment.js',
@@ -28,7 +29,6 @@ module.exports = function (config) {
 
             /* spec helpers */
             './src/client/test/lib/bindPolyfill.js',
-            './src/client/test/lib/specHelper.js',
             './src/client/test/lib/**/*.js',
 
             './src/client/app/app.module.js',

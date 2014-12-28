@@ -1,1 +1,4 @@
-angular.module('blocks.logger', []);
+/* global toastr:false */
+angular
+    .module('blocks.logger', [])
+    .constant('toastr', toastr);
