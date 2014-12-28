@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe('blocks.logger:', function() {
+describe.skip('blocks.logger:', function() {
 
     describe('(if allow real toastr)', function() {
 

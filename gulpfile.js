@@ -166,10 +166,14 @@ gulp.task('build-specs', ['templatecache'], function(done) {
         .src(config.specRunner)
         .pipe(wiredep(options))
         .pipe($.inject(gulp.src(config.js)))
-        .pipe($.inject(gulp.src(config.testlibraries), {name: 'inject:testlibraries', read: false}))
-        .pipe($.inject(gulp.src(config.specHelpers), {name: 'inject:spechelpers', read: false}))
-        .pipe($.inject(gulp.src(config.specs), {name: 'inject:specs', read: false}))
-        .pipe($.inject(gulp.src(config.serverIntegrationSpecs), {name: 'inject:serverspecs', read: false}))
+        .pipe($.inject(gulp.src(config.testlibraries),
+            {name: 'inject:testlibraries', read: false}))
+        .pipe($.inject(gulp.src(config.specHelpers),
+            {name: 'inject:spechelpers', read: false}))
+        .pipe($.inject(gulp.src(config.specs),
+            {name: 'inject:specs', read: false}))
+        .pipe($.inject(gulp.src(config.serverIntegrationSpecs),
+            {name: 'inject:serverspecs', read: false}))
         .pipe($.inject(gulp.src(templateCache, {read: false}), {
             starttag: '<!-- inject:templates:js -->'
         }))
@@ -197,7 +201,7 @@ gulp.task('build', ['html', 'images', 'fonts'], function() {
  * and inject them into the new index.html
  * @return {Stream}
  */
-gulp.task('html', [/*'test'*/, 'inject'], function() {
+gulp.task('html', ['test', 'inject'], function() {
     log('Optimizing the js, css, and html');
 
     var assets = $.useref.assets({searchPath: './'});
