@@ -10,9 +10,8 @@ obj
 # Ignore Node & Bower
 ###################
 node_modules
-/src/client/build
-/src/build
-/build
+build
+.tmp
 bower_components
 **/test/coverage
 
@@ -37,7 +36,6 @@ journal
 *.exe
 *.o
 *.so
-.tmp
 
 # Packages #
 ############

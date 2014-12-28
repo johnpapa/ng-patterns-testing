@@ -20,7 +20,6 @@ describe('blocks.logger:', function() {
         });
     });
 
-
     describe('(stub toastr)', function() {
 
         var msg;
@@ -53,7 +52,6 @@ describe('blocks.logger:', function() {
             });
         });
 
-
         // we're sure it called toaster.error when we attach a sinon spy
         it('calls toastr.error when log an error message', function() {
             inject(function(logger) {
@@ -84,10 +82,6 @@ describe('blocks.logger:', function() {
         });
     });
 
-
-
-
-
     describe('(stub toastr with sinon)', function() {
         var _toastr;
         var testInfo = 'a test info message';
@@ -114,9 +108,6 @@ describe('blocks.logger:', function() {
             });
         });
     });
-
-
-
 
     describe('(stub toastr routinely with $provide)', function() {
         var toastr;
