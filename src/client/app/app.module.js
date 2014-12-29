@@ -5,3 +5,4 @@ angular.module('app', [
     'app.dashboard',
     'app.layout'
 ]);
+

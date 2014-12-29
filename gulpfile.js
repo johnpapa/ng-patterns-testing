@@ -33,7 +33,7 @@ gulp.task('default', ['help']);
  * Lint the code and create coverage report
  * @return {Stream}
  */
-gulp.task('analyze', ['plato'], function() {
+gulp.task('vet', ['plato'], function() {
     log('Analyzing source with JSHint and JSCS');
 
     return gulp
@@ -71,7 +71,7 @@ gulp.task('templatecache', ['clean-code'], function() {
             standalone: config.templateCache.standAlone,
             root: config.templateCache.root
         }))
-        .pipe(gulp.dest(config.temp));
+        .pipe(gulp.dest(config.templateCache.path));
 });
 
 /**
@@ -174,7 +174,8 @@ gulp.task('build-specs', ['templatecache'], function(done) {
             {name: 'inject:specs', read: false}))
         .pipe($.inject(gulp.src(config.serverIntegrationSpecs),
             {name: 'inject:serverspecs', read: false}))
-        .pipe($.inject(gulp.src(templateCache, {read: false}), {
+        .pipe($.inject(gulp.src(templateCache,
+            {name: 'inject:templates', read: false}), {
             starttag: '<!-- inject:templates:js -->'
         }))
         .pipe(gulp.dest(config.client));
@@ -300,7 +301,7 @@ gulp.task('clean-code', function(done) {
  *    gulp test --startServers
  * @return {Stream}
  */
-gulp.task('test', ['analyze', 'templatecache'], function(done) {
+gulp.task('test', ['vet', 'templatecache'], function(done) {
     startTests(true /*singleRun*/ , done);
 });
 
@@ -507,6 +508,7 @@ function startTests(singleRun, done) {
     var excludeFiles = [];
     var fork = require('child_process').fork;
     var karma = require('karma').server;
+    var serverSpecs = config.serverIntegrationSpecs;
 
     if (args.startServers) {
         log('Starting servers');
@@ -515,7 +517,10 @@ function startTests(singleRun, done) {
         savedEnv.PORT = 8888;
         child = fork(config.nodeServer);
     } else {
-        excludeFiles.push(config.midwaySpecs);
+        if (serverSpecs && serverSpecs.length) {
+            log('excluding server-integration tests: ' + serverSpecs);
+            excludeFiles = serverSpecs;
+        }
     }
 
     karma.start({
