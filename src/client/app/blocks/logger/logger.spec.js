@@ -5,6 +5,7 @@ describe('blocks.logger:', function() {
 
         beforeEach(module('blocks.logger'));
 
+        // This is the behavior we want to AVOID in our unit tests
         it('it writes to the DOM (when test is enabled)', function() {
 
             /* jshint -W027 */
@@ -44,7 +45,7 @@ describe('blocks.logger:', function() {
         });
 
         // we infer it called toastr.error if msg is set
-        it('infer calls toastr.error when log an error message', function() {
+        it('infer calls `toastr.error` when log an error message', function() {
             inject(function(logger) {
                 logger.error(testErr);
 
@@ -66,7 +67,7 @@ describe('blocks.logger:', function() {
         });
 
         // $log is already a stub/spy thanks to ngMocks
-        it('calls $log.error when log an error message', function() {
+        it('calls `$log.error` when log an error message', function() {
             inject(function($log, logger) {
                 logger.error(testErr);
 
@@ -79,6 +80,50 @@ describe('blocks.logger:', function() {
                 // the error msg is arg[0]
                 expect(errLogs[0][0]).to.contain(testErr);
             });
+        });
+    });
+
+    describe('(replace with test dummy)', function() {
+        var toastr;
+        var logger;
+        var testLogMsg = 'a test log message';
+
+        // starting with the 'blocks.logger' module ...
+        beforeEach(module('blocks.logger',
+
+            // ... replace the 'toastr' recipe with empty dummy
+            // that will throw exception if used
+            function($provide) {
+                $provide.constant('toastr', {});
+            }
+        ));
+
+        beforeEach(inject(function(_$log_, _logger_, _toastr_) {
+            $log   = _$log_;
+            logger = _logger_;
+            toastr = _toastr_;
+
+            // Invoke before each test
+            // Is this too DRY?
+            logger.log(testLogMsg);
+
+        }));
+
+        it('`logger.log` does not call toastr', function() {
+            // would have thrown if it called toastr
+        });
+
+        it('`logger.log` does call `$log.log`', function() {
+            var logLogs = $log.log.logs;
+            expect(logLogs).to.have.length(1, '$log.log.logs');
+            expect(logLogs[0][0]).to.contain(testLogMsg);
+        });
+
+        // test that our assumption about the dummy toastr is true
+        it('dummy toastr would throw if called', function() {
+            expect(function() {
+                toastr.info(testLogMsg);
+            }).to.throw(TypeError);
         });
     });
 
@@ -97,7 +142,7 @@ describe('blocks.logger:', function() {
             }
         ));
 
-        it('calls toastr.info when log an info message', function() {
+        it('calls `toastr.info` when log an info message', function() {
             inject(function(logger) {
                 logger.info(testInfo);
 
@@ -134,7 +179,7 @@ describe('blocks.logger:', function() {
         // as needed ... as we do here
         beforeEach(module('blocks.logger', fakeToastr));
 
-        it('calls toastr.success when log a success message', function() {
+        it('calls `toastr.success` when log a success message', function() {
             inject(function(logger) {
                 logger.success(testSuccess);
 
