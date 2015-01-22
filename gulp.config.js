@@ -95,8 +95,7 @@ module.exports = function() {
             'node_modules/sinon-chai/lib/sinon-chai.js'
         ],
         specHelpers: [
-            client + '/test-helpers/**/*.js',
-            'node_modules/ng-midway-tester/src/ngMidwayTester.js'
+            client + '/test-helpers/**/*.js'
         ],
         specs: [
             client + '/tests/assertions.spec.js',

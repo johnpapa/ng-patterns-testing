@@ -3,24 +3,22 @@
 //https://github.com/yearofmoo-articles/AngularJS-Testing-Article
 describe('Server: routing', function() {
     var current; // current route
-    var $route;
     var tester;
 
     beforeEach(function() {
-        tester = ngMidwayTester('testerApp', {mockLocationPaths: false});
-        $route = tester.inject('$route');
+        bard.asyncModule('app', bard.ngRouteTester({mockLocationPaths: false}));
+        bard.inject('ngRouteTester');
+        tester = ngRouteTester;
         wrap = bard.wrapWithDone;
-    });
-
-    afterEach(function () {
-        if (tester) { tester.destroy(); }
     });
 
     describe('when go to `/`', function() {
 
         beforeEach(function(done) {
             tester.visit('/', wrap(function() {
-                current = $route.current;
+                current = tester.$route.current;
+                //To inspect Dashboard binding in DOM, call $apply again
+                //tester.$rootScope.$apply();
             }, done));
         });
 
@@ -50,7 +48,9 @@ describe('Server: routing', function() {
 
         beforeEach(function(done) {
             tester.visit('/avengers', wrap(function() {
-                current = $route.current;
+                current = tester.$route.current;
+                //To inspect Avengers binding in DOM, call $apply again
+                //tester.$rootScope.$apply();
             }, done));
         });
 
