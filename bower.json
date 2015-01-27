@@ -36,5 +36,8 @@
     "sinon": {
       "js": "index.js"
     }
+  },
+  "resolutions": {
+    "angular": ">=1.2.25 <1.4.0"
   }
 }
