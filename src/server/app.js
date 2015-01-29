@@ -40,17 +40,14 @@ app.get('/ping', function(req, res, next) {
 switch (environment){
     case 'build':
         console.log('** BUILD **');
-        app.use('/', express.static('./build/'));
+        app.use('/', staticFiles('./build/'));
         break;
     default:
         console.log('** DEV **');
-        // app.use('/bower_components', staticFiles('./bower_components/'));
-        // app.use('/node_modules', staticFiles('./node_modules/'));
         app.use(staticFiles('./src/client/'));
         app.use(staticFiles('./'));
-        // app.use('/', staticFiles('./src/client/'));
         app.use(staticFiles('./.tmp/'));
-        app.use('/*', express.static('./src/client/index.html'));
+        app.use('/*', staticFiles('./src/client/index.html'));
         break;
 }
 
