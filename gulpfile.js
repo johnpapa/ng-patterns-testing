@@ -463,7 +463,7 @@ function startBrowserSync(specRunner) {
         injectChanges: true,
         logFileChanges: true,
         logLevel: 'debug',
-        logPrefix: 'gulp-patterns',
+        logPrefix: 'ng-testing',
         notify: true,
         reloadDelay: 1000
     } ;
