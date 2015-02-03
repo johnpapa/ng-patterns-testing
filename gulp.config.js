@@ -2,47 +2,65 @@ module.exports = function() {
     var client = './src/client/';
     var server = './src/server/';
     var clientApp = client + 'app/';
+    var report = './report/';
     var root = './';
     var specRunnerFile = 'specs.html';
     var temp = './.tmp/';
     var wiredep = require('wiredep');
     var bowerFiles = wiredep({devDependencies: true})['js'];
+    var bower = {
+        json: require('./bower.json'),
+        directory: './bower_components/',
+        ignorePath: '../..'
+    };
+    var nodeModules = 'node_modules';
 
     var config = {
         /**
          * File paths
          */
-        root: root,
-        client: client,
-        server: server,
-        source: 'src/',
-        htmltemplates: clientApp + '/**/*.html',
-        css: temp + '/styles.css',
-        less: client + '/styles/styles.less',
-        html: client + '/**/*.html',
-        index: client + '/index.html',
-
-        // app js, with no specs
-        js: [
-            clientApp + '/**/*.module.js',
-            clientApp + '/**/*.js',
-            '!' + clientApp + '/**/*.spec.js'
-        ],
-
         // all javascript that we want to vet
         alljs: [
             './src/**/*.js',
             './*.js'
         ],
-
-        plato: {
-            js: clientApp + '/**/*.js'
-        },
-        fonts: './bower_components/font-awesome/fonts/**/*.*',
-        images: client + '/images/**/*.*',
         build: './build/',
+        client: client,
+        css: temp + 'styles.css',
+        fonts: bower.directory + 'font-awesome/fonts/**/*.*',
+        html: client + '**/*.html',
+        htmltemplates: clientApp + '**/*.html',
+        images: client + 'images/**/*.*',
+        index: client + 'index.html',
+        // app js, with no specs
+        js: [
+            clientApp + '**/*.module.js',
+            clientApp + '**/*.js',
+            '!' + clientApp + '**/*.spec.js'
+        ],
+        less: client + 'styles/styles.less',
+        report: report,
+        root: root,
+        server: server,
+        source: 'src/',
+        stubsjs: [
+            bower.directory + 'angular-mocks/angular-mocks.js',
+            client + 'stubs/**/*.js'
+        ],
         temp: temp,
-        report: './report/',
+
+        /**
+         * optimized files
+         */
+        optimized: {
+            app: 'app.js',
+            lib: 'lib.js'
+        },
+
+        /**
+         * plato
+         */
+        plato: {js: clientApp + '**/*.js'},
 
         /**
          * browser sync
@@ -50,23 +68,21 @@ module.exports = function() {
         browserReloadDelay: 1000,
 
         /**
-         * Template Cache settings
+         * template cache
          */
         templateCache: {
-            module: 'templates',
-            standAlone: false,
             file: 'templates.js',
-            path: temp,
-            root: 'app/'
+            options: {
+                module: 'app.core',
+                root: 'app/',
+                standAlone: false,
+            }
         },
 
         /**
-         * Bower and NPM locations
+         * Bower and NPM files
          */
-        bower: {
-            directory: './bower_components/',
-            ignorePath: '../..'
-        },
+        bower: bower,
         packages: [
             './package.json',
             './bower.json'
@@ -89,46 +105,73 @@ module.exports = function() {
          *  6 templates
          */
         testlibraries: [
-            'node_modules/mocha/mocha.js',
-            'node_modules/chai/chai.js',
-            'node_modules/mocha-clean/index.js',
-            'node_modules/sinon-chai/lib/sinon-chai.js'
+            nodeModules + '/mocha/mocha.js',
+            nodeModules + '/chai/chai.js',
+            nodeModules + '/mocha-clean/index.js',
+            nodeModules + '/sinon-chai/lib/sinon-chai.js'
         ],
-        specHelpers: [
-            client + '/test-helpers/**/*.js'
-        ],
-        specs: [
-            client + '/tests/assertions.spec.js',
-            clientApp + '/**/*.spec.js'
-        ],
-        serverIntegrationSpecs:[
-            client + '/tests/server-integration/**/*.spec.js'
-        ],
+        specHelpers: [client + 'test-helpers/*.js'],
+        specs: [clientApp + '**/*.spec.js'],
+        serverIntegrationSpecs: [client + '/tests/server-integration/**/*.spec.js'],
 
         /**
          * Node settings
          */
         nodeServer: './src/server/app.js',
-        defaultPort: '7206'
+        defaultPort: '7203'
+    };
+
+    /**
+     * wiredep and bower settings
+     */
+    config.getWiredepDefaultOptions = function() {
+        var options = {
+            bowerJson: config.bower.json,
+            directory: config.bower.directory,
+            ignorePath: config.bower.ignorePath
+        };
+        return options;
     };
 
     /**
      * karma settings
      */
-    config.karma = {
-        files: [].concat(
-            bowerFiles,
-            './node_modules/ng-midway-tester/src/ngMidwayTester.js',
-            config.specHelpers,
-            clientApp + '/**/*.module.js',
-            clientApp + '/**/*.js',
-            client + 'tests/**/*.spec.js',
-            config.templateCache.path + config.templateCache.file
-            ),
-        preprocessors: {}
-    };
-    config.karma.preprocessors['{' + clientApp + ',' +
-                               clientApp + '/**/!(*.spec).js}'] = 'coverage';
+    config.karma = getKarmaOptions();
 
     return config;
+
+    ////////////////
+
+    function getKarmaOptions() {
+        var options = {
+            files: [].concat(
+                bowerFiles,
+                config.specHelpers,
+                clientApp + '**/*.module.js',
+                clientApp + '**/*.js',
+                temp + config.templateCache.file,
+                config.serverIntegrationSpecs
+            ),
+            exclude: [],
+            coverage: {
+                dir: report + 'coverage',
+                reporters: [
+                    // reporters not supporting the `file` property
+                    {type: 'html', subdir: 'report-html'},
+                    {type: 'lcov', subdir: 'report-lcov'},
+                    // reporters supporting the `file` property, use `subdir` to directly
+                    // output them in the `dir` directory.
+                    // omit `file` to output to the console.
+                    // {type: 'cobertura', subdir: '.', file: 'cobertura.txt'},
+                    // {type: 'lcovonly', subdir: '.', file: 'report-lcovonly.txt'},
+                    // {type: 'teamcity', subdir: '.', file: 'teamcity.txt'},
+                    //{type: 'text'}, //, subdir: '.', file: 'text.txt'},
+                    {type: 'text-summary'} //, subdir: '.', file: 'text-summary.txt'}
+                ]
+            },
+            preprocessors: {}
+        };
+        options.preprocessors[clientApp + '**/!(*.spec)+(.js)'] = ['coverage'];
+        return options;
+    }
 };
