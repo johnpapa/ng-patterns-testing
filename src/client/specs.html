@@ -8,31 +8,29 @@
 
     <style>
         body {
-            font: 20px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font: 20px/1.5 "Helvetica Neue", Helvetica, sans-serif;
             padding-left: 20px;
         }
     </style>
 
-    <!--BEWARE of using any styles from the application itself as their @media can screw up tests -->
+    <!--BEWARE: do not load any of app own styles as @media can screw up tests -->
+
+</head>
+<body>
+    <p>
+        Click <a href="/specs.html" title="Start over"><img src="images/home.png"
+                         style="width: 20px"></a> to start over.<br/>
+        Click a <em>description title</em> to run its specs only
+            (see "<a href="http://mochajs.github.io/mocha/#grep-option" target="_blank" title="MochaJS grep option">
+                ?grep</a>" in address bar).<br/>
+        Click a <em>spec title</em> to see its implementation.
+    </p>
+
+    <div id="mocha"></div>
 
     <!-- inject-testvendorcss:css -->
     <link rel="stylesheet" href="node_modules/mocha/mocha.css">
     <!-- endinject -->
-
-</head>
-<body>
-
-<h1><a href="specs.html">ng-patterns-testing</a></h1>
-<p><strong>Make sure the REMOTE server is running</strong><br/>
-    Click on a <em>description title</em> to narrow the scope to just its specs
-    (see "<a href="http://mochajs.github.io/mocha/#grep-option" target="_blank" title="MochaJS grep option">
-        ?grep</a>" in address bar).<br/>
-    Click on a <em>spec title</em> to see the test implementation.<br/>
-    Click on <em>page title</em> to start over.
-</p>
-
-<div id="mocha"></div>
-
 
     <!-- inject:testlibraries:js -->
     <script src="/node_modules/mocha/mocha.js"></script>
