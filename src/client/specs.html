@@ -44,7 +44,6 @@
         AssertionError = chai.AssertionError;
         mocha.setup('bdd');
         mocha.traceIgnores = ['mocha.js', 'chai.js', 'angular.js'];
-        //mocha.checkLeaks();
     </script>
 
     <!-- bower:js -->
@@ -144,7 +143,9 @@
     <!-- endinject -->
 
     <script>
-        mocha.run();
+        mocha.checkLeaks();
+        var runner = mocha.run();
+        bard.mochaRunnerListener(runner);
     </script>
 
 </body>

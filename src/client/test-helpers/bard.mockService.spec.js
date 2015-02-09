@@ -34,6 +34,7 @@ describe('bard.mockService', function() {
 
         it('`doWork2` calls alert and returns the "real" results', function() {
             var alert = sandbox.stub($window, 'alert');
+            bard.addGlobals(this, 'alert'); // because sinon adds it!
             var results = service.doWork2();
             expect(results).to.equal('pointless');
             expect(alert).to.have.been.calledWith('Hi there');
