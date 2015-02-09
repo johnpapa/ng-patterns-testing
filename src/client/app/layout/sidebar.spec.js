@@ -7,7 +7,7 @@ describe('layout sidebar', function () {
         // 'templates' populates $templateCache with all views
         // so that tests don't try to retrieve view templates from the server.
         module('app', 'templates', bard.fakeToastr);
-        bard.inject('$controller', '$location', '$rootScope', '$route');
+        bard.inject(this, '$controller', '$location', '$rootScope', '$route');
     });
 
     beforeEach(function () {

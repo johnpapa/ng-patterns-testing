@@ -15,7 +15,7 @@ describe('blocks.exception:', function() {
             }
         );
 
-        bard.inject('$exceptionHandler', '$log', '$rootScope');
+        bard.inject(this, '$exceptionHandler', '$log', '$rootScope');
 
         throwAndCatch();
     });

@@ -185,6 +185,8 @@ gulp.task('build-specs', ['templatecache'], function(done) {
             {name: 'inject:spechelpers', read: false}))
         .pipe($.inject(gulp.src(specs),
             {name: 'inject:specs', read: false}))
+        .pipe($.inject(gulp.src(config.specHelperSpecs),
+            {name: 'inject:spechelperspecs', read: false}))
         .pipe($.inject(gulp.src(templateCache),
             {name: 'inject:templates', read: false}))
         .pipe(gulp.dest(config.client));

@@ -110,9 +110,17 @@ module.exports = function() {
             nodeModules + '/mocha-clean/index.js',
             nodeModules + '/sinon-chai/lib/sinon-chai.js'
         ],
-        specHelpers: [client + 'test-helpers/*.js'],
-        specs: [clientApp + '**/*.spec.js'],
-        serverIntegrationSpecs: [client + '/tests/server-integration/**/*.spec.js'],
+        specHelpers: [
+            client + 'test-helpers/*.js',
+            '!' + client + 'test-helpers/*.spec.js',
+        ],
+        specs: [
+            client + 'tests/assertions.spec.js',
+            clientApp + '**/*.spec.js',
+            client + 'tests/*.spec.js'
+        ],
+        serverIntegrationSpecs: [client + 'tests/server-integration/**/*.spec.js'],
+        specHelperSpecs: [client + 'test-helpers/*.spec.js'],
 
         /**
          * Node settings
@@ -149,6 +157,7 @@ module.exports = function() {
                 config.specHelpers,
                 clientApp + '**/*.module.js',
                 clientApp + '**/*.js',
+                client + '/tests/*.spec.js',
                 temp + config.templateCache.file,
                 config.serverIntegrationSpecs
             ),

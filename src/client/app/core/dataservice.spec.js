@@ -1,9 +1,11 @@
 /* jshint -W117, -W030 */
 describe('core dataservice', function () {
 
+    var $httpFlush;
+
     beforeEach(function () {
         module('app.core', bard.fakeToastr);
-        bard.inject('$httpBackend', '$rootScope', 'dataservice');
+        bard.inject(this, '$httpBackend', '$rootScope', 'dataservice');
         $httpFlush = $httpBackend.flush;
     });
 

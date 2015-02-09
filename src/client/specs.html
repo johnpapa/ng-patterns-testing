@@ -44,6 +44,7 @@
         AssertionError = chai.AssertionError;
         mocha.setup('bdd');
         mocha.traceIgnores = ['mocha.js', 'chai.js', 'angular.js'];
+        //mocha.checkLeaks();
     </script>
 
     <!-- bower:js -->
@@ -91,8 +92,6 @@
     <!-- endinject -->
 
     <!-- inject:specHelpers:js -->
-    <script src="/src/client/test-helpers/bard.inject.spec.js"></script>
-    <script src="/src/client/test-helpers/bard.mockService.spec.js"></script>
     <script src="/src/client/test-helpers/bindPolyfill.js"></script>
     <script src="/src/client/test-helpers/mockData.js"></script>
     <script src="/src/client/test-helpers/stubs.js"></script>
@@ -133,6 +132,11 @@
     <!-- inject:serverspecs:js -->
     <script src="/src/client/tests/server-integration/dataservice.spec.js"></script>
     <script src="/src/client/tests/server-integration/routing.spec.js"></script>
+    <!-- endinject -->
+
+    <!-- inject:spechelperspecs:js -->
+    <script src="/src/client/test-helpers/bard.inject.spec.js"></script>
+    <script src="/src/client/test-helpers/bard.mockService.spec.js"></script>
     <!-- endinject -->
 
     <!-- inject:templates:js -->

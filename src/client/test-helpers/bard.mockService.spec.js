@@ -4,15 +4,25 @@ describe('bard.mockService', function() {
 
     var mockService = bard.mockService;
     var flush;
+    var sandbox;
 
     beforeEach(function() {
         module();
-        bard.inject('$q', '$rootScope', '$window');
+        bard.inject(this, '$q', '$rootScope', '$window');
+        sandbox = sinon.sandbox.create();
         flush = function() { $rootScope.$apply(); };
     });
 
+    afterEach(function() {
+        sandbox.restore();
+    });
+
     describe('when execute the "real" DoWork service described in the usage example', function() {
-        var service = getDoWorkService();
+        var service;
+
+        beforeEach(function() {
+            service = getDoWorkService();
+        });
 
         it('`doWork1` returns a resolved promise with the "real" results', function() {
             service.doWork1(1, 2)
@@ -23,7 +33,7 @@ describe('bard.mockService', function() {
         });
 
         it('`doWork2` calls alert and returns the "real" results', function() {
-            var alert = sinon.stub($window, 'alert');
+            var alert = sandbox.stub($window, 'alert');
             var results = service.doWork2();
             expect(results).to.equal('pointless');
             expect(alert).to.have.been.calledWith('Hi there');

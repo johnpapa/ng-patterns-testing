@@ -4,10 +4,11 @@
 describe('Server: routing', function() {
     var current; // current route
     var tester;
+    var wrap;
 
     beforeEach(function() {
         bard.asyncModule('app', bard.ngRouteTester({mockLocationPaths: false}));
-        bard.inject('ngRouteTester');
+        bard.inject(this, 'ngRouteTester');
         tester = ngRouteTester;
         wrap = bard.wrapWithDone;
     });

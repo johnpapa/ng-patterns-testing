@@ -6,7 +6,8 @@ describe('dashboard news controller', function() {
 
     beforeEach(function() {
         bard.appModule('app.dashboard');
-        bard.inject('$controller', '$interval', '$q', '$rootScope', '$timeout', 'newsService');
+        bard.inject(this, '$controller', '$interval', '$q', '$rootScope',
+                          '$timeout', 'newsService');
     });
 
     beforeEach(function () {

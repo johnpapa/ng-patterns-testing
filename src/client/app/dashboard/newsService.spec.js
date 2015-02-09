@@ -5,7 +5,7 @@ describe('dashboard newsService', function () {
 
     beforeEach(function () {
         bard.appModule('app.dashboard');
-        bard.inject('$timeout', 'newsService');
+        bard.inject(this, '$timeout', 'newsService');
 
         // We know that the newsService is actually a fake
         // so we don't bother pretending we need $httpBackend
@@ -73,7 +73,9 @@ describe('dashboard newsService', function () {
             // Test could fail if very, very unlucky and service
             // randomly returned the same stories in same order twice.
 
-            bard.inject('$q'); // only need $q in this test.
+            //bard.inject(this, '$q'); // only need $q in this test.
+            var $q = this.$injector.get('$q');
+
             $q.all([
                 newsService.getTopStories(5),
                 newsService.getTopStories(5)

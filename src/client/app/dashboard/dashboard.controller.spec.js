@@ -6,7 +6,7 @@ describe('dashboard controller', function() {
 
     beforeEach(function() {
         bard.appModule('app.dashboard');
-        bard.inject('$controller', '$log', '$q', '$rootScope', 'dataservice');
+        bard.inject(this, '$controller', '$log', '$q', '$rootScope', 'dataservice');
     });
 
     beforeEach(function () {

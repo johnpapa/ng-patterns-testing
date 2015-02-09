@@ -84,6 +84,7 @@ describe('blocks.logger:', function() {
     });
 
     describe('(replace with test dummy)', function() {
+        var $log;
         var toastr;
         var logger;
         var testLogMsg = 'a test log message';

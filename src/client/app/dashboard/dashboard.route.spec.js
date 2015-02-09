@@ -5,7 +5,7 @@ describe('dashboard-route', function () {
 
     beforeEach(function() {
         module('app.dashboard', bard.fakeToastr);
-        bard.inject('$location', '$route', '$rootScope', '$templateCache');
+        bard.inject(this, '$location', '$route', '$rootScope', '$templateCache');
         $templateCache.put(view, '');
     });
 

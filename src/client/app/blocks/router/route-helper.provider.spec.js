@@ -8,7 +8,7 @@ describe('blocks.router routehelper', function () {
           bard.fakeToastr,
           configureRoutehelper);
 
-        bard.inject('$rootScope', '$route', 'routehelper');
+        bard.inject(this, '$rootScope', '$route', 'routehelper');
 
         testRoute = getTestRoute();
     });
@@ -67,7 +67,7 @@ describe('blocks.router routehelper', function () {
 
         // these routes are added in non-alpha order
         var routeIds = [1, 3, 2, 42, 4];
-        routes = routeIds.map(function(id) {return getTestRoute(id);});
+        var routes = routeIds.map(function(id) {return getTestRoute(id);});
 
         routehelper.configureRoutes(routes);
 

@@ -17,7 +17,7 @@ describe('avengers controller', function() {
 
         beforeEach(function() {
             bard.appModule('app.avengers');
-            bard.inject('$controller', '$log', '$q', '$rootScope', 'dataservice');
+            bard.inject(this, '$controller', '$log', '$q', '$rootScope', 'dataservice');
 
             sinon.stub(dataservice, 'getAvengers')
                  .returns($q.when(avengers));
@@ -80,7 +80,7 @@ describe('avengers controller', function() {
         beforeEach(function() {
 
             bard.appModule('app.avengers');
-            bard.inject('$controller', '$q', '$rootScope', 'dataservice');
+            bard.inject(this, '$controller', '$q', '$rootScope', 'dataservice');
 
             // Use when you repeatedly stub this method ... and only this method
             // if you often stub out a bunch of the same methods
@@ -99,7 +99,7 @@ describe('avengers controller', function() {
         beforeEach(function() {
 
             bard.appModule('app.avengers');
-            bard.inject('$controller', '$q', '$rootScope', 'dataservice');
+            bard.inject(this, '$controller', '$q', '$rootScope', 'dataservice');
 
             // Replace the `getAvengers` method with a spy;
             // almost the same as stubbing `getAvengers`
@@ -117,7 +117,7 @@ describe('avengers controller', function() {
         beforeEach(function() {
 
             bard.appModule('app.avengers');
-            bard.inject('$controller', '$q', '$rootScope');
+            bard.inject(this, '$controller', '$q', '$rootScope');
 
             // Shows EXACTLY what the controller needs from the service
             // Controller throws if it asks for anything else.
@@ -150,7 +150,7 @@ describe('avengers controller', function() {
             }
 
             bard.appModule('app.avengers', registerFakeDataservice);
-            bard.inject('$controller', '$q', '$rootScope');
+            bard.inject(this, '$controller', '$q', '$rootScope');
 
             controller = $controller('Avengers');
             $rootScope.$apply();
@@ -165,7 +165,7 @@ describe('avengers controller', function() {
 
         beforeEach(function () {
             bard.appModule('app.avengers');
-            bard.inject('dataservice');
+            bard.inject(this, 'dataservice');
         });
 
         it('has the real `getAvengers` method', function() {
@@ -199,7 +199,7 @@ describe('avengers controller', function() {
             }
 
             bard.appModule('app.avengers', decorateDataservice);
-            bard.inject('$controller', '$q', '$rootScope');
+            bard.inject(this, '$controller', '$q', '$rootScope');
 
             controller = $controller('Avengers');
             $rootScope.$apply();
@@ -212,8 +212,7 @@ describe('avengers controller', function() {
 
         beforeEach(function() {
             bard.appModule('app.avengers');
-            bard.inject(
-                function($controller, $q, $rootScope, $httpBackend, dataservice) { });
+            bard.inject(this, '$controller', '$q', '$rootScope', '$httpBackend', 'dataservice');
 
             // when `dataservice.getAvengers` sends GET request
             // simulate the server's JSON response
@@ -237,7 +236,7 @@ describe('avengers controller', function() {
         beforeEach(function() {
 
             bard.appModule('app.avengers');
-            bard.inject('$controller', '$q', '$rootScope', 'dataservice');
+            bard.inject(this, '$controller', '$q', '$rootScope', 'dataservice');
 
             // Mock multiple service members with a single configuration
             // Every service function is stubbed.
@@ -285,7 +284,7 @@ describe('avengers controller', function() {
         beforeEach(function() {
 
             bard.appModule('app.avengers');
-            bard.inject('$controller', '$log', '$q', '$rootScope', 'dataservice');
+            bard.inject(this, '$controller', '$log', '$q', '$rootScope', 'dataservice');
             stubs.sadService();
 
             controller = $controller('Avengers');
