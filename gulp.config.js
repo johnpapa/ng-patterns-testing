@@ -38,6 +38,11 @@ module.exports = function() {
             clientApp + '**/*.js',
             '!' + clientApp + '**/*.spec.js'
         ],
+        jsOrder: [
+            '**/app.module.js',
+            '**/*.module.js',
+            '**/*.js'
+        ],
         less: client + 'styles/styles.less',
         report: report,
         root: root,
@@ -75,7 +80,7 @@ module.exports = function() {
             options: {
                 module: 'app.core',
                 root: 'app/',
-                standAlone: false,
+                standAlone: false
             }
         },
 
@@ -168,14 +173,7 @@ module.exports = function() {
                     // reporters not supporting the `file` property
                     {type: 'html', subdir: 'report-html'},
                     {type: 'lcov', subdir: 'report-lcov'},
-                    // reporters supporting the `file` property, use `subdir` to directly
-                    // output them in the `dir` directory.
-                    // omit `file` to output to the console.
-                    // {type: 'cobertura', subdir: '.', file: 'cobertura.txt'},
-                    // {type: 'lcovonly', subdir: '.', file: 'report-lcovonly.txt'},
-                    // {type: 'teamcity', subdir: '.', file: 'teamcity.txt'},
-                    //{type: 'text'}, //, subdir: '.', file: 'text.txt'},
-                    {type: 'text-summary'} //, subdir: '.', file: 'text-summary.txt'}
+                    {type: 'text-summary'}
                 ]
             },
             preprocessors: {}
