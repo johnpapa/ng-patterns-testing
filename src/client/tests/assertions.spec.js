@@ -3,7 +3,7 @@
 /*
  *  Using chai BDD (expect) assertions: http://chaijs.com/api/bdd/
  */
-describe('chai assertion examples:', function () {
+describe('chai assertion examples', function () {
     'use strict';
 
 

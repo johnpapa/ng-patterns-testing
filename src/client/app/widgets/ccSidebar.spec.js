@@ -1,5 +1,5 @@
 /* jshint -W117, -W109, -W030 */
-describe('widgets.ccSidebar directive: ', function () {
+describe('widgets ccSidebar directive', function () {
     var dropdownElement;
     var el;
     var innerElement;

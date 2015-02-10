@@ -1,6 +1,5 @@
 /* jshint -W117, -W030 */
-describe('blocks.logger:', function() {
-
+describe('blocks / logger', function() {
     describe('(if allow real toastr)', function() {
 
         beforeEach(module('blocks.logger'));

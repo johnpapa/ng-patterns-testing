@@ -1,6 +1,5 @@
 /* jshint -W117, -W030 */
-describe('blocks.exception:', function() {
-
+describe('blocks / exception-handler', function() {
     var error;
     var errorPrefix = 'TEST: ';
     var errorRe = new RegExp(errorPrefix);

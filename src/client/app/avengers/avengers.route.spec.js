@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe('avengers-route', function () {
+describe('avengers route', function () {
     var controller;
     var view = 'app/avengers/avengers.html';
 

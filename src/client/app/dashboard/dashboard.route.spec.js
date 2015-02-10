@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe('dashboard-route', function () {
+describe('dashboard route', function () {
     var controller;
     var view = 'app/dashboard/dashboard.html';
 

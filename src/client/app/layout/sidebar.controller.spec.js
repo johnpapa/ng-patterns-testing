@@ -1,5 +1,5 @@
 /* jshint -W117, -W030 */
-describe('layout sidebar', function () {
+describe('layout sidebar controller', function () {
     var controller;
 
     beforeEach(function() {
