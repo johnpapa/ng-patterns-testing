@@ -6,19 +6,16 @@ describe('layout shell controller', function() {
     var $timeout;     // different from bard 
  
     beforeEach(function() {
-        module('app.layout', fakeToastr);
- 
-        function fakeToastr($provide) {
-            $provide.constant('toastr', {
-                info: function() {},
-                error: function() {},
-                warning: function() {},
-                success: function() {}
-            });
-        }
+        module('app.layout');
  
         // different from bard - begin
-        inject(function($controller, _$log_, _$timeout_) {
+        inject(function($controller, _$log_, _$timeout_, toastr) {
+            // Crazy stuff we do to disable the toastr
+            toastr.info = function() {};
+            toastr.error = function() {};
+            toastr.warning = function() {};
+            toastr.success = function() {};
+
             $log = _$log_;
             $timeout = _$timeout_;
             controller = $controller('Shell');
