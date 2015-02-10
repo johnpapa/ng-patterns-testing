@@ -1,11 +1,11 @@
 /* jshint -W117, -W030 */
 describe('blocks / logger', function() {
-    describe('(if allow real toastr)', function() {
+    describe('when using real toastr', function() {
 
         beforeEach(module('blocks.logger'));
 
         // This is the behavior we want to AVOID in our unit tests
-        it('it writes to the DOM (when test is enabled)', function() {
+        it('it writes to the DOM when test is enabled', function() {
 
             /* jshint -W027 */
             return; // remove this return during demo
@@ -20,7 +20,7 @@ describe('blocks / logger', function() {
         });
     });
 
-    describe('(stub toastr)', function() {
+    describe('when stub toastr', function() {
 
         var msg;
         var testErr = 'a test error';
@@ -82,7 +82,7 @@ describe('blocks / logger', function() {
         });
     });
 
-    describe('(replace with test dummy)', function() {
+    describe('when replace with test dummy', function() {
         var $log;
         var toastr;
         var logger;
@@ -127,7 +127,7 @@ describe('blocks / logger', function() {
         });
     });
 
-    describe('(stub toastr with sinon)', function() {
+    describe('when stub toastr with sinon', function() {
         var _toastr;
         var testInfo = 'a test info message';
 
@@ -154,7 +154,7 @@ describe('blocks / logger', function() {
         });
     });
 
-    describe('(stub toastr routinely with $provide)', function() {
+    describe('when stub toastr routinely with $provide', function() {
         var toastr;
         var testSuccess = 'a test success message';
 
