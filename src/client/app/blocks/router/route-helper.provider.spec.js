@@ -4,7 +4,7 @@ describe('blocks / router route-helper', function () {
     var routehelperConfig, testRoute;
 
     beforeEach(function () {
-        module('blocks.router',
+        module('blocks.router', // not bard.appModule which mocks $route!
           bard.fakeToastr,
           configureRoutehelper);
 
