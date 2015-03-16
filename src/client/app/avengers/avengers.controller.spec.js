@@ -261,11 +261,13 @@ describe('avengers controller', function() {
         //// tests of the mocked dataservice, not the controller ////
 
         it('can call fake `dataservice.getAvengersCast`', function() {
+            // `getAvengersCast` was not specifically configured
+            //  and therefore returns the default empty array
             dataservice.getAvengersCast().then(function(cast) {
                 expect(cast).to.have.length(0);
             });
             $rootScope.$apply();
-            // verify this is actually a spy
+            // verify that `getAvengersCast` is a spy
             expect(dataservice.getAvengersCast).to.have.been.calledOnce;
         });
 
