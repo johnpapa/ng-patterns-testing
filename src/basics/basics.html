@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+        <title>Mocha/Chai Basic Tests</title>
+
+        <style>
+            body {
+                font: 18px/1.5 "Helvetica Neue", Helvetica, sans-serif;
+                padding-left: 20px;
+            }
+        </style>
+
+    </head>
+
+    <body>
+        <p>
+            Click <a href="basics.html" title="Start over"><img src="https://raw.githubusercontent.com/johnpapa/pluralsight-ng-testing/master/src/client/images/home.png" style="width: 18px"></a> to start over.<br/>
+            Click a <em>description title</em> to run its specs only
+            (see "<a href="http://mochajs.github.io/mocha/#grep-option" target="_blank" title="MochaJS grep option">
+            ?grep</a>" in address bar).<br/>
+            Click a <em>spec title</em> to see its implementation.
+        </p>
+
+        <div id="mocha"></div>
+
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/mocha/2.1.0/mocha.min.css" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/chai/1.10.0/chai.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/mocha/2.1.0/mocha.min.js"></script>
+        <script src="//cdn.rawgit.com/rstacruz/mocha-clean/v0.3.0/index.js"></script>
+
+        <script>
+            mocha.setup('bdd');
+            mocha.traceIgnores = ['mocha.min.js', 'chai.min.js'];
+            expect = chai.expect;
+        </script>
+
+        <script src="basics.js">
+            <!-- specs/tests here -->
+        </script>
+        <script>
+            mocha.run();
+        </script>
+    </body>
+</html>
