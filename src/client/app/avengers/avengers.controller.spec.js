@@ -186,12 +186,13 @@ describe('avengers controller', function() {
         beforeEach(function() {
 
             function decorateDataservice($provide) {
-            // When the service method is widely used, you can
-            // decorate the real `dataservice` methods with
-            // stubbed versions such as `getAvengers`.
-            // Then enlist it in the appModule where needed as shown below.
-            // You would put this function in `bard`
-            // N.B.: this service leaves other real members intact
+
+                // When the service method is widely used, you can
+                // decorate the real `dataservice` methods with
+                // stubbed versions such as `getAvengers`.
+                // Then enlist it in the appModule where needed as shown below.
+                // You would put this function in `bard`
+                // N.B.: this service leaves other real members intact
                 $provide.decorator('dataservice', function($delegate) {
                     $delegate.getAvengers = getAvengersFake();
                     return $delegate;

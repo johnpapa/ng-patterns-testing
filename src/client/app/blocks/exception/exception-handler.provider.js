@@ -32,7 +32,7 @@
      * @param  {[type]} $provide
      * @return {[type]}
      */
-     /* @ngInject */
+    /* @ngInject */
     function config($provide) {
         $provide.decorator('$exceptionHandler', extendExceptionHandler);
     }

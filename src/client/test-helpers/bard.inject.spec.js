@@ -129,15 +129,15 @@ describe('bard.inject', function() {
             expect(window.foo).to.exist;
         });
 
-         // This afterEach would fail because it is called BEFORE
-         // the outer one created by bard to handle window cleaning
-         // -----------------------------------------------------
-         // afterEach('Describe #2 afterEach', function() {
-         //     console.log('---Describe #2 afterEach');
-         //     // Should have cleaned up after itself
-         //     expect(window.$log).to.not.exist;
-         //     expect(window.nutz).to.not.exist;
-         // });
+        // This afterEach would fail because it is called BEFORE
+        // the outer one created by bard to handle window cleaning
+        // -----------------------------------------------------
+        // afterEach('Describe #2 afterEach', function() {
+        //     console.log('---Describe #2 afterEach');
+        //     // Should have cleaned up after itself
+        //     expect(window.$log).to.not.exist;
+        //     expect(window.nutz).to.not.exist;
+        // });
     });
 
     describe('(describe #4):', function() {

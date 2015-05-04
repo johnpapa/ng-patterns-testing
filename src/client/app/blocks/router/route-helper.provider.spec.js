@@ -108,7 +108,7 @@ describe('blocks / router route-helper', function () {
             .to.have.property('title', 'duplicate', 'route');
     });
 
-  ////// helpers /////
+    ////// helpers /////
 
     function configureRoutehelper ($routeProvider, routehelperConfigProvider) {
         // An app module would configure the routehelper
@@ -140,7 +140,7 @@ describe('blocks / router route-helper', function () {
                     nav: index ? index + 1 : 1,
                     content: '<i class="fa fa-lock"></i> ' + test
                 }
-          }
+            }
         };
     }
 });
