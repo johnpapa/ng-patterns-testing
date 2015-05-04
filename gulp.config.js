@@ -117,7 +117,9 @@ module.exports = function() {
         ],
         specHelpers: [
             client + 'test-helpers/*.js',
-            '!' + client + 'test-helpers/*.spec.js',
+            // Karma complains about this because it composes an invalid path from the CWD;
+            // fortunately it doesn't matter because it should (and will) run these anyway
+            '!' + client + 'test-helpers/*.spec.js'
         ],
         specs: [
             client + 'tests/assertions.spec.js',
@@ -162,7 +164,7 @@ module.exports = function() {
                 config.specHelpers,
                 clientApp + '**/*.module.js',
                 clientApp + '**/*.js',
-                client + '/tests/*.spec.js',
+                // client + '/tests/*.spec.js', // NONE AT THE MOMENT
                 temp + config.templateCache.file,
                 config.serverIntegrationSpecs
             ),
