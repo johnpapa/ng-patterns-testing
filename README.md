@@ -61,14 +61,14 @@ There are two ways to test: in the browser and with karma
 
 * Open a command or terminal window.
 
-* Launch the developer server listening on **port 7202**:
+* With browser-sync 
+    * in specs.html, comment out `mocha.checkLeaks()` // false leak report from browser sync
+    * run `gulp serve-specs`<br/><br/>
 
-		gulp serve-dev
-
-* Open a browser to `localhost:7202/specs.html`
-
-> "localhost:7202" alone runs the application in the browser. 
-Be sure to append ***/specs.html*** to that base url.
+* Without browser-sync 
+    * run `gulp serve-specs --nosync`
+	* open a browser to `localhost:7202/specs.html`
+	* browsing to `localhost:7202` runs the app<br/><br/>
 
 * To stop, either "Ctrl-C" and answer the prompt with "Y" or just close the window.
 

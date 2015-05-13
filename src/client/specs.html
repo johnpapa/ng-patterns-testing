@@ -127,7 +127,10 @@
     <!-- endinject -->
 
     <script>
-        mocha.checkLeaks();
+        // warning: false leak reports with browser sync
+        // Either run `gulp serve-specs --nosync`
+        // or comment out next line 
+        mocha.checkLeaks(); 
         var runner = mocha.run();
         bard.mochaRunnerListener(runner);
     </script>
