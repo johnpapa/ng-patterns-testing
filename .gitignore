@@ -6,6 +6,7 @@
 bin
 obj
 /packages
+/typings/**/*.ts
 
 # Ignore Node & Bower
 ###################

@@ -23,24 +23,22 @@ describe('core dataservice', function () {
                         .respond(200, avengers);
         });
 
-        it('should return Avengers', function (done) {
+        it('should return Avengers', function () {
             dataservice.getAvengers()
                 .then(function(data) {
                     expect(data.length).to.equal(avengers.length);
-                })
-                .then(done, done);
+                });
             $httpFlush();
         });
 
-        it('should contain Black Widow', function (done) {
+        it('should contain Black Widow', function () {
             dataservice.getAvengers()
                 .then(function(data) {
                     var hasBlackWidow = data.some(function (a) {
                         return a.name.indexOf('Black Widow') >= 0;
                     });
                     expect(hasBlackWidow).to.be.true;
-                })
-                .then(done, done);
+                });
             $httpFlush();
         });
     });
@@ -53,36 +51,33 @@ describe('core dataservice', function () {
                         .respond(200, cast);
         });
 
-        it('should return cast', function (done) {
+        it('should return cast', function () {
             dataservice.getAvengersCast()
             .then(function(data) {
                 expect(data.length).to.equal(cast.length);
-            })
-            .then(done, done);
+            });
             $httpFlush();
         });
 
-        it('should contain Scarlett Johansson', function (done) {
+        it('should contain Scarlett Johansson', function () {
             dataservice.getAvengersCast()
             .then(function(data) {
                 var hasScarlett = data.some(function (c) {
                     return c.name === 'Scarlett Johansson';
                 });
                 expect(hasScarlett).to.be.true;
-            })
-            .then(done, done);
+            });
             $httpFlush();
         });
     });
 
     describe('ready function', function () {
 
-        it('should return a resolved promise with the dataservice itself', function (done) {
+        it('should return a resolved promise with the dataservice itself', function () {
             dataservice.ready()
             .then(function(data) {
                 expect(data).to.equal(dataservice);
-            })
-            .then(done, done);
+            });
             $rootScope.$apply(); // no $http so just flush $q
         });
     });

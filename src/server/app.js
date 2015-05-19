@@ -44,6 +44,7 @@ switch (environment){
         break;
     default:
         console.log('** DEV **');
+        app.use(staticFiles('./src/basics/'));
         app.use(staticFiles('./src/client/'));
         app.use(staticFiles('./'));
         app.use(staticFiles('./.tmp/'));

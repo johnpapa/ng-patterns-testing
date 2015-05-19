@@ -232,7 +232,7 @@ describe('avengers controller', function() {
         getAvengersExpectations();
     });
 
-    describe('when stub all dataservice members with mockService', function() {
+    describe('when stub all dataservice members with bard.mockService', function() {
 
         beforeEach(function() {
 

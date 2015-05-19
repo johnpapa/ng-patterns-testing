@@ -20,68 +20,6 @@ describe('blocks / logger', function() {
         });
     });
 
-    describe('when stub toastr', function() {
-
-        var msg;
-        var testErr = 'a test error';
-        var _toastr;
-
-        beforeEach(module('blocks.logger'));
-
-        beforeEach(function() {
-            inject(function(toastr) {
-                // monkey-patch the real toastr with
-                // a homebrew stub
-                var stub = function(m) { msg = m; };
-
-                toastr.error   = stub;
-                toastr.info    = stub;
-                toastr.success = stub;
-                toastr.warning = stub;
-
-                _toastr = toastr;
-            });
-        });
-
-        // we infer it called toastr.error if msg is set
-        it('infer calls `toastr.error` when log an error message', function() {
-            inject(function(logger) {
-                logger.error(testErr);
-
-                expect(msg).to.equal(testErr);
-            });
-        });
-
-        // we're sure it called toaster.error when we attach a sinon spy
-        it('calls toastr.error when log an error message', function() {
-            inject(function(logger) {
-
-                var spy = sinon.spy(toastr, 'error');
-
-                logger.error(testErr);
-
-                expect(_toastr.error).to.be.calledOnce;
-                expect(_toastr.error).to.be.calledWith(testErr);
-            });
-        });
-
-        // $log is already a stub/spy thanks to ngMocks
-        it('calls `$log.error` when log an error message', function() {
-            inject(function($log, logger) {
-                logger.error(testErr);
-
-                // $log is mocked by ngMocks
-                // Instead of writing to console it captures each call
-                // in its own `logs` array
-                var errLogs = $log.error.logs;
-                expect(errLogs).to.have.length(1, '$log.error.logs');
-                // logger calls $log error once with two args;
-                // the error msg is arg[0]
-                expect(errLogs[0][0]).to.contain(testErr);
-            });
-        });
-    });
-
     describe('when replace with test dummy', function() {
         var $log;
         var toastr;
@@ -103,24 +41,21 @@ describe('blocks / logger', function() {
             logger = _logger_;
             toastr = _toastr_;
 
-            // Invoke before each test
-            // Is this too DRY?
-            logger.log(testLogMsg);
-
         }));
 
         it('`logger.log` does not call toastr', function() {
             // would have thrown if it called toastr
+            logger.log(testLogMsg);
         });
 
         it('`logger.log` does call `$log.log`', function() {
+            logger.log(testLogMsg);
             var logLogs = $log.log.logs;
             expect(logLogs).to.have.length(1, '$log.log.logs');
             expect(logLogs[0][0]).to.contain(testLogMsg);
         });
 
-        // test that our assumption about the dummy toastr is true
-        it('dummy toastr would throw if called', function() {
+        it('toastr is called by logger.info', function() {
             expect(function() {
                 toastr.info(testLogMsg);
             }).to.throw(TypeError);
@@ -128,35 +63,58 @@ describe('blocks / logger', function() {
     });
 
     describe('when stub toastr with sinon', function() {
-        var _toastr;
-        var testInfo = 'a test info message';
+        var toastr;
+        var testError = 'a test error message';
 
         // starting with the 'blocks.logger' module ...
-        beforeEach(module('blocks.logger',
+        beforeEach(module('blocks.logger'));
 
-            // ... revise the 'toastr' recipe with stubs
-            function(toastr) {
-                // blindly stub every method of toastr
-                sinon.stub(toastr);
-                _toastr = toastr;
-            }
-        ));
+        // inject toastr and mock its methods
+        beforeEach(inject(function (_toastr_) {
+            toastr = _toastr_;
+            // mock specific methods
+            sinon.stub(toastr, 'error');
+            sinon.stub(toastr, 'info');
+            sinon.stub(toastr, 'success');
+            sinon.stub(toastr, 'warning');
+        }));
+
+        // restore toastr's mocked methods
+        // ESSENTIAL: because stubbing changed the global! toastr
+        afterEach(function () {
+            toastr.error.restore();
+            toastr.info.restore();
+            toastr.success.restore();
+            toastr.warning.restore();
+        });
 
         it('calls `toastr.info` when log an info message', function() {
             inject(function(logger) {
+                var testInfo = 'a test info message';
                 logger.info(testInfo);
 
-                expect(_toastr.info).to.be.calledOnce;
-                expect(_toastr.info).to.be.calledWith(testInfo);
-                expect(_toastr.info.getCall(0).args).to.have.length(2,
+                expect(toastr.info).to.be.calledOnce;
+                expect(toastr.info).to.be.calledWith(testInfo);
+                expect(toastr.info.getCall(0).args).to.have.length(2,
                     'info should be called w/ two args');
+            });
+        });
+
+        it('calls `toastr.error` when log an error message', function() {
+            inject(function(logger) {
+                var testError = 'a test error message';
+                logger.error(testError);
+
+                expect(toastr.error).to.be.calledOnce;
+                expect(toastr.error).to.be.calledWith(testError);
+                expect(toastr.error.getCall(0).args).to.have.length(2,
+                    'error should be called w/ two args');
             });
         });
     });
 
     describe('when stub toastr routinely with $provide', function() {
         var toastr;
-        var testSuccess = 'a test success message';
 
         // Because we need to fake toastr all over the place
         // and do so in apps that might not even use toastr
@@ -179,15 +137,26 @@ describe('blocks / logger', function() {
         // as needed ... as we do here
         beforeEach(module('blocks.logger', fakeToastr));
 
-        it('calls `toastr.success` when log a success message', function() {
-            inject(function(logger) {
-                logger.success(testSuccess);
+        // afterEach not needed because replacing the toastr service each time
 
-                expect(toastr.success).to.be.calledOnce;
-                expect(toastr.success).to.be.calledWith(testSuccess);
-                expect(toastr.success.getCall(0).args).to.have.length(2,
-                    'success should be called w/ two args');
-            });
-        });
+        it('calls `toastr.success` when log a success message', inject(function(logger) {
+            var testSuccess = 'a test success message';
+            logger.success(testSuccess);
+
+            expect(toastr.success).to.be.calledOnce;
+            expect(toastr.success).to.be.calledWith(testSuccess);
+            expect(toastr.success.getCall(0).args).to.have.length(2,
+                'success should be called w/ two args');
+        }));
+
+        it('calls `toastr.warning` when log a warning message', inject(function(logger) {
+            var testWarning = 'a test warning message';
+            logger.warning(testWarning);
+
+            expect(toastr.warning).to.be.calledOnce;
+            expect(toastr.warning).to.be.calledWith(testWarning);
+            expect(toastr.warning.getCall(0).args).to.have.length(2,
+                'warning should be called w/ two args');
+        }));
     });
 });

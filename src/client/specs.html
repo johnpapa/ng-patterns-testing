@@ -58,9 +58,9 @@
     <script src="/bower_components/toastr/toastr.js"></script>
     <script src="/bower_components/extras.angular.plus/ngplus-overlay.js"></script>
     <script src="/bower_components/angular-mocks/angular-mocks.js"></script>
+    <script src="/bower_components/sinon/index.js"></script>
     <script src="/bower_components/bardjs/dist/bard.js"></script>
     <script src="/bower_components/bardjs/dist/bard-ngRouteTester.js"></script>
-    <script src="/bower_components/sinon/index.js"></script>
     <!-- endbower -->
 
     <!-- inject:js -->
@@ -130,7 +130,7 @@
         // warning: false leak reports with browser sync
         // Either run `gulp serve-specs --nosync`
         // or comment out next line 
-        mocha.checkLeaks(); 
+        /////////////////////////////////////////////mocha.checkLeaks(); 
         var runner = mocha.run();
         bard.mochaRunnerListener(runner);
     </script>
